@@ -12,7 +12,7 @@ I have plans to do all the CRUD for this project in the future.
 
 - Breeze
 - Inertia
-- Read on react
+- Read (from CRUD) on react
 - Sort, filter, search on react
 
 ## Deepen my knowledge
