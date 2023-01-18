@@ -35,7 +35,7 @@ class FrontController extends Controller
     }
 
     public function sortAndFilter(Request $request){
-        dump($request->filter);
+
         if($request->filter == 0){
             $dishes = match($request->price_sort){
                 'asc'=>Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
@@ -86,7 +86,7 @@ class FrontController extends Controller
             }
         })->get();
         
-        dump($dishes);
+        // dump($dishes);
         return response()-> json([
             'dishes'=> $dishes,
         ]);

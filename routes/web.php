@@ -19,7 +19,7 @@ use App\Http\Controllers\FrontController;
 |
 */
 // Restaurant
-Route::middleware('role:admin')->group(function () {
+Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
 Route::get('/restaurant-list', [RestaurantController::class, 'index'])->name('restaurant-list');
 Route::get('/restaurant-create', [RestaurantController::class, 'create'])->name('restaurant-create');
 Route::post('/restaurant-store', [RestaurantController::class, 'store'])->name('restaurant-store');

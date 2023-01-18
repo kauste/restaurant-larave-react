@@ -19,7 +19,6 @@
                                 <th scope="col"></th>
                         </tr>
                     </thead>
-
                     <tbody>
                         @foreach($restaurants as $restaurant)
                         <tr>

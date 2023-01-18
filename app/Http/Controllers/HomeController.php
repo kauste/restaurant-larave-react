@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HomeController extends Controller
 {
@@ -27,7 +28,9 @@ class HomeController extends Controller
             return redirect()->route('user-restaurants');
         } 
         elseif($request->user()?->role == 10){
-            return redirect()->route('restaurant-list');
+
+            // return redirect()->route(/restaurant-list);
+            return Inertia::render('Redirect');
         }
     }
 }
