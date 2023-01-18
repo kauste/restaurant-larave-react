@@ -3,10 +3,10 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# Moon mining project 'HELIUM 3'
+# Laravel-react project 'Restaurant'
 
 This is a Laravel React project made for educational purposes only. The main goal was to learn the connection between Laravel and React.
-I have plans to do all the CRUD for this project in the future.
+Project is in progress.
 
 ## Used for the first time
 

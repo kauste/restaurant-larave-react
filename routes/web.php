@@ -64,9 +64,6 @@ Route::get('/search-dish', [FrontController::class, 'searchDish'])->name('search
 Route::post('/order', [FrontController::class, 'order'])->name('user-order');
 });
 
-
 require __DIR__.'/auth.php';
-
-// Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

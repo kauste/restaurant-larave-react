@@ -10,14 +10,9 @@ function RestaurantList(props) {
         setRestaurantList(props.restaurants);
     }, [])
     return (
-        <Authenticated
-            auth={props.auth}
-            errors={props.errors}
-            // header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
-        >
-            <Head title="Dashboard" />
-
-            <div className="py-12">
+        <Authenticated auth={props.auth}>
+            <Head title="Restaurants"/>
+            <div className="py-12 restaurant-list-front">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="container">
@@ -27,21 +22,22 @@ function RestaurantList(props) {
                                         <h1>Our restaurants</h1>
                                     </div>
                                     <div className="card-body">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Restaurant Name</th>
-                                                    <th scope="col">City</th>
-                                                    <th scope="col">Adress</th>
-                                                    <th scope="col">Working Hours</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                        <ul className="restaurant-list">
+                                            <li>
+                                                <ul class="restaurant-list-grid headings">
+                                                    <li>Restaurant Name</li>
+                                                    <li>City</li>
+                                                    <li>Adress</li>
+                                                    <li>Working Hours</li>
+                                                    <li></li>
+                                                </ul>
+                                            </li>
+                                            <li>
                                                 {
                                                     RestaurantList.map((restaurant, index) => <Restaurant key={index} restaurant={restaurant}></Restaurant>)
                                                 }
-                                            </tbody>
-                                        </table>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

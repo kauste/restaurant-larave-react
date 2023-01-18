@@ -7,7 +7,123 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
+:root{
+    --names-family:'The Girl Next Door', cursive;
+    --casual-family: 'IBM Plex Serif', serif;
+    --gold-color: #E1B131;
+    --dark-gold:#B78019;
+    --salad-green:#AFB95D;
+    --dark-salad:#5D5002;
+    --light-gray: #E9E3CA;
+    --dark-gray:#d9d4bd;
+}
+nav{
+    background-color: #784124;
+    box-shadow: 0 2px 8px #999;
+    .nav-logo{
+        width: 80px;
+        height:80px;
+        fill:var(--gold-color);
+    }
+    .nav-link{
+        font-size: 30px;
+        padding-top: 10px;
+        font-family: var(--names-family);
+        color: var(--gold-color);
+        &:hover{
+            color:var(--dark-gold);
+        }
+    }
+    .nav-dropdown{
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        background-color: var(--salad-green);
+        font-size: 15px;
+        color: var(--dark-salad);
+        button{
+            text-transform: uppercase;
+        }
+        &:not(:last-of-type){
+            border-right: var(--dark-salad) solid 1px;
+        }
+        &:hover{
+            color:var(--salad-green);
+            background-color: var(--dark-salad);
+        }
+        .dropdown-content{
+            background-color: var(--dark-salad);
+            left:50%;
+            transform: translateX(-50%);
+            padding: 10px 0;
+            width: auto;
+            .dropdown-link{
+                text-transform: capitalize;
+                padding: 10px 30px;
+                width:100%;
+                &:hover{
+                background-color: var(--salad-green);
+                color:var(--dark-salad)
+
+                }
+            }
+        }
+    }
+}
 .img{
     height: 80px;
     width:80px;
+}
+.restaurant-list-front{
+    background-color: #FCC9A3;
+    background-image: url('./../../public/images/food.jfif');
+    .card{
+        box-shadow: 2px 2px 8px #999;
+        background-color: var(--light-gray);
+        .card-header{
+            display:flex;
+            justify-content: center;
+            background-color: transparent;
+            padding: 30px 0 0;
+            border: none;
+            font-family: var(--names-family);
+            font-weight: 700;
+        }
+    }
+
+    .restaurant-list{
+        .restaurant-list-grid{
+            display:grid;
+            grid-template-columns: 1.5fr 1fr 1fr 2fr 1fr;
+            border-bottom: var(--dark-salad) 1px solid;
+            &:not(.headings){
+                grid-template-rows: 70px;
+                align-items: center;
+                li:not(.restaurant-name, .controls){
+                    font-family: var(--casual-family);
+                    // font-style: italic;
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                }
+                &:hover{
+                    background-color: var(--dark-gray);
+                }
+            }
+            &.headings{
+                align-items: end;
+                padding-bottom: 15px;
+                font-weight: 600;
+                font-size: 17px;
+            }
+            li{
+                padding-left:10px;
+
+            }
+            .restaurant-name{
+                font-family: var(--names-family);
+                font-size: 20px;
+                font-weight: 500;
+            }
+        }
+    }
 }
