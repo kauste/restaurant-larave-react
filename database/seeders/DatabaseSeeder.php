@@ -30,12 +30,13 @@ class DatabaseSeeder extends Seeder
                 'work_ends' => Carbon::parse(rand(18, 21).':00:00')->format('H:i'),
             ]);
         }
-        $dishes = ['Egg and bacon', 'Cezar salads', 'Greek salads', 'Sandwiches with avocado', 'Pizza mafia', 'Four cheese pizza', 'Chilli stew', 'Hot sandwiches', 'Stake with rices', 'Beetroot gazpacho', 'Pink soup', 'Italian Pasta', 'Burger with bacon', 'Vegan beetroot burger', 'Buddha bowl', 'Oven vegetabes', 'Tomato soup', 'Pistacio icecream', "Today's special", 'Milkshake'];
+        $dishes = ['Egg and bacon', 'Cezar salad', 'Greek salad', 'Avocado sandwich', 'Pizza mafia', 'Four cheese pizza', 'Chilli stew', 'Grilled sandwich', 'Steak with rice', 'Beetroot gazpacho', 'Pink soup', 'Italian Pasta', 'Burger with bacon', 'Vegan beetroot burger', 'Buddha bowl', 'Grilled vegetables', 'Tomato soup', 'Pistacio Ice Cream', "Today's special", 'Milkshake'];
         foreach($dishes as $dish){
             $date = Carbon::parse(rand(8, 11).':00:00')->format('H:i:s');
             DB::table('dishes')-> insert([
                 'dish_name' => $dish,
-                'price'=> rand(10, 100),
+                'price'=> rand(10, 20),
+                'picture_path' => strtr(strtolower($dish), [' '=> '-', "'" => '']) . '.jpg',
                 'restaurant_id' => rand(1, count($restaurantNames)),
             ]);
         }

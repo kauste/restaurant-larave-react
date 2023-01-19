@@ -25,8 +25,9 @@ class FrontController extends Controller
             ->get();
 
         return Inertia::render('DishList', [
+                        'asset' => asset('images/food') . '/',
                         'dishes'=> $dishes,
-                        'default_pic' => asset('/images') . '/like.jpg',
+                        'default_pic' => '/todays-special.jpg',
                         'orderUrl' => route('user-order'),
                         'sortAndFilterUrl' => route('sort-and-filter'),
                         'searchUrl' => route('search-dish'),

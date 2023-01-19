@@ -19,7 +19,7 @@ function RestaurantList(props) {
                             <div className="row justify-content-center">
                                 <div className="card">
                                     <div className="card-header">
-                                        <h1>Our restaurants</h1>
+                                        <h2>Our restaurants</h2>
                                     </div>
                                     <div className="card-body">
                                         <ul className="restaurant-list">

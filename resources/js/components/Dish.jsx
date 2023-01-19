@@ -1,5 +1,5 @@
 import axios from "axios";
-function Dish({dish, default_pic, orderUrl}) {
+function Dish({dish, asset, default_pic, orderUrl}) {
 
     function doOrder(){
         axios.post(orderUrl, dish)
@@ -8,17 +8,19 @@ function Dish({dish, default_pic, orderUrl}) {
         })
     }
     return (
-        <tr className="align-center">
-            <td>
-                <img src={dish.picture_path ?? default_pic} className="img"/>
-            </td>
-            <td scope="row">{dish.dish_name}</td>
-            <td>{dish.price} eu.</td>
-            <td>{dish.restaurant_name}</td>
-            <td className="controls">
-                    <button className="btn btn-outline-danger" type="button" onClick={doOrder}>WANNA EAT</button>
-            </td>
-        </tr>
+        <li className="align-center">
+            <ul className="one-dish">
+                <li>
+                    <img src={asset + dish.picture_path ?? asset + default_pic} className="img"/>
+                </li>
+                <li className="dish-name">{dish.dish_name}</li>
+                <li>{dish.price} eu.</li>
+                <li><span>At :</span> {dish.restaurant_name}</li>
+                <li className="controls">
+                        <button className="btn btn-outline-danger" type="button" onClick={doOrder}>Lets eat</button>
+                </li>
+            </ul>
+        </li>
     )
 
 
