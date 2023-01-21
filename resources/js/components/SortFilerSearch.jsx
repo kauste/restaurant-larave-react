@@ -31,13 +31,13 @@ function SortFilterSearch({sortAndFilterUrl, setRestaurantDishes, searchUrl, res
         <div className={`card-body ${activenessState} mt-5 d-flex flex-column align-items-center`}>
             <div>
                 <label className="mr-2" htmlFor="priceSort">Sort by price</label>
-                <select class="sort-select" id="priceSort" name="priceSort" value={selectValue} onChange={e => setSelectValue(e.target.value)}>
+                <select className="sort-select" id="priceSort" name="priceSort" value={selectValue} onChange={e => setSelectValue(e.target.value)}>
                     <option value="asc">Smallest first</option>
                     <option value="desc">Biggest first</option>
                     <option value="default">Default</option>
                 </select>
                 <label className="ml-5 mr-2"htmlFor="filterRestaurant">Filter by restaurant</label>
-                <select class="filter-select" id="filterRestaurant" name="filterRestaurant" value={restaurant.id} onChange={e => {setRestaurant(e.target.value)}}>
+                <select className="filter-select" id="filterRestaurant" name="filterRestaurant" value={restaurant.id} onChange={e => {setRestaurant(e.target.value)}}>
                     <option key="default" value="0">All</option>
                     {
                         restaurants.map((rest)=> <option value={rest.id} key={rest.id}>{rest.restaurant_name}</option>)
@@ -47,7 +47,7 @@ function SortFilterSearch({sortAndFilterUrl, setRestaurantDishes, searchUrl, res
             </div>
             <div className="d-flex align-items-center ml-2 mt-5">
                 <label className="mr-2" htmlFor="search">Search</label>
-                <input class="search-input"  value={search} onChange={e => setSearch(e.target.value)}></input>
+                <input className="search-input"  value={search} onChange={e => setSearch(e.target.value)}></input>
                 <button className="btn btn-outline-info ml-2" onClick={doSearch}>SEARCH</button>
             </div>
         </div>

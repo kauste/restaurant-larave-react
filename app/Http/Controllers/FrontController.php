@@ -8,6 +8,7 @@ use App\Models\Dish;
 use App\Models\Order;
 use Inertia\Inertia;
 use Auth;
+use DB;
 
 class FrontController extends Controller
 {
@@ -20,10 +21,16 @@ class FrontController extends Controller
     public function dishes(){
         
         $restaurants = Restaurant::orderBy('restaurant_name', 'asc')->get();
-        $dishes = Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
-            ->select('dishes.id as dish_id', 'restaurants.*', 'dishes.*')
-            ->get();
 
+        $dishes = Dish::get();
+        $dishes->map(function($dish){
+            $restaurants = Restaurant::join('restaurant_dish', 'restaurant_dish.restaurant_id', 'restaurants.id')
+                           ->select('restaurants.restaurant_name', 'restaurants.id')
+                           ->where('restaurant_dish.dish_id', '=', $dish->id)
+                            ->get()->toArray();
+            $dish->restaurants = $restaurants;
+            return $dish;
+        });
         return Inertia::render('DishList', [
                         'asset' => asset('images/food') . '/',
                         'dishes'=> $dishes,
@@ -39,36 +46,51 @@ class FrontController extends Controller
 
         if($request->filter == 0){
             $dishes = match($request->price_sort){
-                'asc'=>Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
-                ->select('dishes.id as dish_id', 'restaurants.*', 'dishes.*')
+                'asc'=>Dish::join('restaurant_dish', 'restaurant_dish.dish_id', '=', 'dishes.id')
+                ->join('restaurants', 'restaurants.id', 'restaurant_dish.restaurant_id')
+                ->select('dishes.id as dish_id', 'dishes.*')
                 ->orderBy('price', 'asc')
                 ->get(), 
-                'desc'=>Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
-                ->select('dishes.id as dish_id', 'restaurants.*', 'dishes.*')
+                'desc'=>Dish::join('restaurant_dish', 'restaurant_dish.dish_id', '=', 'dishes.id')
+                ->join('restaurants', 'restaurants.id', 'restaurant_dish.restaurant_id')
+                ->select('dishes.id as dish_id', 'dishes.*')
                 ->orderBy('price', 'desc')
                 ->get(),
-                default => Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
-                ->select('dishes.id as dish_id', 'restaurants.*', 'dishes.*')
+                default => Dish::join('restaurant_dish', 'restaurant_dish.dish_id', '=', 'dishes.id')
+                ->join('restaurants', 'restaurants.id', 'restaurant_dish.restaurant_id')
+                ->select('dishes.id as dish_id', 'dishes.*')
                 ->get(),
             };
         } else {
             $dishes = match($request->price_sort){
-                'asc'=>Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
-                ->select('dishes.id as dish_id', 'restaurants.*', 'dishes.*')
+                'asc'=>Dish::join('restaurant_dish', 'restaurant_dish.dish_id', '=', 'dishes.id')
+                ->join('restaurants', 'restaurants.id', 'restaurant_dish.restaurant_id')
+                ->select('dishes.id as dish_id', 'dishes.*')
                 ->where('restaurants.id', '=', $request->filter)
                 ->orderBy('price', 'asc')
                 ->get(), 
-                'desc'=>Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
-                ->select('dishes.id as dish_id', 'restaurants.*', 'dishes.*')
+                'desc'=>Dish::join('restaurant_dish', 'restaurant_dish.dish_id', '=', 'dishes.id')
+                ->join('restaurants', 'restaurants.id', 'restaurant_dish.restaurant_id')
+                ->select('dishes.id as dish_id', 'dishes.*')
                 ->where('restaurants.id', '=', $request->filter)
                 ->orderBy('price', 'desc')
                 ->get(),
-                default => Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
-                ->select('dishes.id as dish_id', 'restaurants.*', 'dishes.*')
+                default => Dish::join('restaurant_dish', 'restaurant_dish.dish_id', '=', 'dishes.id')
+                ->join('restaurants', 'restaurants.id', 'restaurant_dish.restaurant_id')
+                ->select('dishes.id as dish_id', 'dishes.*')
                 ->where('restaurants.id', '=', $request->filter)
                 ->get(),
             };
         }
+        $dishes->map(function($dish){
+            $restaurants = Restaurant::join('restaurant_dish', 'restaurant_dish.restaurant_id', 'restaurants.id')
+                           ->select('restaurants.restaurant_name', 'restaurants.id')
+                           ->where('restaurant_dish.dish_id', '=', $dish->id)
+                           ->orderBy('restaurants.restaurant_name')
+                            ->get();
+            $dish->restaurants = $restaurants;
+            return $dish;
+        });
             return response()-> json([
                 'dishes'=> $dishes,
             ]);
@@ -79,15 +101,23 @@ class FrontController extends Controller
         if(count($search_words) > 1 ){
             $search_words = array_slice($search_words, 0, 1);
         }
-        $dishes = Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
-        ->select('dishes.id as dish_id', 'restaurants.*', 'dishes.*')
+        $dishes = Dish::select('dishes.id as dish_id', 'dishes.*')
         ->where(function($case) use ($search_words){
             foreach($search_words as $word){
                 $case->where('dishes.dish_name', 'like', '%'. $word.'%');
             }
         })->get();
         
-        // dump($dishes);
+        $dishes->map(function($dish){
+            $restaurants = Restaurant::join('restaurant_dish', 'restaurant_dish.restaurant_id', 'restaurants.id')
+                           ->select('restaurants.restaurant_name', 'restaurants.id')
+                           ->where('restaurant_dish.dish_id', '=', $dish->id)
+                           ->orderBy('restaurants.restaurant_name')
+                            ->get();
+            $dish->restaurants = $restaurants;
+            return $dish;
+        });
+
         return response()-> json([
             'dishes'=> $dishes,
         ]);

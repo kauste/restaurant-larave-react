@@ -16,9 +16,10 @@ class DishController extends Controller
      */
     public function index()
     {
-        $dishes = Dish::join('restaurants', 'restaurants.id', '=', 'dishes.restaurant_id')
-        ->select('restaurants.*', 'dishes.*')
-        ->get();
+        // $dishes = Dish::join('restaurant_dish', 'restaurant_dish.dish_id', '=', 'dish.id', )
+        // ->select('restaurants.*', 'restaurant_dishes.*')
+        // ->get();
+        // dd($dishes);
         return view('back.dishes.index', ['dishes'=> $dishes]);
     }
 

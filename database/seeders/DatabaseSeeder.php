@@ -37,8 +37,24 @@ class DatabaseSeeder extends Seeder
                 'dish_name' => $dish,
                 'price'=> rand(10, 20),
                 'picture_path' => strtr(strtolower($dish), [' '=> '-', "'" => '']) . '.jpg',
-                'restaurant_id' => rand(1, count($restaurantNames)),
             ]);
+        }
+
+        foreach ($restaurantNames as $key => $resraurantName) {
+            $amountOfDishes = rand(5, count($dishes));
+            $dishes_ids = collect([]);
+
+            do{
+                $dishes_ids->push(rand(1, count($dishes)));
+                $dishes_ids = $dishes_ids->unique();
+            }while($dishes_ids->count() != $amountOfDishes);
+
+            foreach($dishes_ids as $dish_id){
+                DB::table('restaurant_dish')->insert([
+                   'restaurant_id' => ($key + 1),
+                   'dish_id' => $dish_id,
+                ]);
+            }
         }
 
         DB::table('users')->insert([

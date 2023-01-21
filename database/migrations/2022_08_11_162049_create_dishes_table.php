@@ -18,9 +18,6 @@ return new class extends Migration
             $table->string('dish_name', 50);
             $table->unsignedDecimal('price', $precision = 5, $scale = 2);
             $table->string('picture_path', 300);
-            $table->unsignedBigInteger('restaurant_id');
-            $table->foreign('restaurant_id')->references('id')->on('restaurants');
-            $table->timestamps();
         });
 
     }

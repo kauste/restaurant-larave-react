@@ -10,6 +10,6 @@ class Dish extends Model
 {
     use HasFactory;
     public function restaurants(){
-        return $this->hasMany(Restaurant::class, 'restaurant_id', 'id');
+        return $this->belongsToMany(Restaurant::class);
     }
 }

@@ -33,7 +33,7 @@ function DishList(props) {
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        restaurantDishes.map((dish, index) => <Dish key={index} dish={dish} default_pic={props.default_pic} asset={props.asset} orderUrl={props.orderUrl}></Dish>)
+                                        restaurantDishes.map((dish, index) => <Dish key={index} dish={dish} default_pic={props.default_pic} asset={props.asset} orderUrl={props.orderUrl} sortAndFilterUrl={props.sortAndFilterUrl} setRestaurantDishes={setRestaurantDishes}></Dish>)
                                     }
                                 </ul>
                             </div>
