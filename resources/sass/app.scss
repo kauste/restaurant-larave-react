@@ -17,6 +17,16 @@
     --light-gray: #E9E3CA;
     --dark-gray:#d9d4bd;
 }
+.bold {
+    font-weight: 800;
+}
+.message{
+    background-color: var(--gold-color);
+    padding:10px;
+    display:flex;
+    justify-content: center;
+    font-size: 15px;
+}
 nav{
     background-color: #784124;
     box-shadow: 0 2px 8px #999;
@@ -155,14 +165,27 @@ nav{
             }
             li:not(.dish-name){
                 font-family: var(--casual-family);
-                .at-restaurant {
-                    font-weight: 800;
-                }
             }
             .restaurant-have-dish{
+                color:black;
+                text-decoration: none;
+                font-style: italic;
+                .tootlip{
+                    display:block;
+                    position: absolute;
+                    background-color: var(--dark-gray);
+                    visibility:hidden;
+                    border: var(--dark-salad) 1px solid;
+                    padding: 3px 6px;
+                    font-size: 12px;
+                    // font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
+                }
                 &:hover{
                     cursor: pointer;
                     background-color: var(--dark-gray);
+                    .tootlip{
+                        visibility: visible;
+                    }
                 }
             }
             .comma{
@@ -205,5 +228,30 @@ nav{
         &:focus{
             outline: var(--dark-salad) 2px solid;
         }
+    }
+}
+.one-restaurant-dishes{
+    .about-restaurant{
+        
+        background-color: var(--salad-green);
+        box-shadow: 0px 0px 4px 1px #999;
+        padding: 20px;
+        border-radius: 10px;
+        h2{
+            font-weight: 800;
+        }
+        .restaurant-info{
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            gap:10px;
+            text-align: center;
+            font-family: var(--casual-family);
+            p{
+                font-family: var(--names-family);
+                letter-spacing: 1.5px;
+                font-size: 18px;
+            }
+        }              
     }
 }

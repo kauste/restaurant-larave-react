@@ -1,5 +1,5 @@
-import Dish from "@/components/Dish";
-import SortFilterSearch from "@/components/SortFilerSearch";
+import Dish from "@/components/frontOffice/Dish";
+import SortFilterSearch from "@/components/frontOffice/SortFilerSearch";
 import Authenticated from "@/Layouts/Authenticated";
 import { Head } from "@inertiajs/inertia-react";
 import axios from "axios";
@@ -33,7 +33,7 @@ function DishList(props) {
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        restaurantDishes.map((dish, index) => <Dish key={index} dish={dish} default_pic={props.default_pic} asset={props.asset} orderUrl={props.orderUrl} sortAndFilterUrl={props.sortAndFilterUrl} setRestaurantDishes={setRestaurantDishes}></Dish>)
+                                        restaurantDishes.map((dish, index) => <Dish key={index} dish={dish} default_pic={props.default_pic} asset={props.asset} orderUrl={props.orderUrl} restaurantDishesUrl={props.restaurantDishesUrl}></Dish>)
                                     }
                                 </ul>
                             </div>

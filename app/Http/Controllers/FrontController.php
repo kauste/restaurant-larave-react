@@ -15,7 +15,8 @@ class FrontController extends Controller
     public function restaurants(){
         $restaurants = Restaurant::all();
         return Inertia::render('RestaurantList', [
-                        'restaurants'=> $restaurants
+                        'restaurants'=> $restaurants,
+                        'restaurantDishesUrl' => route('restaurant-dishes'),
                         ]);
     }
     public function dishes(){
@@ -25,7 +26,7 @@ class FrontController extends Controller
         $dishes = Dish::get();
         $dishes->map(function($dish){
             $restaurants = Restaurant::join('restaurant_dish', 'restaurant_dish.restaurant_id', 'restaurants.id')
-                           ->select('restaurants.restaurant_name', 'restaurants.id')
+                           ->select('restaurants.restaurant_name', 'restaurants.id', 'restaurants.city', 'restaurants.adress')
                            ->where('restaurant_dish.dish_id', '=', $dish->id)
                             ->get()->toArray();
             $dish->restaurants = $restaurants;
@@ -37,9 +38,27 @@ class FrontController extends Controller
                         'default_pic' => '/todays-special.jpg',
                         'orderUrl' => route('user-order'),
                         'sortAndFilterUrl' => route('sort-and-filter'),
+                        'restaurantDishesUrl'=>route('restaurant-dishes'),
                         'searchUrl' => route('search-dish'),
                         'restaurants'=> $restaurants
                         ]);
+    }
+    public function restaurantDishes(Request $request){
+        // dump($request->id);
+        $restaurant = Restaurant::where('id', '=', $request->id)->first();
+        $dishes = Dish::join('restaurant_dish', 'restaurant_dish.dish_id', 'dishes.id')
+                        ->join('restaurants', 'restaurants.id', 'restaurant_dish.restaurant_id')
+                        ->where('restaurant_dish.restaurant_id', $request->id)
+                        ->select('dishes.*')
+                        ->orderBy('dishes.dish_name')
+                        ->get();
+        return Inertia::render('RestaurantDishes', [
+                                'restaurant' =>$restaurant,
+                                'dishes'=> $dishes,
+                                'asset' => asset('images/food'). '/',
+                                'default_pic' => '/todays-special.jpg',
+                                'orderUrl' => route('user-order'),
+                                ]);
     }
 
     public function sortAndFilter(Request $request){
@@ -124,14 +143,12 @@ class FrontController extends Controller
     }
 
     public function order (Request $request){
-        dump($request->all());
         $order = new Order;
         $order->user_id = Auth::user()->id;
-        $order->dish_id = $request->dish_id;
-        dump($order);
+        $order->dish_id = $request->id;
         $order->save();
         return response()->json([
-            'message'=> 'This thing is ordered'
+            'message'=> $request->dish_name . ' is ordered. You can now find it in your order list.'
         ]);
     }
 }

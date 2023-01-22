@@ -58,6 +58,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
 Route::get('/user-restaurant-list', [FrontController::class, 'restaurants'])->name('user-restaurants');
+Route::get('/restaurant-dishes/{id?}', [FrontController::class, 'restaurantDishes'])->name('restaurant-dishes');
 Route::get('/user-dish-list', [FrontController::class, 'dishes'])->name('user-dishes');
 Route::get('/dish-sort-and-filter', [FrontController::class, 'sortAndFilter'])->name('sort-and-filter');
 Route::get('/search-dish', [FrontController::class, 'searchDish'])->name('search-dish');

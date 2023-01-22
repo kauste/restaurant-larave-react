@@ -1,6 +1,6 @@
 import axios from "axios";
 import RestaurantInDish from "./RestaurantInDish";
-function Dish({dish, asset, default_pic, orderUrl, sortAndFilterUrl, setRestaurantDishes}) {
+function Dish({dish, asset, default_pic, orderUrl, restaurantDishesUrl}) {
 
     function doOrder(){
         axios.post(orderUrl, dish)
@@ -8,10 +8,10 @@ function Dish({dish, asset, default_pic, orderUrl, sortAndFilterUrl, setRestaura
             console.log(res.data.message);
         })
     }
-    let restaurantDishes = (restaurantId) => {
-        axios.get(sortAndFilterUrl + '?price_sort=default&filter=' + restaurantId)
-        .then(res => {setRestaurantDishes(res.data.dishes) });
-    }
+    // let restaurantDishes = (restaurantId) => {
+    //     axios.get(sortAndFilterUrl + '?price_sort=default&filter=' + restaurantId)
+    //     .then(res => {setRestaurantDishes(res.data.dishes) });
+    // }
     return (
         <li className="align-center">
             <ul className="one-dish">
@@ -21,9 +21,9 @@ function Dish({dish, asset, default_pic, orderUrl, sortAndFilterUrl, setRestaura
                 <li className="dish-name">{dish.dish_name}</li>
                 <li>{dish.price} eu.</li>
                 <li>
-                    <span class="at-restaurant">At: </span>
+                    <span className="bold">At: </span>
                     {
-                        (dish.restaurants).map((restaurant, index) => <RestaurantInDish key={index} restaurant={restaurant} index={index} allRestaurants={dish.restaurants} restaurantDishes={restaurantDishes}></RestaurantInDish>)
+                        (dish.restaurants).map((restaurant, index) => <RestaurantInDish key={index} restaurant={restaurant} index={index} allRestaurants={dish.restaurants} restaurantDishesUrl={restaurantDishesUrl}></RestaurantInDish>)
                     }
                 </li>
                 <li className="controls">
