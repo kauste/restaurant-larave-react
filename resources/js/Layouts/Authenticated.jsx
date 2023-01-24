@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import Message from '@/components/Message';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
+// import route from 'vendor/tightenco/ziggy/src/js';
 
 export default function Authenticated({ auth, header, message, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -70,6 +71,13 @@ export default function Authenticated({ auth, header, message, children }) {
                                         </Dropdown.Content>
                                     </Dropdown>
                             </div>
+                            {/* PRDZIA */}
+                            <div className="nav-cart-link-box">
+                                <div className="h-24">
+                                    <Link href={route('show-cart')} className="nav-cart-link">Show cart</Link>
+                                </div>
+                            </div>
+                            {/* PABAIGA */}
                         </div>
 
                         <div className="-mr-2 flex items-center sm:hidden">

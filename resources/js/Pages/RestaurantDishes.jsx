@@ -30,7 +30,7 @@ function RestaurantDishes(props){
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        (props.dishes).map((dish, index) => <DishInRestaurant key={index} dish={dish} default_pic={props.default_pic} orderUrl={props.orderUrl} asset={props.asset} setMessage={setMessage}></DishInRestaurant>)
+                                        (props.dishes).map((dish, index) => <DishInRestaurant key={index} dish={dish} default_pic={props.default_pic} addToCartUrl={props.addToCartUrl} restaurantId={props.restaurant.id} asset={props.asset} setMessage={setMessage}></DishInRestaurant>)
                                     }
                                 </ul>
                             </div>

@@ -1,14 +1,16 @@
 import axios from "axios";
-function DishInRestaurant({dish, asset, setMessage, default_pic, orderUrl}) {
+import { useState } from "react";
+function DishInRestaurant({dish, asset, setMessage, default_pic, addToCartUrl, restaurantId}) {
 
+ const [amount, setAmount] = useState(1);
 
-    function doOrder(){
-        axios.post(orderUrl, {id:dish.id, dish_name:dish.dish_name})
+    function addToCart(){
+        axios.post(addToCartUrl, {id:dish.id, dish_name:dish.dish_name, amount:amount, restaurant_id:restaurantId})
         .then(res => {
             setMessage(res.data.message);
             setTimeout(()=> {
             setMessage(null)
-            }, 10000)
+            }, 20000)
         })
     }
 
@@ -20,8 +22,9 @@ function DishInRestaurant({dish, asset, setMessage, default_pic, orderUrl}) {
                 </li>
                 <li className="dish-name">{dish.dish_name}</li>
                 <li>{dish.price} eu.</li>
-                <li className="controls">
-                        <button className="btn btn-outline-danger" type="button" onClick={doOrder}>Lets eat</button>
+                <li className="form">
+                        <input className="amount-input" type="number" min="1" max="50" value={amount} onChange={e => setAmount(e.target.value)}/>
+                        <button className="btn btn-outline-danger" type="button" onClick={addToCart}>Add to cart</button>
                 </li>
             </ul>
         </li>

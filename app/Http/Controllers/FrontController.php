@@ -36,7 +36,6 @@ class FrontController extends Controller
                         'asset' => asset('images/food') . '/',
                         'dishes'=> $dishes,
                         'default_pic' => '/todays-special.jpg',
-                        'orderUrl' => route('user-order'),
                         'sortAndFilterUrl' => route('sort-and-filter'),
                         'restaurantDishesUrl'=>route('restaurant-dishes'),
                         'searchUrl' => route('search-dish'),
@@ -44,7 +43,6 @@ class FrontController extends Controller
                         ]);
     }
     public function restaurantDishes(Request $request){
-        // dump($request->id);
         $restaurant = Restaurant::where('id', '=', $request->id)->first();
         $dishes = Dish::join('restaurant_dish', 'restaurant_dish.dish_id', 'dishes.id')
                         ->join('restaurants', 'restaurants.id', 'restaurant_dish.restaurant_id')
@@ -57,7 +55,7 @@ class FrontController extends Controller
                                 'dishes'=> $dishes,
                                 'asset' => asset('images/food'). '/',
                                 'default_pic' => '/todays-special.jpg',
-                                'orderUrl' => route('user-order'),
+                                'addToCartUrl' => route('user-add-to-cart'),
                                 ]);
     }
 
@@ -139,16 +137,6 @@ class FrontController extends Controller
 
         return response()-> json([
             'dishes'=> $dishes,
-        ]);
-    }
-
-    public function order (Request $request){
-        $order = new Order;
-        $order->user_id = Auth::user()->id;
-        $order->dish_id = $request->id;
-        $order->save();
-        return response()->json([
-            'message'=> $request->dish_name . ' is ordered. You can now find it in your order list.'
         ]);
     }
 }

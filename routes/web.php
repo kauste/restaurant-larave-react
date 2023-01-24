@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,13 +57,19 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+//Front offce
 Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
+//restaurant
 Route::get('/user-restaurant-list', [FrontController::class, 'restaurants'])->name('user-restaurants');
 Route::get('/restaurant-dishes/{id?}', [FrontController::class, 'restaurantDishes'])->name('restaurant-dishes');
+//dishes
 Route::get('/user-dish-list', [FrontController::class, 'dishes'])->name('user-dishes');
 Route::get('/dish-sort-and-filter', [FrontController::class, 'sortAndFilter'])->name('sort-and-filter');
 Route::get('/search-dish', [FrontController::class, 'searchDish'])->name('search-dish');
-Route::post('/order', [FrontController::class, 'order'])->name('user-order');
+//cart
+Route::get('show-cart', [CartController::class, 'showCart'])->name('show-cart');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('user-add-to-cart');
+Route::delete('/delete-cart-item/{dishId?}/{restaurantId?}', [CartController::class, 'deleteCartItem'])->name('delete-cart-item');
 });
 
 require __DIR__.'/auth.php';
