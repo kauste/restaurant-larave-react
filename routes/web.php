@@ -8,6 +8,7 @@ use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\HomeControlle;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,8 +71,10 @@ Route::get('/search-dish', [FrontController::class, 'searchDish'])->name('search
 Route::get('show-cart', [CartController::class, 'showCart'])->name('show-cart');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('user-add-to-cart');
 Route::delete('/delete-cart-item/{dishId?}/{restaurantId?}', [CartController::class, 'deleteCartItem'])->name('delete-cart-item');
+Route::put('/edit-cart-item/{dishId?}/{restaurantId?}', [CartController::class, 'editCartItem'])->name('edit-cart-item');
+Route::delete('/delete-cart/{restaurantId?}', [CartController::class, 'deleteCart'])->name('delete-cart');
+Route::post('/confirm-cart', [CartController::class, 'confirmCart'])->name('confirm-cart');
 });
 
 require __DIR__.'/auth.php';
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');

@@ -5,13 +5,15 @@ import Message from '@/components/Message';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
-// import route from 'vendor/tightenco/ziggy/src/js';
+import AreYouSureModal from "@/components/AreYouSureModal";
+import ConfirmCartModal from '@/components/ConfirmCartModal';
 
-export default function Authenticated({ auth, header, message, children }) {
+export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-
     return (
         <div className="min-h-screen bg-gray-100">
+                        <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
+                        <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo}></ConfirmCartModal>
             <nav className="">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-24 items-center">

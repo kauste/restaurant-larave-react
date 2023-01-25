@@ -35,16 +35,13 @@ class CartController extends Controller
     public function showCart(Request $request){
         $cart = $request->session()->get('cart', collect([]));
         $dishesIds = $cart->pluck('dish_id');
-
-
         $cart = $cart->map(function($item){
-
             $item['dish_info'] = Dish::where('id', $item['dish_id'])
                                ->first();
             return $item;
-        })->groupBy('restaurant_id');
-        $cart = $cart->values()->map(function($restaurant){
-            $oneOrder = [];
+        })->groupBy('restaurant_id')
+          ->values()
+          ->map(function($restaurant){
             $totalPrice = 0;
             foreach($restaurant as $item){
                 $totalPrice += $item['amount'] * $item['dish_info']['price'];
@@ -61,7 +58,10 @@ class CartController extends Controller
                                 'user'=> $user,
                                 'asset' => asset('images/food'),
                                 'deliveryPrice' => Order::DELIVERY_PRICE,
-                                'deleteCartItemUrl' => route('delete-cart-item')
+                                'deleteCartItemUrl' => route('delete-cart-item'),
+                                'editCartItemUrl' => route('edit-cart-item'),
+                                'cancelCartUrl' => route('delete-cart'),
+                                'confirmCartUrl' => route('confirm-cart'),
         ]);
     }
     public function deleteCartItem (Request $request){
@@ -70,6 +70,28 @@ class CartController extends Controller
             return ($item['restaurant_id'] != $request->restaurantId || $item['dish_id'] != $request->dishId);
         });
         $request->session()->put('cart', $filtered);
-        return response()->json(['message'=> 'Dish is deleted from the list']);
+        return response()->json(['message'=> 'Dish is deleted from the cart.']);
+    }
+    public function editCartItem(Request $request){
+        $cart = $request->session()->get('cart', collect([]));
+        $cart = $cart->map(function ($item) use ($request) {
+            if($item['restaurant_id'] == $request->restaurantId && $item['dish_id'] == $request->dishId){
+                $item['amount'] = $request->amount;
+            }
+            return $item;
+        });
+        $request->session()->put('cart', $cart);
+        return response()->json(['message'=> 'Amount of this dish is edited']);
+    }
+    public function deleteCart (Request $request){
+        $cart = $request->session()->get('cart', collect([]));
+        $filtered = $cart->filter(function ($item, $key) use ($request) {
+            return ($item['restaurant_id'] != $request->restaurantId);
+        });
+        $request->session()->put('cart', $filtered);
+        return response()->json(['message'=> 'Your cart is deleted. Please form a new order.']);
+    }
+    public function confirmCart (Request $request){
+        dump($request->all());
     }
 }
