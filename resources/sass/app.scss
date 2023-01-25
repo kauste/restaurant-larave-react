@@ -11,11 +11,13 @@
     --names-family:'The Girl Next Door', cursive;
     --casual-family: 'IBM Plex Serif', serif;
     --gold-color: #E1B131;
+    --light-gold: #e8d6a4;
     --dark-gold:#B78019;
     --salad-green:#AFB95D;
     --dark-salad:#5D5002;
     --light-gray: #E9E3CA;
     --dark-gray:#d9d4bd;
+    --darker-gray:#c3beab;
 }
 .bold {
     font-weight: 800;
@@ -38,6 +40,84 @@
         border:none;
         border: var(--dark-salad) 2px solid;
     }
+}
+.modal-box{
+    width:100%;
+    height:100%;
+    background-color: rgba(153, 153, 153, 0.167);
+    position: fixed;
+    z-index: 999;
+    top:0;
+    left:0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+        .modal-mine{
+            display:block;
+            padding: 50px 80px;
+            border-radius: 30px;
+            background-color: var(--darker-gray);
+            border: solid black 3px;
+            .modal-content{
+                .modal-header{
+                    border-bottom: solid black 1px;
+                    margin-bottom: 10px;
+                    .modal-title{
+                        font-size: 25px;
+                        font-family: var(--names-family);
+                        font-weight: 800;
+                    }
+                    button{
+                        font-size: 30px;
+                        position: absolute;
+                        z-index: 1000;
+                        top: -30px;
+                        right: -40px;
+                    }
+                }
+                .modal-body{
+                    font-family: var(--casual-family);
+                    margin-bottom: 20px;
+                    p, .modal-radios{
+                        font-size: 15px;
+                        margin-bottom:10px;
+                    }
+                    .delivery-form{
+                        font-style: italic;
+                        .label-input{
+                            display:grid;
+                            grid-template-columns: 0.5fr 1fr;
+                            input, textarea{
+                                border-radius: 5px;
+                                padding: 3px 9px;
+                                box-sizing: border-box;
+                                &:focus{
+                                    --tw-ring-color: none;
+                                    --tw-ring-shadow: none;
+                                    border: 1px #6b7280 solid;
+                                    box-shadow: 0 0 0 2px var(--dark-salad);
+                                    outline-offset:0;
+                                }
+                            }
+                            textarea{
+                                resize: none;
+                                height: 150px;
+                                &::placeholder{
+                                    font-style: italic;
+                                    font-family: var(--casual-family);
+                                }
+                            }
+                            .text-input{
+                                width: 200px
+                            }
+                            .number-input{
+                                width:100px;
+                            }
+                        }
+                    }
+                }
+            }
+        }  
 }
 button, a{
     text-transform: uppercase;
