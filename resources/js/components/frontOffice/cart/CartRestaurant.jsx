@@ -1,27 +1,32 @@
 import axios from "axios";
 import CartDish from "./CartDish";
-import { router } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 
-function CartRestaurant({restaurant, asset, deliveryPrice, deleteCartItemUrl, editCartItemUrl, setModalInfo, cancelCartUrl, confirmCartUrl, setComfirmModalInfo}){
+function CartRestaurant({restaurant, asset, deliveryPrice, deleteCartItemUrl, editCartItemUrl, setModalInfo, cancelCartUrl, confirmCartUrl, setComfirmModalInfo, setNewCart, cart, setThisRestaurant}){
+    
+    const [cartData, setCartData] = useState([]);
+    const [newCartInfo, setNewCartInfo] = useState(restaurant.cartInfo);
+    
+
+    useEffect(()=> {
+        setThisRestaurant(restaurant)
+        setCartData(newCartInfo);
+    }, [newCartInfo])
+
     const cancelCart = () => {
         axios.delete(cancelCartUrl + '/' + restaurant.cartInfo[0].restaurant_id)
         .then(res => {
+            setNewCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
+            setModalInfo(null);
             localStorage.setItem('message', res.data.message)
-            router.reload()
-        })
-    }
-    const confirmCart = () => {
-        axios.post(confirmCartUrl, {restaurantId:restaurant.cartInfo[0].restaurant_id})
-        .then(res => {
-            localStorage.setItem('message', res.data.message)
-            router.reload()
+            window.dispatchEvent(new Event('storage'));
         })
     }
     const showModal = () => {
         setModalInfo({'text':'Are you sure you want to delete this cart?', 'confirm': cancelCart});
     }
     const confirmOrderModal =() => {
-        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'confirm': confirmCart});
+        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'restaurantId': cartData[0].restaurant_id, 'confirmCartUrl': confirmCartUrl});
     }
     return(
             <div className="card cart-restaurant">
@@ -38,7 +43,7 @@ function CartRestaurant({restaurant, asset, deliveryPrice, deleteCartItemUrl, ed
                         <li></li>
                     </ul>
                     {
-                        restaurant.cartInfo.map((cartDish, index) => <CartDish key={index} cartDish={cartDish} asset={asset} deleteCartItemUrl={deleteCartItemUrl} editCartItemUrl={editCartItemUrl} setModalInfo={setModalInfo}></CartDish>)
+                        cartData.map((cartDish, index) => <CartDish key={index} cartDish={cartDish} asset={asset} deleteCartItemUrl={deleteCartItemUrl} editCartItemUrl={editCartItemUrl} setModalInfo={setModalInfo} cartData={cartData} setNewCartInfo={setNewCartInfo} setNewCart={setNewCart} cart={cart} restaurant={restaurant}></CartDish>)
                     }
                     <ul className="grid-for-extra">
                         <li></li>

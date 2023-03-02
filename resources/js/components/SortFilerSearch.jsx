@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 function SortFilterSearch({sortAndFilterUrl, setRestaurantDishes, searchUrl, restaurants}){
     const [selectValue, setSelectValue] = useState('default');
@@ -22,7 +23,7 @@ function SortFilterSearch({sortAndFilterUrl, setRestaurantDishes, searchUrl, res
         <div className="sort-filter-search">
         <div className="card-header d-flex align-items-center" onClick={displayToggle}>
             <h3 className="p-0 m-0">Sort, filter, search</h3>
-                <span className="p-0 sfs-chevron">
+            <span className="p-0 sfs-chevron">
                 <svg className="ml-2 -mr-0.5 h-7 w-7 pb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
                 </svg>
@@ -43,12 +44,12 @@ function SortFilterSearch({sortAndFilterUrl, setRestaurantDishes, searchUrl, res
                         restaurants.map((rest)=> <option value={rest.id} key={rest.id}>{rest.restaurant_name}</option>)
                     }
                 </select>
-                <button className="btn btn-outline-info ml-2" onClick={sortAndFilter}>SORT AND FILTER</button>
+                <button className="btn btn-danger ml-2" onClick={sortAndFilter}>SORT AND FILTER</button>
             </div>
             <div className="d-flex align-items-center ml-2 mt-5">
                 <label className="mr-2" htmlFor="search">Search</label>
                 <input className="search-input"  value={search} onChange={e => setSearch(e.target.value)}></input>
-                <button className="btn btn-outline-info ml-2" onClick={doSearch}>SEARCH</button>
+                <button className="btn btn-danger ml-2" onClick={doSearch}>SEARCH</button>
             </div>
         </div>
     </div>

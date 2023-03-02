@@ -8,7 +8,8 @@ use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\HomeControlle;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,7 +74,12 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('user-ad
 Route::delete('/delete-cart-item/{dishId?}/{restaurantId?}', [CartController::class, 'deleteCartItem'])->name('delete-cart-item');
 Route::put('/edit-cart-item/{dishId?}/{restaurantId?}', [CartController::class, 'editCartItem'])->name('edit-cart-item');
 Route::delete('/delete-cart/{restaurantId?}', [CartController::class, 'deleteCart'])->name('delete-cart');
-Route::post('/confirm-cart', [CartController::class, 'confirmCart'])->name('confirm-cart');
+//order
+Route::post('/order-store', [OrderController::class, 'store'])->name('confirm-cart');
+Route::get('/show-orders', [OrderController::class, 'index'])->name('show-orders');
+Route::put('/update-order-adress/{orderId?}', [OrderController::class, 'updateAdress'])->name('update-order-adress');
+Route::get('/get-invoice/{orderId?}', [OrderController::class, 'getInvoice'])->name('get-invoice');
+
 });
 
 require __DIR__.'/auth.php';

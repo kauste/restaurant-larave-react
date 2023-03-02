@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-function DishInRestaurant({dish, asset, setMessage, default_pic, addToCartUrl, restaurantId}) {
+function DishInRestaurant({dish, asset, setMessage, defaultPic, addToCartUrl, restaurantId}) {
 
  const [amount, setAmount] = useState(1);
 
@@ -18,7 +18,7 @@ function DishInRestaurant({dish, asset, setMessage, default_pic, addToCartUrl, r
         <li className="align-center">
             <ul className="one-dish">
                 <li>
-                    <img src={asset + dish.picture_path ?? asset + default_pic} className="img"/>
+                    <img src={asset + dish.picture_path ?? asset + defaultPic} className="img"/>
                 </li>
                 <li className="dish-name">{dish.dish_name}</li>
                 <li>{dish.price} eu.</li>

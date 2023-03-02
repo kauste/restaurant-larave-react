@@ -4,7 +4,7 @@ import { Head } from "@inertiajs/inertia-react";
 import { useEffect, useState } from "react";
 
 function RestaurantList(props) {
-    const [RestaurantList, setRestaurantList] = useState([]);
+    const [restaurantList, setRestaurantList] = useState([]);
     useEffect(() => {
         setRestaurantList(props.restaurants);
     }, [])
@@ -33,7 +33,7 @@ function RestaurantList(props) {
                                             </li>
                                             <li>
                                                 {
-                                                    RestaurantList.map((restaurant, index) => <Restaurant key={index} restaurant={restaurant} restaurantDishesUrl={props.restaurantDishesUrl}></Restaurant>)
+                                                    restaurantList.map((restaurant, index) => <Restaurant key={index} restaurant={restaurant} restaurantDishesUrl={props.restaurantDishesUrl}></Restaurant>)
                                                 }
                                             </li>
                                         </ul>

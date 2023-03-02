@@ -1,21 +1,28 @@
-import { router } from "@inertiajs/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-function CartDish({cartDish, asset, deleteCartItemUrl, editCartItemUrl, setModalInfo}){
+function CartDish({cartDish, asset, deleteCartItemUrl, editCartItemUrl, setModalInfo, cartData, cart, setNewCart, setNewCartInfo, restaurant}){
     const [amount, setAmount] = useState(cartDish.amount);
-
     const deleteItem = () => {
         axios.delete(deleteCartItemUrl + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id)
-        .then(res => 
-            localStorage.setItem('message', res.data.message),
-            router.reload()
-    )}
+        .then(res => {
+            if(cartData.length === 1){
+                setNewCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
+                localStorage.setItem('message', 'There is no dishes in cart, therefore cart is deleted.');
+            }
+            else{
+                setNewCartInfo(cartData.filter((dish) => dish.restaurant_id !== cartDish.restaurant_id || dish.dish_id !== cartDish.dish_id));
+                localStorage.setItem('message', res.data.message);
+            }
+            setModalInfo(null);
+            window.dispatchEvent( new Event('storage') )
+        })
+    }
     const editAmount = () => {
         axios.put(editCartItemUrl + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id, {'amount':amount})
         .then(res => {
-            localStorage.setItem('message', res.data.message),
-            router.reload()
+            localStorage.setItem('message', res.data.message);
+            window.dispatchEvent( new Event('storage') )
         })
     }
     const showModal = () => {
@@ -25,7 +32,7 @@ function CartDish({cartDish, asset, deleteCartItemUrl, editCartItemUrl, setModal
     return(
         <ul className="cart-grid">
             <li>
-                <img className="cart-dish-img" src={asset + '/' + cartDish.dish_info.picture_path} alt={cartDish.dish_info.dish_name}></img>
+                <img className="small-dish-img" src={asset + '/' + cartDish.dish_info.picture_path} alt={cartDish.dish_info.dish_name}></img>
             </li>
             <li>{cartDish.dish_info.dish_name}</li>
             <li className="d-flex gap-2">

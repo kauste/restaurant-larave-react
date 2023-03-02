@@ -11,13 +11,12 @@
     --names-family:'The Girl Next Door', cursive;
     --casual-family: 'IBM Plex Serif', serif;
     --gold-color: #E1B131;
-    --light-gold: #e8d6a4;
     --dark-gold:#B78019;
     --salad-green:#AFB95D;
     --dark-salad:#5D5002;
-    --light-gray: #E9E3CA;
+    --light-gold: #F6EA70;
     --dark-gray:#d9d4bd;
-    --darker-gray:#c3beab;
+    --gold-shadow:#CDA941;
 }
 .bold {
     font-weight: 800;
@@ -28,6 +27,20 @@
     display:flex;
     justify-content: center;
     font-size: 15px;
+}
+.messages{
+    background-color: var(--light-gold);
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 15px;
+    div{
+        width: 100%;
+        padding:5px 10px;
+        text-align: center;
+        border-bottom: var(--dark-salad) 1px solid;
+        color: #DC3545;
+    }
 }
 .amount-input{
     width: 60px;
@@ -40,6 +53,12 @@
         border:none;
         border: var(--dark-salad) 2px solid;
     }
+}
+.small-dish-img{
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    object-position: center;
 }
 .modal-box{
     width:100%;
@@ -56,12 +75,11 @@
             display:block;
             padding: 50px 80px;
             border-radius: 30px;
-            background-color: var(--darker-gray);
+            background-color: var(--gold-shadow);
             border: solid black 3px;
             .modal-content{
                 .modal-header{
                     border-bottom: solid black 1px;
-                    margin-bottom: 10px;
                     .modal-title{
                         font-size: 25px;
                         font-family: var(--names-family);
@@ -78,15 +96,29 @@
                 .modal-body{
                     font-family: var(--casual-family);
                     margin-bottom: 20px;
+                    margin-top: 10px;
                     p, .modal-radios{
                         font-size: 15px;
                         margin-bottom:10px;
                     }
                     .delivery-form{
+                        margin-top: 10px;
                         font-style: italic;
+                        h5{
+                            font-style: normal;
+                        }
                         .label-input{
                             display:grid;
-                            grid-template-columns: 0.5fr 1fr;
+                            grid-template-columns: 0.6fr 1fr;
+                            align-items: center;
+                            .telNr-input-box{
+                                span{
+                                    margin-right:5px;
+                                }
+                            }
+                            label{
+                                padding-right: 5px;
+                            }
                             input, textarea{
                                 border-radius: 5px;
                                 padding: 3px 9px;
@@ -119,12 +151,12 @@
             }
         }  
 }
-button, a{
+button, a:not(.restaurant-have-dish){
     text-transform: uppercase;
 }
 nav{
     background-color: #784124;
-    box-shadow: 0 2px 8px #999;
+    box-shadow: 0 2px 8px var(--gold-shadow);
     .nav-logo{
         width: 80px;
         height:80px;
@@ -147,9 +179,7 @@ nav{
         font-size: 15px;
         height:100%;
         color: var(--dark-salad);
-        &:not(:last-of-type){
-            border-right: var(--dark-salad) solid 1px;
-        }
+        border-right: var(--dark-salad) solid 1px;
         &:hover{
             color:var(--salad-green);
             background-color: var(--dark-salad);
@@ -186,8 +216,8 @@ nav{
 }
 
 .card{
-    box-shadow: 2px 2px 8px #999;
-    background-color: var(--light-gray);
+    box-shadow: 2px 2px 8px var(--gold-shadow);
+    background-color: var(--light-gold);
 }
 .card-header{
     display:flex;
@@ -222,7 +252,7 @@ nav{
                     letter-spacing: 0.5px;
                 }
                 &:hover{
-                    background-color: var(--dark-gray);
+                    background-color: var(--gold-color);
                 }
             }
             &.headings{
@@ -244,7 +274,7 @@ nav{
     }
 }
 .dishes-list{
-    background-color: var(--light-gray);
+    background-color: var(--light-gold);
     .dish-list-grid{
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -279,14 +309,14 @@ nav{
                     position: absolute;
                     background-color: var(--dark-gray);
                     visibility:hidden;
-                    border: var(--dark-salad) 1px solid;
+                    // border: var(--dark-salad) 1px solid;
                     padding: 3px 6px;
                     font-size: 12px;
                     // font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
                 }
                 &:hover{
                     cursor: pointer;
-                    background-color: var(--dark-gray);
+                    background-color: var(--gold-color);
                     .tootlip{
                         visibility: visible;
                     }
@@ -299,8 +329,8 @@ nav{
     }
 }
 .sort-filter-search{
-    background-color: var(--dark-gray);
-    box-shadow: 0px 0px 4px 1px #999;
+    background-color: var(--gold-color);
+    box-shadow: 0px 0px 4px 1px var(--gold-shadow);
     padding: 30px;
     width: 700px;
     .card-header{
@@ -338,7 +368,7 @@ nav{
     .about-restaurant{
         
         background-color: var(--salad-green);
-        box-shadow: 0px 0px 4px 1px #999;
+        box-shadow: 0px 0px 4px 1px var(--gold-shadow);
         padding: 20px;
         border-radius: 10px;
         h2{
@@ -365,8 +395,8 @@ nav{
         }
     }
 }
-.cart{
-    .cart-restaurant{
+.cart, .order{
+    .cart-restaurant, .order-restaurant{
         margin-bottom: 30px;
         padding:10px 50px;
         .cart-grid{
@@ -396,11 +426,98 @@ nav{
             margin-bottom: 0;
             margin-top: 10px;
         }
-        .cart-dish-img{
-            height: 80px;
-            width: 80px;
-            object-fit: cover;
-            object-position: center;
+    }
+}
+.order{
+    .order-card-header{
+        padding:20px;
+        width:100%;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--casual-family);
+        .created-updated{
+            font-style: italic;
+            box-shadow: 0 0 2px 2px var(--gold-shadow);
+            padding: 3px;
+        }
+        .right-corner{
+            box-shadow: 0 0 2px 2px var(--gold-shadow);
+            padding: 3px;
+            .status{
+                font-size: 20px;
+                text-transform: uppercase;
+            }
+            .delivery-choice{
+                width:fit-content;
+                text-decoration: underline;
+            }
+        }
+        .middle{
+            display:flex;
+            gap: 10px;
+            align-items: center;
+            h3{
+                font-size: 35px;
+                font-family: var(--names-family) !important;
+                font-weight: 800;
+            }
+        }
+    
+        transition: all 0.2s linear;
+            &:hover{
+                cursor: pointer;
+                .sfs-chevron{
+                    transform: scale(1.1);
+                }
+            }
+    }
+    .order-delivery-info-box{
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        padding: 5px;
+        margin-bottom:20px;
+        border: var(--dark-salad) 1px solid;
+        padding: 10px 20px;
+        width: fit-content;
+    }
+    .order-grid{
+        display:grid;
+        grid-template-columns: repeat(5, 1fr);
+        justify-items: center;
+        align-items: center;
+        border-bottom: var(--dark-salad) 1px solid;
+        &:not(.bold){
+            margin-bottom: 0;
+            padding: 10px;
+        }
+
+    }
+    .grid-item-invoice{
+        grid-row-start: 1;
+        grid-row-end: span 2;
+        justify-self: start;
+        .invoice-svg-box{
+            &:hover{
+                cursor: pointer;
+                transform: scale(1.1);
+            }
         }
     }
+}
+svg{
+    .st0{
+        fill-rule:evenodd;
+        clip-rule:evenodd;
+        fill:#262626;
+    } 
+    .st1{
+        fill-rule:evenodd;
+        clip-rule:evenodd;
+        fill:#FF0000;
+    } 
+        .st2{
+            fill:#FFFFFF;
+        }
 }

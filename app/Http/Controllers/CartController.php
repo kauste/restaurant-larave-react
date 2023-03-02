@@ -13,9 +13,8 @@ class CartController extends Controller
 {
     public function addToCart (Request $request){
         $cart = $request->session()->get('cart', collect([]));
-        $ids = $cart->pluck('dish_id');
-
-        if($ids->search($request->id) !== false){
+        $dishInCart = $cart->where('dish_id', $request->id)->where('restaurant_id', $request->restaurant_id);
+        if(count($dishInCart) !== 0){
             $cart = $cart->map(function($dish) use ($request){
                 if($dish['dish_id'] == $request->id && $dish['restaurant_id'] == $request->restaurant_id){
                     $dish['amount'] += $request['amount'];
@@ -85,13 +84,10 @@ class CartController extends Controller
     }
     public function deleteCart (Request $request){
         $cart = $request->session()->get('cart', collect([]));
-        $filtered = $cart->filter(function ($item, $key) use ($request) {
+        $filtered = $cart->filter(function ($item) use ($request) {
             return ($item['restaurant_id'] != $request->restaurantId);
         });
         $request->session()->put('cart', $filtered);
         return response()->json(['message'=> 'Your cart is deleted. Please form a new order.']);
-    }
-    public function confirmCart (Request $request){
-        dump($request->all());
     }
 }
