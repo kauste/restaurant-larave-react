@@ -1,15 +1,16 @@
-function DeliveryInfo({deliveryChoice, contactInfo, orderStatus, setChangeContactOrder, orderId}){
+function DeliveryInfo({deliveryChoice, contactInfo, setContactInfo, orderStatus, setChangeContactOrder, orderId}){
 
     const changeAdress = () => {
-        setChangeContactOrder({orderId:orderId, contactInfo:contactInfo});
+        setChangeContactOrder({orderId:orderId, contactInfo:contactInfo, setContactInfo:setContactInfo});
     }
+    console.log(contactInfo)
     if(deliveryChoice === 1){
         return (
                 <div className="order-delivery-info-box">
                     <div className="order-delivery-info">
-                        <div>{contactInfo.street}  {contactInfo.street_nr}{contactInfo.flatNr ? '-'+ contactInfo.flatNr : ''},  {contactInfo.post_code},  {contactInfo.city}</div>
-                        <div>Telephone number:  {contactInfo.telephone_number}</div>
-                        <div>Message to courier {contactInfo.message}</div>
+                        <div>{contactInfo.street}  {contactInfo.street_nr}{contactInfo.flat_nr ? '-'+ contactInfo.flat_nr : ''},  {contactInfo.post_code},  {contactInfo.city}</div>
+                        <div>Telephone number:  +370{contactInfo.telephone_number}</div>
+                        <div>Message to courier: {contactInfo.message ? contactInfo.message : <i>no message</i>}</div>
                     </div>
                     <div>
                         {orderStatus < 2 ? <button className="btn btn-outline-danger" onClick={changeAdress}>Edit</button> : null}

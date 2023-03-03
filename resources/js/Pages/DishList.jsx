@@ -1,5 +1,5 @@
 import Dish from "@/components/frontOffice/Dish";
-import SortFilterSearch from "@/components/SortFilerSearch";
+import SortFilterSearch from "@/components/frontOffice/dishes/SortFilerSearch";
 import Authenticated from "@/Layouts/Authenticated";
 import { Head } from "@inertiajs/inertia-react";
 import { useEffect, useState } from "react";

@@ -1,7 +1,3 @@
-import { router } from "@inertiajs/react";
-import axios from "axios";
-import { useEffect, useState } from "react";
-
 function OrderDish({asset, orderDish}){
 
 

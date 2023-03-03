@@ -1,6 +1,6 @@
 import Authenticated from "@/Layouts/Authenticated";
 import { Head } from "@inertiajs/inertia-react";
-import DishInRestaurant from "@/components/frontOffice/DishInRestaurant";
+import DishInRestaurant from "@/components/frontOffice/restaurants/DishInRestaurant";
 import { useEffect, useState } from "react";
 
 function RestaurantDishes(props){

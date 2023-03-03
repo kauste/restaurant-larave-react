@@ -279,7 +279,9 @@ nav{
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 30px;
+        padding-left:0;
         .one-dish{
+            padding-left:0;
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -299,6 +301,9 @@ nav{
             }
             li:not(.dish-name){
                 font-family: var(--casual-family);
+            }
+            li{
+                text-align: center;
             }
             .restaurant-have-dish{
                 color:black;
@@ -332,7 +337,7 @@ nav{
     background-color: var(--gold-color);
     box-shadow: 0px 0px 4px 1px var(--gold-shadow);
     padding: 30px;
-    width: 700px;
+    max-width: 700px;
     .card-header{
         padding: 0;
         transition: all 0.2s linear;
@@ -342,6 +347,10 @@ nav{
                 transform: scale(1.1);
             }
         }
+    }
+    .sort-filter{
+        display:flex;
+        justify-content: space-between;
     }
     .sort-select, .filter-select, .search-input {
         width:auto;
@@ -358,7 +367,7 @@ nav{
         }
     }
     .search-input {
-        width:400px;
+        width:calc(200px + 10vw);
         &:focus{
             outline: var(--dark-salad) 2px solid;
         }
@@ -398,7 +407,7 @@ nav{
 .cart, .order{
     .cart-restaurant, .order-restaurant{
         margin-bottom: 30px;
-        padding:10px 50px;
+        padding:1vw 2vw;
         .cart-grid{
             display:grid;
             grid-template-columns: repeat(6, 1fr);
@@ -429,13 +438,15 @@ nav{
     }
 }
 .order{
+    font-size: calc(10px + 0.3vw);
     .order-card-header{
-        padding:20px;
+        padding:1.5vw;
         width:100%;
         display:flex;
         justify-content: space-between;
         align-items: center;
         font-family: var(--casual-family);
+        font-size: calc(10px + 0.3vw);
         .created-updated{
             font-style: italic;
             box-shadow: 0 0 2px 2px var(--gold-shadow);
@@ -445,7 +456,7 @@ nav{
             box-shadow: 0 0 2px 2px var(--gold-shadow);
             padding: 3px;
             .status{
-                font-size: 20px;
+                font-size: calc(12px + 0.3vw);
                 text-transform: uppercase;
             }
             .delivery-choice{
@@ -457,8 +468,10 @@ nav{
             display:flex;
             gap: 10px;
             align-items: center;
+            padding: 0 10px;
             h3{
-                font-size: 35px;
+                text-align: center;
+                font-size: calc(10px + 2vw);
                 font-family: var(--names-family) !important;
                 font-weight: 800;
             }
@@ -484,13 +497,16 @@ nav{
     }
     .order-grid{
         display:grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: 1.5fr repeat(4, 1fr);
         justify-items: center;
         align-items: center;
         border-bottom: var(--dark-salad) 1px solid;
         &:not(.bold){
             margin-bottom: 0;
             padding: 10px;
+        }
+        li{
+            padding: 0 3px;
         }
 
     }
@@ -520,4 +536,90 @@ svg{
         .st2{
             fill:#FFFFFF;
         }
+}
+.container{
+    max-width: calc(100% - 2vw);
+}
+@media (max-width: 992px){
+    .dishes-list{
+        .dish-list-grid{
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+}
+@media (max-width: 768px){
+    .dishes-list{
+        .dish-list-grid{
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    .restaurant-list-front{
+        .restaurant-list{
+            padding: 0;
+            .restaurant-list-grid.headings{
+                display:none;
+            }
+            .restaurant-list-grid{
+                padding: 10px;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px 0;
+                &:not(.headings){
+                    grid-template-rows: none;
+                }
+                li:last-child, li:first-child, li:nth-child(4){
+                    grid-column: 1 / span 2;
+                }
+                li:last-child{
+                    justify-self: end;
+                }
+                li:first-child{
+                    justify-self: center;
+                    font-size: 27px;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+    .sort-filter-search{
+        .sort-filter{
+           flex-direction: column;
+           row-gap: 5px;
+           div:not(:last-child){
+            width:100%;
+            display:grid;
+            grid-template-columns: repeat(2, 1fr);
+           }
+           div:last-child{
+            display:flex;
+            justify-content: center;
+           }
+        }
+    }
+    .order{
+        // .order-card-header{ 
+        //     flex-direction: column-reverse;
+        //     gap: 5px;
+        //     .middle{
+        //         order:3;
+        //     }
+        // }
+    }
+}
+@media (max-width: 576px){
+    .dishes-list{
+        .dish-list-grid{
+            grid-template-columns: 1fr;
+        }
+    }
+    .restaurant-list-front{
+        .card{
+            padding: 0;
+            .card-body{
+                padding: inherit 0;
+            }
+        }
+        .restaurant-list{
+            padding: 0;
+        }
+    }
 }

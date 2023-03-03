@@ -1,10 +1,15 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeliveryInfo from "./DeliveryInfo";
 import OrderDish from "./OrderDish";
 
 function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, getInvoiceUrl, setChangeContactOrder }) {
     const [showBody, setShowBody] = useState('d-none');
+    const [contactInfo, setContactInfo] = useState(order.contactInfo);
+
+    // useEffect(()=>{
+    //     setContactInfo(order.contactInfo)
+    // }, [])
     const headerToggle = () => {
         let toggle = showBody === 'd-none' ? '' : 'd-none';
         setShowBody(toggle);
@@ -40,7 +45,7 @@ function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, ge
                 </div>
             </div>
             <div className={`card-body ${showBody}`}>
-                <DeliveryInfo deliveryChoice={order.delivery_choice} orderId={order.id} contactInfo={order.contactInfo} orderStatus={order.status} setChangeContactOrder={setChangeContactOrder}></DeliveryInfo>
+                <DeliveryInfo deliveryChoice={order.delivery_choice} orderId={order.id} contactInfo={contactInfo} setContactInfo={setContactInfo} orderStatus={order.status} setChangeContactOrder={setChangeContactOrder}></DeliveryInfo>
                 <ul className="bold order-grid">
                     <li></li>
                     <li>Dish</li>

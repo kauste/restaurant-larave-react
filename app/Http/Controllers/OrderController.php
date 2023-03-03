@@ -61,7 +61,31 @@ class OrderController extends Controller
         
     }
     public function store(Request $request)
-    {
+    {   
+        // validation
+        $courierData = $request->deliveryData['courierData'];
+        if($request->deliveryData['deliveryChoice'] == 1){
+            $validator = Validator::make($courierData, [
+                'city' => 'required|string|min:3|max:50',
+                'street' =>'required|string|min:3|max:50',
+                'streetNumber'=> 'required|string|min:1|max:8',
+                'flat' => 'nullable|string|min:1|max:8',
+                'postCode'  => 'required|numeric|digits_between:5,8',
+                'telNr' => 'required|numeric|digits:8',
+                'message' => 'nullable|string|min:1|max:200'
+            ]);
+            $validator->after(function ($validator) use ($courierData){
+                $exp = '/6\d{7}/';
+                if (preg_match($exp, $courierData['telNr']) != 1) {
+                    $validator->errors()->add('telNr', 'Invalid telephone number!');
+                }
+            });
+            if($validator->fails()){
+                $errors = $validator->errors()->all();
+                return response()->json(['errors' => $errors]);
+            }
+        }
+        // data valid, putting to database
         $order = new Order;
         $order->user_id = Auth::user()->id;
         $order->restaurant_id = $request->restaurantId;
@@ -75,29 +99,7 @@ class OrderController extends Controller
         $restaurantCart->map(function($item) use ($order){
                 $order->dishes()->attach($item['dish_id'], ['amount' => $item['amount']]);
         });
-        
-        $courierData = $request->deliveryData['courierData'];
         if($request->deliveryData['deliveryChoice'] == 1){
-            $validator = Validator::make($courierData, [
-                'city' => 'required|string|min:3|max:50',
-                'street' =>'required|string|min:3|max:50',
-                'streetNumber'=> 'required|string|min:1|max:8',
-                'flat' => 'nullable|string|min:1|max:8',
-                'postCode'  => 'required|string|min:1|max:8',
-                'telNr' => 'required|string|min:8|max:8',
-                'message' => 'nullable|string|min:8|max:200'
-            ]);
-            $validator->after(function ($validator) use ($courierData){
-                $exp = '/6\d{7}/';
-                if (preg_match($exp, $courierData['telNr']) != 1) {
-                    $validator->errors()->add('telNr', 'Invalid telephone number!');
-                }
-            });
-            if($validator->fails()){
-                $errors = $validator->errors()->all();
-                return response()->json(['errors' => $errors]);
-            }
-            dump('ce');
             $contactInfo = new ContactInfo;
             $contactInfo->order_id = $order->id;
             $contactInfo->city = $courierData['city'];
@@ -107,11 +109,9 @@ class OrderController extends Controller
             $contactInfo->post_code = $courierData['postCode'];
             $contactInfo->telephone_number = $courierData['telNr'];
             $contactInfo->message = $courierData['message'];
-            dump('ir ce');
             $contactInfo->save();
         }
 
-        dump('pateko');
         $filtered = $allCarts->filter(function ($item) use ($request) {
             return ($item['restaurant_id'] != $request->restaurantId);
         });
@@ -124,7 +124,6 @@ class OrderController extends Controller
 
     public function updateAdress(Request $request)
     {
-        dump($request->all());
         $contacts = ContactInfo::where('order_id', $request->orderId)->first();
         $contacts->city = $request->all()['city'];
         $contacts->street = $request->all()['street'];
@@ -137,7 +136,6 @@ class OrderController extends Controller
         return response()->json(['message' => 'Contact information is edited.']);
     }
     public function getInvoice(Request $request){
-        dump('jou');
         $order = Order::where('orders.id', $request->orderId)
                         ->first();
         $order->food = Dish::join('dish_order','dish_order.dish_id', 'dishes.id')
@@ -151,7 +149,6 @@ class OrderController extends Controller
             return $dish;
         });
 
-        dump('ce');
         if($order->delivery_choice === 1){
             $order->totalPrice += Order::DELIVERY_PRICE;
         }

@@ -1,4 +1,4 @@
-import Restaurant from "@/components/frontOffice/Restaurant";
+import Restaurant from "@/components/frontOffice/restaurants/Restaurant";
 import Authenticated from "@/Layouts/Authenticated";
 import { Head } from "@inertiajs/inertia-react";
 import { useEffect, useState } from "react";
@@ -12,8 +12,8 @@ function RestaurantList(props) {
         <Authenticated auth={props.auth}>
             <Head title="Restaurants"/>
             <div className="py-12 restaurant-list-front">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div className="max-w-7xl mx-auto  lg:px-8">
+                    <div>
                         <div className="container">
                             <div className="row justify-content-center">
                                 <div className="card">
