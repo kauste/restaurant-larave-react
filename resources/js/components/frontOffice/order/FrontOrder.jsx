@@ -7,9 +7,6 @@ function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, ge
     const [showBody, setShowBody] = useState('d-none');
     const [contactInfo, setContactInfo] = useState(order.contactInfo);
 
-    // useEffect(()=>{
-    //     setContactInfo(order.contactInfo)
-    // }, [])
     const headerToggle = () => {
         let toggle = showBody === 'd-none' ? '' : 'd-none';
         setShowBody(toggle);

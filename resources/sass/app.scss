@@ -418,6 +418,9 @@ nav{
                 margin-bottom: 0;
                 padding: 10px;
             }
+            li{
+                padding: 0 4px;
+            }
         }
         .grid-for-extra{
             display:grid;
@@ -595,14 +598,15 @@ svg{
            }
         }
     }
-    .order{
-        // .order-card-header{ 
-        //     flex-direction: column-reverse;
-        //     gap: 5px;
-        //     .middle{
-        //         order:3;
-        //     }
-        // }
+    .cart{
+        .container{
+            padding:0;
+        }
+        .cart-restaurant{
+            padding:0;
+            .cart-grid{
+            }
+        }
     }
 }
 @media (max-width: 576px){
@@ -620,6 +624,19 @@ svg{
         }
         .restaurant-list{
             padding: 0;
+        }
+    }
+    .cart{
+        .cart-restaurant{
+
+            .cart-grid{
+                grid-template-columns: repeat(4, 1fr);
+                gap:8px;
+                li:first-child, li:last-child{
+                    grid-column-start: 1;
+                    grid-column-end: span 4;
+                }
+            }
         }
     }
 }
