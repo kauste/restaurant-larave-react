@@ -1,9 +1,8 @@
-function DeliveryInfo({deliveryChoice, contactInfo, setContactInfo, orderStatus, setChangeContactOrder, orderId}){
+function DeliveryInfo({deliveryChoice, contactInfo, setContactInfo, orderStatus, setChangeContactOrder, orderId, setMessage}){
 
     const changeAdress = () => {
-        setChangeContactOrder({orderId:orderId, contactInfo:contactInfo, setContactInfo:setContactInfo});
+        setChangeContactOrder({orderId:orderId, contactInfo:contactInfo, setContactInfo:setContactInfo, setMessage: setMessage});
     }
-    console.log(contactInfo)
     if(deliveryChoice === 1){
         return (
                 <div className="order-delivery-info-box">

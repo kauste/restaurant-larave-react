@@ -1,14 +1,13 @@
 import React, {  useState } from 'react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
+import ApplicationLogo from '@/components/inertiaComponents/ApplicationLogo';
+import Dropdown from '@/components/inertiaComponents/Dropdown';
 import Message from '@/components/Message';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import NavLink from '@/components/inertiaComponents/NavLink';
+import ResponsiveNavLink from '@/components/inertiaComponents/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
 import AreYouSureModal from "@/components/frontOffice/AreYouSureModal";
 import ConfirmCartModal from '@/components/frontOffice/cart/ConfirmCartModal';
 import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfoModal';
-import Messages from '@/components/Messages';
 
 export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo, changeContactOrder, setChangeContactOrder, updateAdressUrl, cart, thisRestaurant, setNewCart, setContactInfo}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -17,7 +16,7 @@ export default function Authenticated({ auth, header, message, children, modalIn
                         <EditContactInfoModal  changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder} updateAdressUrl={updateAdressUrl} setContactInfo={setContactInfo}></EditContactInfoModal>
                         <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
                         <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} restaurant={thisRestaurant} setNewCart={setNewCart}></ConfirmCartModal>
-            <nav className="">
+            <nav>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-24 items-center">
                         <div className="flex items-center">
@@ -27,7 +26,7 @@ export default function Authenticated({ auth, header, message, children, modalIn
                                 </Link>
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={route('user-restaurants')} active={route().current('user-restaurants')}>
                                     Food lovers
                                 </NavLink>
                             </div>
@@ -58,23 +57,21 @@ export default function Authenticated({ auth, header, message, children, modalIn
                             </div>
                             {/* PABAIGA */}
                             <div className="relative nav-dropdown ">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <span className="inline-flex rounded-md">
-                                                <button type="button"className="h-24 flex items-center transition ease-in-out duration-150">
-                                                    {auth.user.name}
-
-                                                    <svg className="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                        </Dropdown.Trigger>
-
-                                        <Dropdown.Content>
-                                            <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
-                                        </Dropdown.Content>
-                                    </Dropdown>
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <span className="inline-flex rounded-md">
+                                            <button type="button"className="h-24 flex items-center transition ease-in-out duration-150">
+                                                {auth.user.name}
+                                                <svg className="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content>
+                                        <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
                             </div>
                             {/* PRDZIA */}
                             <div className="nav-cart-link-box">

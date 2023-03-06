@@ -2,7 +2,7 @@ import axios from "axios";
 import CartDish from "./CartDish";
 import { useEffect, useState } from "react";
 
-function CartRestaurant({restaurant, asset, deliveryPrice, deleteCartItemUrl, editCartItemUrl, setModalInfo, cancelCartUrl, confirmCartUrl, setComfirmModalInfo, setNewCart, cart, setThisRestaurant}){
+function CartRestaurant({restaurant, asset, deliveryPrice, deleteCartItemUrl, editCartItemUrl, setModalInfo, cancelCartUrl, confirmCartUrl, setComfirmModalInfo, setNewCart, cart, setThisRestaurant, setMessage}){
     
     const [cartData, setCartData] = useState([]);
     const [newCartInfo, setNewCartInfo] = useState(restaurant.cartInfo);
@@ -18,15 +18,14 @@ function CartRestaurant({restaurant, asset, deliveryPrice, deleteCartItemUrl, ed
         .then(res => {
             setNewCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
             setModalInfo(null);
-            localStorage.setItem('message', res.data.message)
-            window.dispatchEvent(new Event('storage'));
+            setMessage(res.data.message)
         })
     }
     const showModal = () => {
         setModalInfo({'text':'Are you sure you want to delete this cart?', 'confirm': cancelCart});
     }
     const confirmOrderModal =() => {
-        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'restaurantId': cartData[0].restaurant_id, 'confirmCartUrl': confirmCartUrl});
+        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'restaurantId': cartData[0].restaurant_id, 'confirmCartUrl': confirmCartUrl, 'setMessage':setMessage});
     }
     return(
             <div className="card cart-restaurant">
@@ -43,7 +42,7 @@ function CartRestaurant({restaurant, asset, deliveryPrice, deleteCartItemUrl, ed
                         <li></li>
                     </ul>
                     {
-                        cartData.map((cartDish, index) => <CartDish key={index} cartDish={cartDish} asset={asset} deleteCartItemUrl={deleteCartItemUrl} editCartItemUrl={editCartItemUrl} setModalInfo={setModalInfo} cartData={cartData} setNewCartInfo={setNewCartInfo} setNewCart={setNewCart} cart={cart} restaurant={restaurant}></CartDish>)
+                        cartData.map((cartDish, index) => <CartDish key={index} cartDish={cartDish} asset={asset} deleteCartItemUrl={deleteCartItemUrl} editCartItemUrl={editCartItemUrl} setModalInfo={setModalInfo} cartData={cartData} setNewCartInfo={setNewCartInfo} setNewCart={setNewCart} cart={cart} restaurant={restaurant} setMessage={setMessage}></CartDish>)
                     }
                     <ul className="grid-for-extra">
                         <li></li>

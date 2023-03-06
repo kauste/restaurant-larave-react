@@ -1,4 +1,5 @@
-import Dish from "@/components/frontOffice/Dish";
+
+import Dish from "@/components/frontOffice/dishes/Dish";
 import SortFilterSearch from "@/components/frontOffice/dishes/SortFilerSearch";
 import Authenticated from "@/Layouts/Authenticated";
 import { Head } from "@inertiajs/inertia-react";
@@ -11,8 +12,6 @@ function DishList(props) {
         setRestaurantDishes(props.dishes);
         setDefaultPic(props.defaultPic)
     }, [])
-
-
 
     return (
         <Authenticated auth={props.auth}>

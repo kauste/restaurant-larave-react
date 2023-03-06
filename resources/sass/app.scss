@@ -17,6 +17,8 @@
     --light-gold: #F6EA70;
     --dark-gray:#d9d4bd;
     --gold-shadow:#CDA941;
+    --sand-color: #f3eec4;
+    --darker-sand:#f1ebb0;
 }
 .bold {
     font-weight: 800;
@@ -154,6 +156,25 @@
 button, a:not(.restaurant-have-dish){
     text-transform: uppercase;
 }
+svg{
+    .st0{
+        fill-rule:evenodd;
+        clip-rule:evenodd;
+        fill:#262626;
+    } 
+    .st1{
+        fill-rule:evenodd;
+        clip-rule:evenodd;
+        fill:#FF0000;
+    } 
+        .st2{
+            fill:#FFFFFF;
+        }
+}
+.container{
+    max-width: calc(100% - 2vw);
+}
+
 nav{
     background-color: #784124;
     box-shadow: 0 2px 8px var(--gold-shadow);
@@ -214,10 +235,10 @@ nav{
         }
     }
 }
-
+// front
 .card{
     box-shadow: 2px 2px 8px var(--gold-shadow);
-    background-color: var(--light-gold);
+    background-color: var(--sand-color);
 }
 .card-header{
     display:flex;
@@ -252,7 +273,7 @@ nav{
                     letter-spacing: 0.5px;
                 }
                 &:hover{
-                    background-color: var(--gold-color);
+                    background-color: var(--darker-sand);
                 }
             }
             &.headings{
@@ -525,24 +546,54 @@ nav{
         }
     }
 }
-svg{
-    .st0{
-        fill-rule:evenodd;
-        clip-rule:evenodd;
-        fill:#262626;
-    } 
-    .st1{
-        fill-rule:evenodd;
-        clip-rule:evenodd;
-        fill:#FF0000;
-    } 
-        .st2{
-            fill:#FFFFFF;
+// back
+.restaurant-list-back{
+    background-color: #FCC9A3;
+    background-image: url('./../../public/images/food.jfif');
+    .restaurant-list{
+        .restaurant-list-grid{
+            display:grid;
+            grid-template-columns: 1.5fr 1fr 1fr 2fr 3fr;
+            border-bottom: var(--dark-salad) 1px solid;
+            &:not(.headings){
+                grid-template-rows: 70px;
+                align-items: center;
+                li:not(.restaurant-name, .controls){
+                    font-family: var(--casual-family);
+                    font-weight: 400;
+                    letter-spacing: 0.5px;
+                }
+                &:hover{
+                    background-color: var(--darker-sand);
+                }
+            }
+            &.headings{
+                align-items: end;
+                padding-bottom: 15px;
+                font-weight: 600;
+                font-size: 17px;
+            }
+            li{
+                padding-left:10px;
+
+            }
+            .restaurant-name{
+                font-family: var(--names-family);
+                font-size: 20px;
+                font-weight: 500;
+            }
+            .controls{
+                display:flex;
+                justify-content: space-between;
+                .show-edit{
+                    display:flex;
+                    gap:15px;
+                }
+            }
         }
+    }
 }
-.container{
-    max-width: calc(100% - 2vw);
-}
+
 @media (max-width: 992px){
     .dishes-list{
         .dish-list-grid{

@@ -34,8 +34,7 @@ function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, restaur
                     setNewCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
                     setDelivery(null);
                     setComfirmModalInfo(null);
-                    localStorage.setItem('message', res.data.message)
-                    window.dispatchEvent(new Event('storage'));
+                    comfirmModalInfo.setMessage(res.data.message)
                 }
             })
         }, [delivery])

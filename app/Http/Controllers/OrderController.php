@@ -50,7 +50,7 @@ class OrderController extends Controller
         $statuses = Order::STATUS;
         $deliveryChoices = Order::DELIVERY_CHOICES;
         
-        return Inertia::render('FrontOrders', [ 'orders' => $orders,
+        return Inertia::render('frontOffice/FrontOrders', [ 'orders' => $orders,
                                                 'statuses' => $statuses,
                                                 'deliveryPrice' => Order::DELIVERY_PRICE,
                                                 'asset'=> asset('/images/food'),

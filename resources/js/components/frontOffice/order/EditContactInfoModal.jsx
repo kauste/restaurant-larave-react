@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function EditContactInfoModal({setChangeContactOrder, changeContactOrder, updateAdressUrl}){
+function EditContactInfoModal({setChangeContactOrder, changeContactOrder, updateAdressUrl, setMessage}){
     if(changeContactOrder !== null && changeContactOrder !== undefined){
         const [courierData, setCourierData ] = useState({});
         useEffect(() => {
@@ -27,8 +27,7 @@ function EditContactInfoModal({setChangeContactOrder, changeContactOrder, update
                 changeContactOrder.setContactInfo({...changeContactOrder.contactInfo, ...courierData});
                 const newData = {city:courierData.city, street:courierData.street, street_nr:courierData.streetNumber, flat_nr:courierData.flat, telephone_number:courierData.telNr, post_code:courierData.postCode, message:courierData.message}
                 changeContactOrder.setContactInfo({...changeContactOrder.contactInfo, ...newData});
-                localStorage.setItem('message', res.data.message),
-                window.dispatchEvent(new Event('storage'));
+                changeContactOrder.setMessage(res.data.message);
                 setChangeContactOrder(null);
             })
         }

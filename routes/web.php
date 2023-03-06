@@ -4,7 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\BackOffice\RestaurantController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\CartController;
@@ -24,11 +24,10 @@ use App\Http\Controllers\HomeController;
 // Restaurant
 Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
 Route::get('/restaurant-list', [RestaurantController::class, 'index'])->name('restaurant-list');
-Route::get('/restaurant-create', [RestaurantController::class, 'create'])->name('restaurant-create');
+Route::get('/restaurant-dishes/{restaurant?}', [RestaurantController::class, 'showDishes'])->name('restaurant-show-dishes'); // not used yet
 Route::post('/restaurant-store', [RestaurantController::class, 'store'])->name('restaurant-store');
-Route::get('/restaurant-edit/ {restaurant}', [RestaurantController::class, 'edit'])->name('restaurant-edit');
-Route::put('/restaurant-update/{restaurant}', [RestaurantController::class, 'update/{restaurant}'])->name('restaurant-update/{restaurant}');
-Route::delete('/restaurant-delete/{restaurant}', [RestaurantController::class, 'destroy'])->name('restaurant-delete');
+Route::put('/restaurant-update', [RestaurantController::class, 'update'])->name('restaurant-update');
+Route::delete('/restaurant-delete/{restaurant?}', [RestaurantController::class, 'destroy'])->name('restaurant-delete');
 
 //Dishes
 Route::get('/dish-list', [DishController::class, 'index'])->name('dish-list');

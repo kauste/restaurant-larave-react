@@ -11,7 +11,6 @@ function RestaurantDishes(props){
     const [restaurant, setRestaurant] = useState({});
     const [asset, setAsset] = useState('');
     useEffect(() =>{
-        console.log();
         setDishes(props.dishes);
         setDefaultPic(props.defaultPic);
         setAddToCartUrl(props.addToCartUrl);

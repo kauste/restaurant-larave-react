@@ -33,7 +33,7 @@ function FrontOrders(props) {
                             <h2>Your Orders</h2>
                         </div>
                         {
-                            orders.map((order, index) => <FrontOrder key={index} order={order} setChangeContactOrder={setChangeContactOrder} statuses={props.statuses} asset={props.asset} deliveryPrice={props.deliveryPrice} deliveryChoices={props.deliveryChoices} getInvoiceUrl={props.getInvoiceUrl}></FrontOrder>)
+                            orders.map((order, index) => <FrontOrder key={index} order={order} setChangeContactOrder={setChangeContactOrder} statuses={props.statuses} asset={props.asset} deliveryPrice={props.deliveryPrice} deliveryChoices={props.deliveryChoices} getInvoiceUrl={props.getInvoiceUrl} setMessage={setMessage}></FrontOrder>)
                         }
                     </div>
                 </div>

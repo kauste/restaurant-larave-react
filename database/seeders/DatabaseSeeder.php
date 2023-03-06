@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
         $faker = Faker::create('lt_LT');
         $restaurantNames = ['Food masters', 'Food first', 'Vegan friendly', 'Lovely dinner', 'Fell for smell', 'Day treat', 'Food brothers', 'Pleasure', 'Taste good', 'Smell and taste'];
         foreach($restaurantNames as $restaurantName){
-            $date = Carbon::parse(rand(8, 11).':00:00')->format('H:i:s');
             DB::table('restaurants')-> insert([
                 'restaurant_name' => $restaurantName,
                 'city'=> $faker->city,
@@ -32,7 +31,6 @@ class DatabaseSeeder extends Seeder
         }
         $dishes = ['Egg and bacon', 'Cezar salad', 'Greek salad', 'Avocado sandwich', 'Pizza mafia', 'Four cheese pizza', 'Chilli stew', 'Grilled sandwich', 'Steak with rice', 'Beetroot gazpacho', 'Pink soup', 'Italian Pasta', 'Burger with bacon', 'Vegan beetroot burger', 'Buddha bowl', 'Grilled vegetables', 'Tomato soup', 'Pistacio Ice Cream', "Today's special", 'Milkshake'];
         foreach($dishes as $dish){
-            $date = Carbon::parse(rand(8, 11).':00:00')->format('H:i:s');
             DB::table('dishes')-> insert([
                 'dish_name' => $dish,
                 'price'=> rand(10, 20),

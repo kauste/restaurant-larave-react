@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 function Messages({messages}){
     if(messages !== null && messages !== undefined){
-        console.log(messages);
         const [messageStyle, setMessageStyle] = useState({});
         const [isNavBottomSeen, setIsNavBottomSeen] = useState(false);
 

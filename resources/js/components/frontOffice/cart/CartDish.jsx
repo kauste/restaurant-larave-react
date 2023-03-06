@@ -1,28 +1,28 @@
 import axios from "axios";
 import { useState } from "react";
 
-function CartDish({cartDish, asset, deleteCartItemUrl, editCartItemUrl, setModalInfo, cartData, cart, setNewCart, setNewCartInfo, restaurant}){
+function CartDish({cartDish, asset, deleteCartItemUrl, editCartItemUrl, setModalInfo, cartData, cart, setNewCart, setNewCartInfo, restaurant, setMessage}){
     const [amount, setAmount] = useState(cartDish.amount);
     const deleteItem = () => {
         axios.delete(deleteCartItemUrl + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id)
         .then(res => {
+            let msg;
             if(cartData.length === 1){
                 setNewCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
-                localStorage.setItem('message', 'There is no dishes in cart, therefore cart is deleted.');
+                msg ='There is no dishes in cart, therefore cart is deleted.';
             }
             else{
                 setNewCartInfo(cartData.filter((dish) => dish.restaurant_id !== cartDish.restaurant_id || dish.dish_id !== cartDish.dish_id));
-                localStorage.setItem('message', res.data.message);
+                msg = res.data.message;
             }
             setModalInfo(null);
-            window.dispatchEvent( new Event('storage') )
+            setMessage(msg)
         })
     }
     const editAmount = () => {
         axios.put(editCartItemUrl + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id, {'amount':amount})
         .then(res => {
-            localStorage.setItem('message', res.data.message);
-            window.dispatchEvent( new Event('storage') )
+            setMessage(res.data.message);
         })
     }
     const showModal = () => {

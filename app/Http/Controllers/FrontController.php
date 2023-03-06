@@ -14,7 +14,13 @@ class FrontController extends Controller
 {
     public function restaurants(){
         $restaurants = Restaurant::all();
-        return Inertia::render('RestaurantList', [
+        $restaurants->map(function($restaurant){
+            $restaurant['work_starts'] = Carbon::parse($restaurant['work_starts'])->format('H:i');
+            $restaurant['work_ends'] = Carbon::parse($restaurant['work_ends'])->format('H:i');
+            return $restaurant;
+        });
+
+        return Inertia::render('frontOffice/RestaurantList', [
                         'restaurants'=> $restaurants,
                         'restaurantDishesUrl' => route('restaurant-dishes'),
                         ]);
@@ -32,7 +38,7 @@ class FrontController extends Controller
             $dish->restaurants = $restaurants;
             return $dish;
         });
-        return Inertia::render('DishList', [
+        return Inertia::render('frontOffice/DishList', [
                         'asset' => asset('images/food') . '/',
                         'dishes'=> $dishes,
                         'defaultPic' => '/todays-special.jpg',
@@ -49,7 +55,7 @@ class FrontController extends Controller
                         ->select('dishes.*')
                         ->orderBy('dishes.dish_name')
                         ->get();
-        return Inertia::render('RestaurantDishes', [
+        return Inertia::render('frontOffice/RestaurantDishes', [
                                 'restaurant' =>$restaurant,
                                 'dishes'=> $dishes,
                                 'asset' => asset('images/food'). '/',

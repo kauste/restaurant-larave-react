@@ -52,7 +52,7 @@ class CartController extends Controller
           });
 
         $user = ['name'=> Auth::user()->name];
-        return Inertia::render('Cart', [
+        return Inertia::render('frontOffice/Cart', [
                                 'cartInfo'=> $cart,
                                 'user'=> $user,
                                 'asset' => asset('images/food'),

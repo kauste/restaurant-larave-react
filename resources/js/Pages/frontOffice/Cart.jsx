@@ -21,16 +21,12 @@ function Cart(props){
         setCart(newCart)
     }, [newCart])
     
-    window.addEventListener('storage', () => {
-       
-        if(localStorage.getItem('message')){
-            setMessage(localStorage.getItem('message'))
-            localStorage.removeItem('message');
-            setTimeout(()=> {
+    useEffect(() => {
+        setTimeout(()=> {
                 setMessage(null)
             }, 20000)
-        }
-    })
+    }, [message])
+
 
     return(
         <Authenticated auth={props.auth} message={message} modalInfo={modalInfo} setModalInfo={setModalInfo} comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} thisRestaurant={thisRestaurant} setNewCart={setNewCart}>
@@ -42,7 +38,7 @@ function Cart(props){
                             <h2>Dishes in Cart</h2>
                         </div>
                         {
-                            cart.map((restaurant, index)=> <CartRestaurant key={index} deliveryPrice={props.deliveryPrice} asset={props.asset} restaurant={restaurant} deleteCartItemUrl={props.deleteCartItemUrl} editCartItemUrl={props.editCartItemUrl} setModalInfo={setModalInfo} setComfirmModalInfo={setComfirmModalInfo} cancelCartUrl={props.cancelCartUrl} confirmCartUrl={props.confirmCartUrl} setNewCart={setNewCart} cart={cart} setThisRestaurant={setThisRestaurant}></CartRestaurant>)
+                            cart.map((restaurant, index)=> <CartRestaurant key={index} deliveryPrice={props.deliveryPrice} asset={props.asset} restaurant={restaurant} deleteCartItemUrl={props.deleteCartItemUrl} editCartItemUrl={props.editCartItemUrl} setModalInfo={setModalInfo} setComfirmModalInfo={setComfirmModalInfo} cancelCartUrl={props.cancelCartUrl} confirmCartUrl={props.confirmCartUrl} setNewCart={setNewCart} cart={cart} setThisRestaurant={setThisRestaurant} setMessage={setMessage}></CartRestaurant>)
                         }
                     </div>
                 </div>
