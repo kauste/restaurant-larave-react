@@ -5,7 +5,7 @@ import Message from '@/components/Message';
 import NavLink from '@/components/inertiaComponents/NavLink';
 import ResponsiveNavLink from '@/components/inertiaComponents/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
-import AreYouSureModal from "@/components/frontOffice/AreYouSureModal";
+import AreYouSureModal from "@/components/AreYouSureModal";
 import ConfirmCartModal from '@/components/frontOffice/cart/ConfirmCartModal';
 import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfoModal';
 

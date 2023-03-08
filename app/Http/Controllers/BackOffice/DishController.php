@@ -1,55 +1,53 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\BackOffice;
 
+use App\Http\Controllers\Controller;
 use App\Models\Dish;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Image;
+use Inertia\Inertia;
 
 class DishController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        // $dishes = Dish::join('restaurant_dish', 'restaurant_dish.dish_id', '=', 'dish.id', )
-        // ->select('restaurants.*', 'restaurant_dishes.*')
-        // ->get();
-        // dd($dishes);
-        return view('back.dishes.index', ['dishes'=> $dishes]);
+        $restaurants = Restaurant::orderBy('restaurant_name', 'asc')->get();
+
+        $dishes = Dish::get();
+        $dishes->map(function($dish){
+            $restaurants = Restaurant::join('restaurant_dish', 'restaurant_dish.restaurant_id', 'restaurants.id')
+                           ->select('restaurants.restaurant_name', 'restaurants.id', 'restaurants.city', 'restaurants.adress')
+                           ->where('restaurant_dish.dish_id', '=', $dish->id)
+                            ->get()->toArray();
+            $dish->restaurants = $restaurants;
+            return $dish;
+        });
+        return Inertia::render('BackOffice/DishList', [
+                        'asset' => asset('images/food') . '/',
+                        'dishes'=> $dishes,
+                        'defaultPic' => '/todays-special.jpg',
+                        'sortAndFilterUrl' => route('sort-and-filter'),
+                        'restaurantDishesUrl'=>route('restaurant-dishes'),
+                        'dishStoreUrl' => route('dish-store'),
+                        'searchUrl' => route('search-dish'),
+                        'restaurants'=> $restaurants
+                        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $restaurants = Restaurant::all();
-        return view('back.dishes.create', ['restaurants'=> $restaurants]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreDishRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        foreach($request->restaurant as $restaurant_id){
+        $restaurantData = $request->formData;
+        dump($restaurantData);
+        foreach($restaurantData['restaurant'] as $restaurant_id){
             $dish = new Dish;
-            $dish->dish_name = $request->dish_name;
-            $dish->price = $request->price;
+            $dish->dish_name = $restaurantData['dish_name'];
+            $dish->price = $restaurantData['price'];
             $dish->restaurant_id = $restaurant_id;
-            if ($request->file('picture')) {
+            if ($restaurantData['picture']) {
 
-                $photo = $request->file('picture');
+                $photo = $restaurantData['picture'];
     
                 $ext = $photo->getClientOriginalExtension();
     

@@ -17,7 +17,6 @@ class RestaurantController extends Controller
             $restaurant['work_ends'] = Carbon::parse($restaurant['work_ends'])->format('H:i');
             return $restaurant;
         });
-
         return Inertia::render('BackOffice/RestaurantList', ['restaurants'=> $restaurants,
                                                               'storeRestaurantUrl' =>route('restaurant-store'),
                                                               'deleteRestaurantUrl' =>route('restaurant-delete'),
@@ -35,9 +34,8 @@ class RestaurantController extends Controller
         $restaurant->work_starts = Carbon::parse($restaurantData['work_starts'].':00')->format('H:i');
         $restaurant->work_ends = Carbon::parse($restaurantData['work_ends'].':00')->format('H:i');
         $restaurant->save();
-        $restaurants = Restaurant::all();
         return response()->json(['message'=> 'New restaurant is added',
-                                 'restaurants' => $restaurants]);
+                                 'restaurantId' => $restaurant->id]);
 
     }
 
@@ -51,26 +49,19 @@ class RestaurantController extends Controller
     {
         $forUpdate = $request->all();
         $restaurant = Restaurant::find($forUpdate['id']);
-        // dump($restaurant->all());
         $restaurant->restaurant_name = $forUpdate['restaurant_name'];
         $restaurant->city = $forUpdate['city'];
         $restaurant->adress = $forUpdate['adress'];
-        $restaurant->work_starts = Carbon::parse($forUpdate['work_starts'].':00')->format('H:i');
-        $restaurant->work_ends = Carbon::parse($forUpdate['work_ends'].':00')->format('H:i');
-        dump($restaurant);
+        $restaurant->work_starts = Carbon::parse($forUpdate['work_starts']);
+        $restaurant->work_ends = Carbon::parse($forUpdate['work_ends']);
         $restaurant->save();
-        return response()->json(['message'=> 'New restaurant is edited']);
+        return response()->json(['message'=> 'Restaurant is edited']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Restaurant  $restaurant
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Restaurant $restaurant)
+    public function destroy(Request $request)
     {
+        $restaurant = Restaurant::find($request->id);
         $restaurant->delete();
-        return redirect()-> back()-> with('message', 'Restaurant is deleted');
+        return response()->json(['message' => 'Restaurant is deleted']);
     }
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, updateRestaurantUrl, setRestaurants}) {
+function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, updateRestaurantUrl, setRestaurants, setMessage}) {
     if (forEditRestaurant) {
     const fillForm = (event) => {
         const name = event.target.name;
@@ -11,7 +11,9 @@ function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, u
     const updateRestaurant = () => {
         axios.put(updateRestaurantUrl, forEditRestaurant)
         .then(res => {
-            setRestaurants([forEditRestaurant, ...restaurants]);
+            const removedRestaurant = restaurants.filter((restaurant) => {return restaurant.id !== forEditRestaurant.id});
+            setRestaurants([forEditRestaurant, ...removedRestaurant]);
+            setMessage(res.data.message)
             setForEditRestaurant(null);
         })
     }

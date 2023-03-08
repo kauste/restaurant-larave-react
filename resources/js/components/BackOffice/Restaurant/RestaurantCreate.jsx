@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-function RestaurantCreate({ shouldCreate, setShouldCreate, storeRestaurantUrl, setRestaurants }) {
+function RestaurantCreate({ restaurants, shouldCreate, setShouldCreate, storeRestaurantUrl, setRestaurants, setMessage }) {
     if (shouldCreate === true) {
         const [restaurantData, setRestaurantData] = useState({});
         const fillForm = (event) => {
@@ -13,7 +13,8 @@ function RestaurantCreate({ shouldCreate, setShouldCreate, storeRestaurantUrl, s
         const createRestaurant = () => {
             axios.post(storeRestaurantUrl, { restaurantData: restaurantData })
                 .then(res => {
-                    setRestaurants(res.data.restaurants)
+                    setRestaurants([...restaurants, {id:res.data.restaurantId, ...restaurantData}])
+                    setMessage(res.data.message)
                     setShouldCreate(false)
                 })
         }

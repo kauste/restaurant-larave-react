@@ -4,8 +4,9 @@ import Dropdown from '@/components/inertiaComponents/Dropdown';
 import NavLink from '@/components/inertiaComponents/NavLink';
 import ResponsiveNavLink from '@/components/inertiaComponents/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
+import Message from '@/components/Message';
 
-export default function AuthenticatedBack({ auth, header, children }) {
+export default function AuthenticatedBack({ auth, header, children, message }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
@@ -33,7 +34,7 @@ export default function AuthenticatedBack({ auth, header, children }) {
                             </div>
                             <div className="nav-cart-link-box">
                                 <div className="h-24">
-                                    <Link className="nav-cart-link">Dishes</Link>
+                                    <Link href={route('dish-list')} className="nav-cart-link">Dishes</Link>
                                 </div>
                             </div>
                             <div className="nav-cart-link-box">
@@ -106,6 +107,7 @@ export default function AuthenticatedBack({ auth, header, children }) {
                         </div>
                     </div>
                 </div>
+                <Message message={message}></Message>
             </nav>
 
             {header && (

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\BackOffice\RestaurantController;
-use App\Http\Controllers\DishController;
+use App\Http\Controllers\BackOffice\DishController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
@@ -27,7 +27,7 @@ Route::get('/restaurant-list', [RestaurantController::class, 'index'])->name('re
 Route::get('/restaurant-dishes/{restaurant?}', [RestaurantController::class, 'showDishes'])->name('restaurant-show-dishes'); // not used yet
 Route::post('/restaurant-store', [RestaurantController::class, 'store'])->name('restaurant-store');
 Route::put('/restaurant-update', [RestaurantController::class, 'update'])->name('restaurant-update');
-Route::delete('/restaurant-delete/{restaurant?}', [RestaurantController::class, 'destroy'])->name('restaurant-delete');
+Route::delete('/restaurant-delete/{id?}', [RestaurantController::class, 'destroy'])->name('restaurant-delete');
 
 //Dishes
 Route::get('/dish-list', [DishController::class, 'index'])->name('dish-list');

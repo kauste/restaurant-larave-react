@@ -593,6 +593,22 @@ nav{
         }
     }
 }
+.dishes-list{
+    
+}
+.create-form{
+    .form-row{
+        .main-label{
+            font-weight: 800;
+        }
+        .restaurants-checkbox{
+            display:grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+}
+
+
 
 @media (max-width: 992px){
     .dishes-list{
@@ -691,3 +707,4 @@ nav{
         }
     }
 }
+ 
