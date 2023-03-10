@@ -16,10 +16,10 @@ function OrderList() {
                 <div className="max-w-7xl mx-auto sm:px-0 ">
                     <div className="container">
                         <div className="card-header">
-                            <h2>Your Orders</h2>
+                            <h2>Orders</h2>
                         </div>
                         {
-                            orders.map((order, index) => <FrontOrder key={index} order={order} setChangeContactOrder={setChangeContactOrder} statuses={props.statuses} asset={props.asset} deliveryPrice={props.deliveryPrice} deliveryChoices={props.deliveryChoices} getInvoiceUrl={props.getInvoiceUrl} setMessage={setMessage}></FrontOrder>)
+                            // orders.map((order, index) => <FrontOrder key={index} order={order} setChangeContactOrder={setChangeContactOrder} statuses={props.statuses} asset={props.asset} deliveryPrice={props.deliveryPrice} deliveryChoices={props.deliveryChoices} getInvoiceUrl={props.getInvoiceUrl} setMessage={setMessage}></FrontOrder>)
                         }
                     </div>
                 </div>

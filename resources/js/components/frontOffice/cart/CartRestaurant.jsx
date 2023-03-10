@@ -2,20 +2,18 @@ import axios from "axios";
 import CartDish from "./CartDish";
 import { useEffect, useState } from "react";
 
-function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComfirmModalInfo, setNewCart, cart, setThisRestaurant, setMessage}){
+function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComfirmModalInfo, setNewCart, cart, setMessage}){
     
     const [cartData, setCartData] = useState([]);
     const [newCartInfo, setNewCartInfo] = useState(restaurant.cartInfo);
-    
-
     useEffect(()=> {
-        setThisRestaurant(restaurant)
         setCartData(newCartInfo);
     }, [newCartInfo])
 
     const cancelCart = () => {
         axios.delete(route('delete-cart') + '/' + restaurant.cartInfo[0].restaurant_id)
         .then(res => {
+            console.log(restaurant.cartInfo[0].restaurant_id);
             setNewCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
             setModalInfo(null);
             setMessage(res.data.message)
@@ -24,8 +22,10 @@ function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComf
     const showModal = () => {
         setModalInfo({'text':'Are you sure you want to delete this cart?', 'confirm': cancelCart});
     }
+
     const confirmOrderModal =() => {
-        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'restaurantId': cartData[0].restaurant_id, 'setMessage':setMessage});
+        console.log(restaurant.cartInfo[0].restaurant_id);
+        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'restaurantId': restaurant.cartInfo[0].restaurant_id, 'setMessage':setMessage});
     }
     return(
             <div className="card cart-restaurant">

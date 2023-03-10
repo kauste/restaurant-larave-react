@@ -15,7 +15,7 @@ export default function Authenticated({ auth, header, message, children, modalIn
         <div className="min-h-screen bg-gray-100 authentificated-layout">
                         <EditContactInfoModal  changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder} setContactInfo={setContactInfo}></EditContactInfoModal>
                         <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
-                        <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} restaurant={thisRestaurant} setNewCart={setNewCart}></ConfirmCartModal>
+                        <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} setNewCart={setNewCart}></ConfirmCartModal>
             <nav>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-24 items-center">
@@ -55,6 +55,16 @@ export default function Authenticated({ auth, header, message, children, modalIn
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
+                            <div className="nav-cart-link-box">
+                                <div className="h-24">
+                                    <Link href={route('show-cart')} className="nav-cart-link">Show cart</Link>
+                                </div>
+                            </div>
+                            <div className="nav-cart-link-box">
+                                <div className="h-24">
+                                    <Link href={route('show-orders')} className="nav-cart-link">Show orders</Link>
+                                </div>
+                            </div>
                             {/* PABAIGA */}
                             <div className="relative nav-dropdown ">
                                 <Dropdown>
@@ -73,18 +83,6 @@ export default function Authenticated({ auth, header, message, children, modalIn
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
-                            {/* PRDZIA */}
-                            <div className="nav-cart-link-box">
-                                <div className="h-24">
-                                    <Link href={route('show-cart')} className="nav-cart-link">Show cart</Link>
-                                </div>
-                            </div>
-                            <div className="nav-cart-link-box">
-                                <div className="h-24">
-                                    <Link href={route('show-orders')} className="nav-cart-link">Show orders</Link>
-                                </div>
-                            </div>
-                            {/* PABAIGA */}
                         </div>
 
                         <div className="-mr-2 flex items-center sm:hidden">

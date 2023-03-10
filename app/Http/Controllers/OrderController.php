@@ -61,6 +61,7 @@ class OrderController extends Controller
     }
     public function store(Request $request)
     {   
+        dump($request->restaurantId);
         // validation
         $courierData = $request->deliveryData['courierData'];
         if($request->deliveryData['deliveryChoice'] == 1){
@@ -162,10 +163,10 @@ class OrderController extends Controller
         return $pdf->output();
     }
     public function backIndex (){
-        $orders = Order::where('id', '>', 0)
-                        ->select('orders.*')
+        $orders = Order::select('orders.id', 'orders.user_id', 'orders.restaurant_id', 'orders.delivery_choice', 'orders.status', 'orders.created_at', 'orders.updated_at')
+                        ->where('id', '>', 0)
                         ->orderBy('created_at', 'desc')
-                        ->groupBy('status')
+                        ->groupBy('status', 'id', 'user_id', 'restaurant_id', 'delivery_choice', 'created_at', 'updated_at')
                         ->get();
                         dump($orders);
         //                 ->map(function($order){

@@ -3,7 +3,7 @@ import DeliveryAdress from "./DeliveryAdress";
 import axios from "axios";
 import Messages from "../../Messages";
 
-function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, restaurant, setNewCart }) {
+function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, setNewCart }) {
 
     if (comfirmModalInfo !== null && comfirmModalInfo != undefined) {
         const [messages, setMessages] = useState(null);
@@ -22,6 +22,7 @@ function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, restaur
         }
         useEffect(()=> {
             if(delivery === null) return;
+            console.log(delivery)
             axios.post(route('confirm-cart'), {restaurantId:comfirmModalInfo.restaurantId, deliveryData:delivery})
             .then(res => {
                 if(res.data.errors !== undefined){
@@ -31,7 +32,8 @@ function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, restaur
                     }, 50000)
                 }
                 else{
-                    setNewCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
+                    console.log(comfirmModalInfo.restaurantId)
+                    setNewCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== comfirmModalInfo.restaurantId));
                     setDelivery(null);
                     setComfirmModalInfo(null);
                     comfirmModalInfo.setMessage(res.data.message)

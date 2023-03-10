@@ -1,6 +1,5 @@
 import RestaurantInDish from "./RestaurantInDish";
 function Dish({dish, asset, defaultPic}) {
-
     return (
         <li className="align-center">
             <ul className="one-dish">

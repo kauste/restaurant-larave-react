@@ -39,7 +39,7 @@ export default function AuthenticatedBack({ auth, header, children, message }) {
                             </div>
                             <div className="nav-cart-link-box">
                                 <div className="h-24">
-                                    <Link className="nav-cart-link">Orders</Link>
+                                    <Link className="nav-cart-link" href={route('back-order')} >Orders</Link>
                                 </div>
                             </div>
                             <div className="relative nav-dropdown ">

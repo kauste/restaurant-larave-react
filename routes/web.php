@@ -11,16 +11,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HomeController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+//Back
 // Restaurant
 Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
 Route::get('/restaurant-list', [RestaurantController::class, 'index'])->name('restaurant-list');
@@ -36,7 +27,8 @@ Route::post('/dish-store', [DishController::class, 'store'])->name('dish-store')
 Route::put('/dish-update/{id?}', [DishController::class, 'update'])->name('dish-update');
 Route::delete('/dish-delete/{id?}', [DishController::class, 'destroy'])->name('dish-delete');
 });
-Route::get('bask-order', [OrderController::class, 'backIndex'])->name('bask-order');
+// Order
+Route::get('back-order', [OrderController::class, 'backIndex'])->name('back-order');
 
 
 Route::get('/', function () {
