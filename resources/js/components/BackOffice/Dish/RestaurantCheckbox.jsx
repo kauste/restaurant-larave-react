@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 
-function RestaurantCheckbox ({oneRestaurant, checkBoxData, setCheckboxData}) {
+function RestaurantCheckbox ({oneRestaurant, checkBoxData, setCheckboxData, checkedRestaurants}) {
     const [isChecked, setIsChecked] = useState(false);
 
     const checkboxChange = () => {
         setIsChecked(r => !r)
     }
+
+    useEffect(() => {
+        if(checkedRestaurants.includes(oneRestaurant.id)){
+            setIsChecked(r => !r)
+        }
+    }, [checkedRestaurants])
+
     useEffect(() => {
         if(isChecked){
-            setCheckboxData([...checkBoxData, oneRestaurant.id])
+            setCheckboxData(values => ([...values, oneRestaurant.id]))
         }
         else {
             setCheckboxData(checkBoxData.filter(thisRestaurant => { return thisRestaurant != oneRestaurant.id}))

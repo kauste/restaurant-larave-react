@@ -33,7 +33,7 @@ function RestaurantList(props) {
                                             </li>
                                             <li>
                                                 {
-                                                    restaurantList.map((restaurant, index) => <Restaurant key={index} restaurant={restaurant} restaurantDishesUrl={props.restaurantDishesUrl}></Restaurant>)
+                                                    restaurantList.map((restaurant, index) => <Restaurant key={index} restaurant={restaurant}></Restaurant>)
                                                 }
                                             </li>
                                         </ul>

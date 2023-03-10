@@ -9,11 +9,11 @@ import AreYouSureModal from "@/components/AreYouSureModal";
 import ConfirmCartModal from '@/components/frontOffice/cart/ConfirmCartModal';
 import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfoModal';
 
-export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo, changeContactOrder, setChangeContactOrder, updateAdressUrl, cart, thisRestaurant, setNewCart, setContactInfo}) {
+export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo, changeContactOrder, setChangeContactOrder, cart, thisRestaurant, setNewCart, setContactInfo}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     return (
         <div className="min-h-screen bg-gray-100 authentificated-layout">
-                        <EditContactInfoModal  changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder} updateAdressUrl={updateAdressUrl} setContactInfo={setContactInfo}></EditContactInfoModal>
+                        <EditContactInfoModal  changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder} setContactInfo={setContactInfo}></EditContactInfoModal>
                         <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
                         <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} restaurant={thisRestaurant} setNewCart={setNewCart}></ConfirmCartModal>
             <nav>

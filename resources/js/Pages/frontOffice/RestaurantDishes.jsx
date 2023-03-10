@@ -1,26 +1,24 @@
 import Authenticated from "@/Layouts/Authenticated";
 import { Head } from "@inertiajs/inertia-react";
-import DishInRestaurant from "@/components/frontOffice/restaurants/DishInRestaurant";
+import DishInRestaurant from "@/components/frontOffice/dishes/DishInRestaurant";
 import { useEffect, useState } from "react";
 
 function RestaurantDishes(props){
     const [message, setMessage] = useState(null);
     const [dishes, setDishes] = useState([]);
     const [defaultPic, setDefaultPic] = useState('')
-    const [addToCartUrl, setAddToCartUrl] = useState('');
     const [restaurant, setRestaurant] = useState({});
     const [asset, setAsset] = useState('');
     useEffect(() =>{
         setDishes(props.dishes);
         setDefaultPic(props.defaultPic);
-        setAddToCartUrl(props.addToCartUrl);
         setRestaurant(props.restaurant);
         setAsset(props.asset);
     }, [])
     return (
         <Authenticated auth={props.auth}
                     message={message}>
-            <Head title="Restaurants"/>
+            <Head title={restaurant.restaurant_name}/>
             <div className="py-12 dishes-list one-restaurant-dishes">
                 <div className="max-w-7xl mx-auto sm:px-0 ">
                     <div className="container">
@@ -41,7 +39,7 @@ function RestaurantDishes(props){
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        dishes.map((dish, index) => <DishInRestaurant key={index} dish={dish} defaultPic={defaultPic} addToCartUrl={addToCartUrl} restaurantId={restaurant.id} asset={asset} setMessage={setMessage}></DishInRestaurant>)
+                                        dishes.map((dish, index) => <DishInRestaurant key={index} dish={dish} defaultPic={defaultPic} restaurantId={restaurant.id} asset={asset} setMessage={setMessage}></DishInRestaurant>)
                                     }
                                 </ul>
                             </div>

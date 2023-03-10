@@ -28,164 +28,83 @@ class DishController extends Controller
                         'asset' => asset('images/food') . '/',
                         'dishes'=> $dishes,
                         'defaultPic' => '/todays-special.jpg',
-                        'sortAndFilterUrl' => route('sort-and-filter'),
-                        'restaurantDishesUrl'=>route('restaurant-dishes'),
-                        'dishStoreUrl' => route('dish-store'),
-                        'searchUrl' => route('search-dish'),
-                        'restaurants'=> $restaurants
+                        'restaurants'=> $restaurants,
                         ]);
     }
 
     public function store(Request $request)
     {
-        $restaurantData = $request->formData;
-        dump($restaurantData);
-        foreach($restaurantData['restaurant'] as $restaurant_id){
-            $dish = new Dish;
-            $dish->dish_name = $restaurantData['dish_name'];
-            $dish->price = $restaurantData['price'];
-            $dish->restaurant_id = $restaurant_id;
-            if ($restaurantData['picture']) {
+        $dishData = $request->all();
+        $dish = new Dish;
+        $dish->dish_name = $dishData['dish_name'];
+        $dish->price = $dishData['price'];
 
-                $photo = $restaurantData['picture'];
+            if ($dishData['picture']) {
+                $photo = $dishData['picture'];
     
                 $ext = $photo->getClientOriginalExtension();
-    
                 $name = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-    
                 $file = $name. '-' . rand(100000, 999999). '.' . $ext;
     
-                $Image = Image::make($photo);
-    
-                $Image->save(public_path().'/images/'.$file);
-    
-                // $photo->move(public_path().'/images', $file);
-    
-                $dish->picture_path = asset('/images') . '/' . $file;
-    
+                // $Image = Image::make($photo);
+                // $Image->save(public_path().'/images/'.$file);
+                $photo->move(public_path().'/images/food', $file);
+                $dish->picture_path = $file; 
             }
             $dish->save();
-        }
 
-        return redirect()-> route('dish-list')->with('message', 'New dish is added');
+            $restaurants = collect($dishData)->filter(function ($value, string $key) {
+                return str_contains($key, 'restaurants');
+            })->toArray();
+            $restaurants = array_values($restaurants);
+            $dish->restaurants()->attach($restaurants);
+            
+        return response()->json(['message'=> 'New dish is added', 'newDish' => $dish, 'restaurants' => $dish->restaurants]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Dish  $dish
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Dish $dish)
+    public function update(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Dish  $dish
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Dish $dish)
-    {
-        $thisDishRestaurants = Dish::where('dish_name', $dish->dish_name)->select('restaurant_id')->get();
-        $inRestaurant = [];
-        foreach($thisDishRestaurants as $restaurant){
-            $inRestaurant[] = $restaurant->restaurant_id;
-        }
-        $restaurants = Restaurant::all();
-
-        return view('back.dishes.edit', ['dish'=> $dish, 'inRestaurant'=> $inRestaurant, 'restaurants'=> $restaurants]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateDishRequest  $request
-     * @param  \App\Models\Dish  $dish
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Dish $dish)
-    {
-
-        if ($request->file('picture') && $dish->picture_path){
-            $name = pathinfo($dish->picture_path, PATHINFO_FILENAME);
-            $ext = pathinfo($dish->picture_path, PATHINFO_EXTENSION);
-            dump(pathinfo($dish->picture_path, PATHINFO_FILENAME));
-            $path = public_path(). '/images/'. $name . '.'. $ext ;
-            if (file_exists($path)) {
-                unlink($path);
-            }
-        }
-        $dishes = Dish::where('dish_name', $dish->dish_name)->get();
-        foreach($dishes as $dish){
-            if(!in_array($dish->restaurant_id, $request->restaurant)){
-                $dish->delete();
-            }
-            else{
-                $photo = $request->file('picture');
-                if ($request->file('picture')){
-                    $ext = $photo->getClientOriginalExtension();
-                    $name = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-                    $file = $name. '-' . rand(100000, 999999). '.' . $ext;
-                    $Image = Image::make($photo);
-                    $Image->save(public_path().'/images/'.$file);
-                    $dish->picture_path = asset('/images') . '/' . $file;
-                }
-                $dish->dish_name = $request->dish_name;
-                $dish->price = $request->price;
-                 $dish->save();
-                $request->restaurant = array_diff($request->restaurant, [$dish->restaurant_id]);
-            }
-        }
-
-
-        foreach($request->restaurant as $restaurant_id){
-            $dish = new Dish;
-            $dish->dish_name = $request->dish_name;
-            $dish->price = $request->price;
-            $dish->restaurant_id = $restaurant_id;
-            if ($request->file('picture')) {
-
-                $photo = $request->file('picture');
+        $dishData = $request->all();
+        $dish = Dish::where('id', $dishData['id'])->first();
+        $dish->dish_name = $dishData['dish_name'];
+        $dish->price = $dishData['price'];
+            if ($dishData['picture']) {
+                $photo = $dishData['picture'];
     
                 $ext = $photo->getClientOriginalExtension();
-    
                 $name = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-    
                 $file = $name. '-' . rand(100000, 999999). '.' . $ext;
     
-                $Image = Image::make($photo);
-    
-                $Image->save(public_path().'/images/'.$file);
-                $dish->picture_path = asset('/images') . '/' . $file;
-    
+                // $Image = Image::make($photo);
+                // $Image->save(public_path().'/images/'.$file);
+                $photo->move(public_path().'/images/food', $file);
+                $dish->picture_path = $file; 
             }
+            dump('patekau');
             $dish->save();
-        }
-
-        return redirect()-> route('dish-list')->with('message', 'Dish is edited');
-
+            $restaurants = collect($dishData)->filter(function ($value, string $key) {
+                return str_contains($key, 'restaurants');
+            })->toArray();
+            $restaurants = array_values($restaurants);
+            $dish->restaurants()->detach();
+            $dish->restaurants()->attach($restaurants);
+            
+        return response()->json(['message'=> 'Dish "' . $dish->dish_name . '" dish is edited', 'editedDish' => $dish, 'restaurants' => $dish->restaurants]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Dish  $dish
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Dish $dish)
+    public function destroy(Request $request)
     {
+        $dish = Dish::where('id', $request->id)->first();
         $name = pathinfo($dish->picture_path, PATHINFO_FILENAME);
         $ext = pathinfo($dish->picture_path, PATHINFO_EXTENSION);
-        $path = public_path('/images') . '/' . $name . '.' . $ext;
-
+        $path = public_path('/images/food') . '/' . $name . '.' . $ext;
+        
         if(file_exists($path)) {
             unlink($path);
         } 
+        $dishName = $dish->dish_name;
         $dish->delete();
 
-        return redirect()->back()->with('deleted', 'Animal have no photo now');
+        return response()->json(['message' => 'Dish "'. $dishName .'" is deleted.']);
     }
 }

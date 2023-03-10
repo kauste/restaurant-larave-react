@@ -23,6 +23,7 @@ function RestaurantList(props) {
             setMessage(null);
         }, 20000)
     },[message])
+    
     return (
         <AuthenticatedBack auth={props.auth} message={message}>
             <Head title="Restaurants"/>

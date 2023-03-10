@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import DeliveryInfo from "./DeliveryInfo";
 import OrderDish from "./OrderDish";
 
-function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, getInvoiceUrl, setChangeContactOrder, setMessage }) {
+function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, setChangeContactOrder, setMessage }) {
     const [showBody, setShowBody] = useState('d-none');
     const [contactInfo, setContactInfo] = useState(order.contactInfo);
 
@@ -12,7 +12,7 @@ function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, ge
         setShowBody(toggle);
     }
     const getInvoice = () => {
-        axios.get(getInvoiceUrl + '/' + order.id, {responseType: 'blob'})
+        axios.get(route('get-invoice') + '/' + order.id, {responseType: 'blob'})
         .then(response => {
             let blob = new Blob([response.data], { type: 'application/pdf' })
             let link = document.createElement('a')

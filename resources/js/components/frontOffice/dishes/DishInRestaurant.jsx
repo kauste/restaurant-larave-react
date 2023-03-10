@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
-function DishInRestaurant({dish, asset, setMessage, defaultPic, addToCartUrl, restaurantId}) {
+function DishInRestaurant({dish, asset, setMessage, defaultPic, restaurantId}) {
 
  const [amount, setAmount] = useState(1);
 
     function addToCart(){
-        axios.post(addToCartUrl, {id:dish.id, dish_name:dish.dish_name, amount:amount, restaurant_id:restaurantId})
+        axios.post(route('user-add-to-cart'), {id:dish.id, dish_name:dish.dish_name, amount:amount, restaurant_id:restaurantId})
         .then(res => {
             setMessage(res.data.message);
             setTimeout(()=> {

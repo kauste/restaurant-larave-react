@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function EditContactInfoModal({setChangeContactOrder, changeContactOrder, updateAdressUrl, setMessage}){
+function EditContactInfoModal({setChangeContactOrder, changeContactOrder, setMessage}){
     if(changeContactOrder !== null && changeContactOrder !== undefined){
         const [courierData, setCourierData ] = useState({});
         useEffect(() => {
@@ -22,7 +22,7 @@ function EditContactInfoModal({setChangeContactOrder, changeContactOrder, update
             setCourierData(values => ({...values, [name]:value }))
         }
         const updateOrder = () => {
-            axios.put(updateAdressUrl + '/' + changeContactOrder.orderId, courierData)
+            axios.put(route('update-order-adress') + '/' + changeContactOrder.orderId, courierData)
             .then(res => {
                 changeContactOrder.setContactInfo({...changeContactOrder.contactInfo, ...courierData});
                 const newData = {city:courierData.city, street:courierData.street, street_nr:courierData.streetNumber, flat_nr:courierData.flat, telephone_number:courierData.telNr, post_code:courierData.postCode, message:courierData.message}

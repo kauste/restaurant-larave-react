@@ -57,10 +57,6 @@ class CartController extends Controller
                                 'user'=> $user,
                                 'asset' => asset('images/food'),
                                 'deliveryPrice' => Order::DELIVERY_PRICE,
-                                'deleteCartItemUrl' => route('delete-cart-item'),
-                                'editCartItemUrl' => route('edit-cart-item'),
-                                'cancelCartUrl' => route('delete-cart'),
-                                'confirmCartUrl' => route('confirm-cart'),
         ]);
     }
     public function deleteCartItem (Request $request){

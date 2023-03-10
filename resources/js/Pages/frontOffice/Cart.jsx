@@ -30,7 +30,7 @@ function Cart(props){
 
     return(
         <Authenticated auth={props.auth} message={message} modalInfo={modalInfo} setModalInfo={setModalInfo} comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} thisRestaurant={thisRestaurant} setNewCart={setNewCart}>
-                        <Head title="Restaurants"/>
+                        <Head title="Cart"/>
             <div className="py-12 cart">
                 <div className="max-w-7xl mx-auto sm:px-0 ">
                     <div className="container">
@@ -38,7 +38,7 @@ function Cart(props){
                             <h2>Dishes in Cart</h2>
                         </div>
                         {
-                            cart.map((restaurant, index)=> <CartRestaurant key={index} deliveryPrice={props.deliveryPrice} asset={props.asset} restaurant={restaurant} deleteCartItemUrl={props.deleteCartItemUrl} editCartItemUrl={props.editCartItemUrl} setModalInfo={setModalInfo} setComfirmModalInfo={setComfirmModalInfo} cancelCartUrl={props.cancelCartUrl} confirmCartUrl={props.confirmCartUrl} setNewCart={setNewCart} cart={cart} setThisRestaurant={setThisRestaurant} setMessage={setMessage}></CartRestaurant>)
+                            cart.map((restaurant, index)=> <CartRestaurant key={index} deliveryPrice={props.deliveryPrice} asset={props.asset} restaurant={restaurant} setModalInfo={setModalInfo} setComfirmModalInfo={setComfirmModalInfo} setNewCart={setNewCart} cart={cart} setThisRestaurant={setThisRestaurant} setMessage={setMessage}></CartRestaurant>)
                         }
                     </div>
                 </div>

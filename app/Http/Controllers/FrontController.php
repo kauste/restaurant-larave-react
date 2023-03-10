@@ -7,6 +7,7 @@ use App\Models\Restaurant;
 use App\Models\Dish;
 use App\Models\Order;
 use Inertia\Inertia;
+use Carbon\Carbon;
 use Auth;
 use DB;
 
@@ -22,7 +23,6 @@ class FrontController extends Controller
 
         return Inertia::render('frontOffice/RestaurantList', [
                         'restaurants'=> $restaurants,
-                        'restaurantDishesUrl' => route('restaurant-dishes'),
                         ]);
     }
     public function dishes(){
@@ -42,12 +42,10 @@ class FrontController extends Controller
                         'asset' => asset('images/food') . '/',
                         'dishes'=> $dishes,
                         'defaultPic' => '/todays-special.jpg',
-                        'sortAndFilterUrl' => route('sort-and-filter'),
-                        'restaurantDishesUrl'=>route('restaurant-dishes'),
-                        'searchUrl' => route('search-dish'),
                         'restaurants'=> $restaurants
                         ]);
     }
+
     public function restaurantDishes(Request $request){
         $restaurant = Restaurant::where('id', '=', $request->id)->first();
         $dishes = Dish::join('restaurant_dish', 'restaurant_dish.dish_id', 'dishes.id')
@@ -60,7 +58,6 @@ class FrontController extends Controller
                                 'dishes'=> $dishes,
                                 'asset' => asset('images/food'). '/',
                                 'defaultPic' => '/todays-special.jpg',
-                                'addToCartUrl' => route('user-add-to-cart'),
                                 ]);
     }
 

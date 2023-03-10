@@ -24,8 +24,8 @@ function FrontOrders(props) {
         }
     })
     return (
-        <Authenticated auth={props.auth} message={message} changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder} updateAdressUrl={props.updateAdressUrl}>
-            <Head title="Restaurants" />
+        <Authenticated auth={props.auth} message={message} changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder}>
+            <Head title="Orders" />
             <div className="py-12 order">
                 <div className="max-w-7xl mx-auto sm:px-0 ">
                     <div className="container">
@@ -33,7 +33,7 @@ function FrontOrders(props) {
                             <h2>Your Orders</h2>
                         </div>
                         {
-                            orders.map((order, index) => <FrontOrder key={index} order={order} setChangeContactOrder={setChangeContactOrder} statuses={props.statuses} asset={props.asset} deliveryPrice={props.deliveryPrice} deliveryChoices={props.deliveryChoices} getInvoiceUrl={props.getInvoiceUrl} setMessage={setMessage}></FrontOrder>)
+                            orders.map((order, index) => <FrontOrder key={index} order={order} setChangeContactOrder={setChangeContactOrder} statuses={props.statuses} asset={props.asset} deliveryPrice={props.deliveryPrice} deliveryChoices={props.deliveryChoices} setMessage={setMessage}></FrontOrder>)
                         }
                     </div>
                 </div>

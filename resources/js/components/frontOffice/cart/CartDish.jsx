@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 
-function CartDish({cartDish, asset, deleteCartItemUrl, editCartItemUrl, setModalInfo, cartData, cart, setNewCart, setNewCartInfo, restaurant, setMessage}){
+function CartDish({cartDish, asset, setModalInfo, cartData, cart, setNewCart, setNewCartInfo, restaurant, setMessage}){
     const [amount, setAmount] = useState(cartDish.amount);
     const deleteItem = () => {
-        axios.delete(deleteCartItemUrl + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id)
+        axios.delete(route('delete-cart-item') + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id)
         .then(res => {
             let msg;
             if(cartData.length === 1){
@@ -20,7 +20,7 @@ function CartDish({cartDish, asset, deleteCartItemUrl, editCartItemUrl, setModal
         })
     }
     const editAmount = () => {
-        axios.put(editCartItemUrl + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id, {'amount':amount})
+        axios.put(route('edit-cart-item') + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id, {'amount':amount})
         .then(res => {
             setMessage(res.data.message);
         })

@@ -22,7 +22,7 @@ function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, restaur
         }
         useEffect(()=> {
             if(delivery === null) return;
-            axios.post(comfirmModalInfo.confirmCartUrl, {restaurantId:comfirmModalInfo.restaurantId, deliveryData:delivery})
+            axios.post(route('confirm-cart'), {restaurantId:comfirmModalInfo.restaurantId, deliveryData:delivery})
             .then(res => {
                 if(res.data.errors !== undefined){
                     setMessages(res.data.errors);

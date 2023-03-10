@@ -24,7 +24,7 @@ use App\Http\Controllers\HomeController;
 // Restaurant
 Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
 Route::get('/restaurant-list', [RestaurantController::class, 'index'])->name('restaurant-list');
-Route::get('/restaurant-dishes/{restaurant?}', [RestaurantController::class, 'showDishes'])->name('restaurant-show-dishes'); // not used yet
+Route::get('/back-restaurant-dishes/{restaurant?}', [RestaurantController::class, 'showDishes'])->name('restaurant-show-dishes'); // not used yet
 Route::post('/restaurant-store', [RestaurantController::class, 'store'])->name('restaurant-store');
 Route::put('/restaurant-update', [RestaurantController::class, 'update'])->name('restaurant-update');
 Route::delete('/restaurant-delete/{id?}', [RestaurantController::class, 'destroy'])->name('restaurant-delete');
@@ -33,10 +33,10 @@ Route::delete('/restaurant-delete/{id?}', [RestaurantController::class, 'destroy
 Route::get('/dish-list', [DishController::class, 'index'])->name('dish-list');
 Route::get('/dish-create', [DishController::class, 'create'])->name('dish-create');
 Route::post('/dish-store', [DishController::class, 'store'])->name('dish-store');
-Route::get('/dish-edit/ {dish}', [DishController::class, 'edit'])->name('dish-edit');
-Route::put('/dish-update/{dish}', [DishController::class, 'update'])->name('dish-update');
-Route::delete('/dish-delete/{dish}', [DishController::class, 'destroy'])->name('dish-delete');
+Route::put('/dish-update/{id?}', [DishController::class, 'update'])->name('dish-update');
+Route::delete('/dish-delete/{id?}', [DishController::class, 'destroy'])->name('dish-delete');
 });
+Route::get('bask-order', [OrderController::class, 'backIndex'])->name('bask-order');
 
 
 Route::get('/', function () {

@@ -7,20 +7,21 @@ import { useEffect, useState } from "react";
 
 function DishList(props) {
     const [restaurantDishes, setRestaurantDishes] = useState([]);
-    const [defaultPic, setDefaultPic] = useState('');
+    const defaultPic = props.defaultPic;
+
     useEffect(() => {
         setRestaurantDishes(props.dishes);
-        setDefaultPic(props.defaultPic)
     }, [])
 
+    
     return (
         <Authenticated auth={props.auth}>
-            <Head title="Restaurants"/>
+            <Head title="Dishes"/>
             <div className="py-12 dishes-list">
                 <div className="max-w-7xl mx-auto sm:px-0 ">
                     <div className="container">
                         <div className="row justify-content-center">
-                            <SortFilterSearch setRestaurantDishes={setRestaurantDishes} sortAndFilterUrl={props.sortAndFilterUrl} searchUrl={props.searchUrl} restaurants={props.restaurants}/>
+                            <SortFilterSearch setRestaurantDishes={setRestaurantDishes} restaurants={props.restaurants}/>
                         </div>
                         <div>
                             <div className="card-header">
@@ -29,7 +30,7 @@ function DishList(props) {
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        restaurantDishes.map((dish, index) => <Dish key={index} dish={dish} defaultPic={defaultPic} asset={props.asset} orderUrl={props.orderUrl} restaurantDishesUrl={props.restaurantDishesUrl}></Dish>)
+                                        restaurantDishes.map((dish, index) => <Dish key={index} dish={dish} defaultPic={defaultPic} asset={props.asset} orderUrl={props.orderUrl}></Dish>)
                                     }
                                 </ul>
                             </div>

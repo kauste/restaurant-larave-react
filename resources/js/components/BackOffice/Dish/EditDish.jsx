@@ -3,15 +3,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import RestaurantCheckbox from "./RestaurantCheckbox";
 
-function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, setNewestDishes, setMessage }) {
-    if (shouldCreate === true) {
-        const [formData, setFormData] = useState({ restaurants: [],
-                                                  dish_name: '',
-                                                  price:'',
-                                                  picture:null,                                                            
-                                                });
-        const [checkBoxData, setCheckboxData] = useState([]);
+function EditDish({, dishForEdit, setDishForEdit , restaurants, setNewestDishes, setMessage }) {
+    if (typeof(dishForEdit) === 'object' && dishForEdit !== null) {
 
+        const [checkBoxData, setCheckboxData] = useState([]);
+        const [checkedRestaurants, setCheckedRestaurants] = useState([]);
+     
         const fillForm = (e) => {
             const name = e.target.name;
             let value;
@@ -21,19 +18,30 @@ function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, 
             else if(e.target.value){
                 value = e.target.value;
             }
-            setFormData(values => ({...values, [name]:value}));
+            setDishForEdit(values => ({...values, [name]:value}));
         }
+
         useEffect(() => {
-            setFormData({...formData, restaurants:checkBoxData})
+            dishForEdit.picture = null;
+            if(dishForEdit.restaurants !== [] || dishForEdit.restaurants !== null){
+                dishForEdit.restaurants.forEach(restaurant => {
+                    setCheckedRestaurants(values => ([...values, restaurant.id]))
+                });
+            }
+        }, [])
+
+        useEffect(() => {
+            setDishForEdit({...dishForEdit, restaurants:checkBoxData})
         }, [checkBoxData])
 
-        const createDish = () => {
-            axios.post(route('dish-store'), formData, {headers:{Accept: "application/json", "Content-Type": "multipart/form-data"}})
+        const updateDish = () => {
+            console.log(dishForEdit);
+            axios.post(route('dish-update'), { _method: 'PUT', ...dishForEdit}, {headers:{"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}})
             .then(res => {
-                const newestDish = {...res.data.newDish, restaurants:res.data.restaurants}
-                setNewestDishes([...newestDishes, newestDish])
-                setMessage(res.data.message)
-                setShouldCreate(false)
+                const editedDish = {...res.data.editedDish, restaurants:res.data.restaurants}
+                setNewestDishes(values => ([...values.filter(d => d.id !== editedDish.id), editedDish]))
+                setMessage(res.data.message);
+                setDishForEdit(null);
             })
         }
         return (
@@ -42,8 +50,8 @@ function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, 
                     <div role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">Create new dish</h5>
-                                <button type="button" className="close" onClick={() => setShouldCreate(false)}>
+                                <h5 className="modal-title">Edit dish</h5>
+                                <button type="button" className="close" onClick={() => setDishForEdit(null)}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -52,12 +60,12 @@ function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, 
                                     <div className="form-row d-flex gap-10">
                                         <div className="col-md-7">
                                             <label className="main-label" htmlFor="name">Name</label>
-                                            <input id="name" type="text" className="form-control" name="dish_name" value={formData?.dish_name || ''} onChange={fillForm} required />
+                                            <input id="name" type="text" className="form-control" name="dish_name" value={dishForEdit?.dish_name || ''} onChange={fillForm} required />
                                         </div>
                                         <div className="col-3">
                                             <label className="main-label" htmlFor="price">Price</label>
                                             <div className="d-flex gap-1 align-items-end">
-                                                <input id="price" type="number" className="form-control" name="price" value={formData?.price} onChange={fillForm} required />
+                                                <input id="price" type="number" className="form-control" name="price" value={dishForEdit?.price} onChange={fillForm} required />
                                                 <span>eur.</span>
                                             </div>
                                         </div>
@@ -67,7 +75,7 @@ function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, 
                                             <label className="main-label"htmlFor="restaurant_id">Choose restaurant</label>
                                             <div className="restaurants-checkbox">
                                                 {
-                                                    restaurants.map((oneRestaurant, i) => <RestaurantCheckbox key={i} oneRestaurant={oneRestaurant} setCheckboxData={setCheckboxData} checkBoxData={checkBoxData}></RestaurantCheckbox>)
+                                                    restaurants.map((oneRestaurant, i) => <RestaurantCheckbox key={i} oneRestaurant={oneRestaurant} setCheckboxData={setCheckboxData} checkBoxData={checkBoxData} checkedRestaurants={checkedRestaurants}></RestaurantCheckbox>)
 
                                                 }
                                                 
@@ -83,8 +91,8 @@ function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, 
                                 </form>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="btn btn-danger" onClick={createDish}>Create</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => setShouldCreate(false)}>Cancel</button>
+                                <button type="button" className="btn btn-danger" onClick={updateDish}>Create</button>
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => setDishForEdit(null)}>Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -94,4 +102,4 @@ function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, 
     }
     return null;
 }
-export default CreateDish;
+export default EditDish;

@@ -1,17 +1,17 @@
 import axios from "axios";
 import { useState } from "react";
-function SortFilterSearch({sortAndFilterUrl, setRestaurantDishes, searchUrl, restaurants}){
+function SortFilterSearch({sortAndFilterUrl, setRestaurantDishes, restaurants}){
     const [selectValue, setSelectValue] = useState('default');
     const [restaurant, setRestaurant] = useState(0);
     const [search, setSearch] = useState('');
     const [activenessState, setActivenessState] = useState('d-none');
 
     const sortAndFilter = () => {
-        axios.get(sortAndFilterUrl + '?price_sort='+ selectValue +'&filter=' + restaurant)
+        axios.get(route('sort-and-filter') + '?price_sort='+ selectValue +'&filter=' + restaurant)
         .then(res => {setRestaurantDishes(res.data.dishes) });
     }
     const doSearch = () => {
-        axios.get(searchUrl +'?dish=' + search)
+        axios.get(route('search-dish') +'?dish=' + search)
         .then(res => {setRestaurantDishes(res.data.dishes) });
     }
     const displayToggle = () => {

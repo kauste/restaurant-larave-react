@@ -1,6 +1,6 @@
 import axios from "axios";
 
-function Restaurant({restaurant, restaurantDishesUrl}){
+function Restaurant({restaurant}){
 
     return(
         <ul className="restaurant-list-grid">
@@ -9,7 +9,7 @@ function Restaurant({restaurant, restaurantDishesUrl}){
             <li>{restaurant.adress}</li>
             <li>From {restaurant.work_starts}h to {restaurant.work_ends}h</li>
             <li className="controls">
-                <a className="btn btn-outline-danger" href={restaurantDishesUrl + '/' + restaurant.id} title="Show restaurant dishes">Show dishes</a>
+                <a className="btn btn-outline-danger" href={route('restaurant-dishes') + '/' + restaurant.id} title="Show restaurant dishes">Show dishes</a>
             </li>
         </ul>
     )

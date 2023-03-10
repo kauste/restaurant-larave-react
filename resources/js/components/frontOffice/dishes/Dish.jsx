@@ -1,11 +1,6 @@
-import axios from "axios";
 import RestaurantInDish from "./RestaurantInDish";
-function Dish({dish, asset, defaultPic, restaurantDishesUrl}) {
+function Dish({dish, asset, defaultPic}) {
 
-    // let restaurantDishes = (restaurantId) => {
-    //     axios.get(sortAndFilterUrl + '?price_sort=default&filter=' + restaurantId)
-    //     .then(res => {setRestaurantDishes(res.data.dishes) });
-    // }
     return (
         <li className="align-center">
             <ul className="one-dish">
@@ -17,7 +12,7 @@ function Dish({dish, asset, defaultPic, restaurantDishesUrl}) {
                 <li>
                     <span className="bold">At: </span>
                     {
-                        (dish.restaurants).map((restaurant, index) => <RestaurantInDish key={index} restaurant={restaurant} index={index} allRestaurants={dish.restaurants} restaurantDishesUrl={restaurantDishesUrl}></RestaurantInDish>)
+                        (dish.restaurants).map((restaurant, index) => <RestaurantInDish key={index} restaurant={restaurant} index={index} allRestaurants={dish.restaurants}></RestaurantInDish>)
                     }
                 </li>
             </ul>
