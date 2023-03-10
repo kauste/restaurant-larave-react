@@ -80,7 +80,6 @@ class DishController extends Controller
                 $photo->move(public_path().'/images/food', $file);
                 $dish->picture_path = $file; 
             }
-            dump('patekau');
             $dish->save();
             $restaurants = collect($dishData)->filter(function ($value, string $key) {
                 return str_contains($key, 'restaurants');

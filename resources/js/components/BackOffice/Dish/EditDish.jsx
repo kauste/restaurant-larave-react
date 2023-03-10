@@ -35,7 +35,6 @@ function EditDish({, dishForEdit, setDishForEdit , restaurants, setNewestDishes,
         }, [checkBoxData])
 
         const updateDish = () => {
-            console.log(dishForEdit);
             axios.post(route('dish-update'), { _method: 'PUT', ...dishForEdit}, {headers:{"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}})
             .then(res => {
                 const editedDish = {...res.data.editedDish, restaurants:res.data.restaurants}

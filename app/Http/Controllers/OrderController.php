@@ -61,7 +61,6 @@ class OrderController extends Controller
     }
     public function store(Request $request)
     {   
-        dump($request->restaurantId);
         // validation
         $courierData = $request->deliveryData['courierData'];
         if($request->deliveryData['deliveryChoice'] == 1){

@@ -9,13 +9,13 @@ import AreYouSureModal from "@/components/AreYouSureModal";
 import ConfirmCartModal from '@/components/frontOffice/cart/ConfirmCartModal';
 import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfoModal';
 
-export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo, changeContactOrder, setChangeContactOrder, cart, thisRestaurant, setNewCart, setContactInfo}) {
+export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo, changeContactOrder, setChangeContactOrder, cart, setCart, setContactInfo}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     return (
         <div className="min-h-screen bg-gray-100 authentificated-layout">
                         <EditContactInfoModal  changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder} setContactInfo={setContactInfo}></EditContactInfoModal>
                         <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
-                        <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} setNewCart={setNewCart}></ConfirmCartModal>
+                        <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} setCart={setCart}></ConfirmCartModal>
             <nav>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-24 items-center">

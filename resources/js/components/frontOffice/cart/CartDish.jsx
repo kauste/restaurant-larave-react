@@ -1,18 +1,18 @@
 import axios from "axios";
 import { useState } from "react";
 
-function CartDish({cartDish, asset, setModalInfo, cartData, cart, setNewCart, setNewCartInfo, restaurant, setMessage}){
+function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCartData, restaurant, setMessage}){
     const [amount, setAmount] = useState(cartDish.amount);
     const deleteItem = () => {
         axios.delete(route('delete-cart-item') + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id)
         .then(res => {
             let msg;
             if(cartData.length === 1){
-                setNewCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
+                setCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
                 msg ='There is no dishes in cart, therefore cart is deleted.';
             }
             else{
-                setNewCartInfo(cartData.filter((dish) => dish.restaurant_id !== cartDish.restaurant_id || dish.dish_id !== cartDish.dish_id));
+                setCartData(cartData.filter((dish) => dish.restaurant_id !== cartDish.restaurant_id || dish.dish_id !== cartDish.dish_id));
                 msg = res.data.message;
             }
             setModalInfo(null);
