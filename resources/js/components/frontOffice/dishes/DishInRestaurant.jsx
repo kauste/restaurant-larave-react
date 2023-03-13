@@ -24,7 +24,7 @@ function DishInRestaurant({dish, asset, setMessage, defaultPic, restaurantId}) {
                 <li>{dish.price} eu.</li>
                 <li className="form">
                         <input className="amount-input" type="number" min="1" max="50" value={amount} onChange={e => setAmount(e.target.value)}/>
-                        <button className="btn btn-outline-danger" type="button" onClick={addToCart}>Add to cart</button>
+                        <button className="simple-button" type="button" onClick={addToCart}>Add to cart</button>
                 </li>
             </ul>
         </li>

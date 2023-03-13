@@ -25,7 +25,7 @@ export default function Authenticated({ auth, header, message, children, modalIn
                                     <ApplicationLogo className="block nav-logo text-gray-500" />
                                 </Link>
                             </div>
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex nav-main-name">
                                 <NavLink href={route('user-restaurants')} active={route().current('user-restaurants')}>
                                     Food lovers
                                 </NavLink>
@@ -56,11 +56,11 @@ export default function Authenticated({ auth, header, message, children, modalIn
                                 </Dropdown>
                             </div>
                             <div className="nav-cart-link-box">
-                                    <Link href={route('show-cart')} className="nav-cart-link">Show cart</Link>
+                                    <Link href={route('show-cart')} className="nav-cart-link h-24">Show cart</Link>
                             </div>
                             <div className="nav-cart-link-box">
                                 <div className="h-24">
-                                    <Link href={route('show-orders')} className="nav-cart-link">Show orders</Link>
+                                    <Link href={route('show-orders')} className="nav-cart-link h-24">Show orders</Link>
                                 </div>
                             </div>
                             {/* PABAIGA */}

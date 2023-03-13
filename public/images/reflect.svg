@@ -1,0 +1,17 @@
+<svg width="220" height="220" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <radialGradient
+            id="GradientReflect"
+            cx="0.5"
+            cy="0.5"
+            r="0.4"
+            fx="0.75"
+            fy="0.75"
+            spreadMethod="reflect">
+            <stop offset="0%" stopColor="rgba(223,179,113,1)" />
+            <stop offset="80%" stopColor="hsla(36, 70%, 17%, 1)" />
+        </radialGradi
+    </defs>
+    <rect x="50" y="50" rx="15" ry="15" width="120" height="40"
+        fill="url(#GradientReflect)" />
+</svg>

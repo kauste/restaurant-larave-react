@@ -5,17 +5,6 @@ export default function ApplicationLogo({ className }) {
 		<svg className={className + 'logo-svg-svg'} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
 			viewBox="0 0 60 60" xmlSpace="preserve" fill="url(#GradientReflect)">
 			<defs>
-				<radialGradient id="RadialGradient1">
-					<stop offset="0%" stopColor="#806949" />
-					<stop offset="90%" stopColor="#ff8f05" />
-					<stop offset="100%" stopColor="#806949" />
-				</radialGradient>
-				<linearGradient id="Gradient2" x1="0" x2="1" y1="0" y2="0">
-					<stop offset="0%" stopColor="#ff8f05" />
-					<stop offset="45%" stopColor="#b36403ef" stopOpacity="0.5" />
-					<stop offset="85%" stopColor=" #b36403ef" stopOpacity="0.5" />
-					<stop offset="100%" stopColor="#ff8f05" />
-				</linearGradient>
 				<radialGradient
 					id="GradientReflect"
 					cx="0.5"
