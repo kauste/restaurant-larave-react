@@ -1,4 +1,4 @@
-import AreYouSureModal from "@/components/AreYouSureModal";
+import AreYouSureModal from "@/components/inertiaComponents/AreYouSureModal";
 import CreateDish from "@/components/BackOffice/Dish/CreateDish";
 import Dish from "@/components/BackOffice/Dish/Dish";
 import EditDish from "@/components/BackOffice/Dish/EditDish";

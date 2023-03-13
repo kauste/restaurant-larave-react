@@ -1,4 +1,4 @@
-import AreYouSureModal from "@/components/AreYouSureModal";
+import AreYouSureModal from "@/components/inertiaComponents/AreYouSureModal";
 import BackRestaurant from "@/components/BackOffice/Restaurant/BackRestaurant";
 import RestaurantCreate from "@/components/BackOffice/Restaurant/RestaurantCreate";
 import RestaurantEdit from "@/components/BackOffice/Restaurant/RestaurantEdit";

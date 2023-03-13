@@ -162,35 +162,38 @@ class OrderController extends Controller
         return $pdf->output();
     }
     public function backIndex (){
-        $orders = Order::select('orders.id', 'orders.user_id', 'orders.restaurant_id', 'orders.delivery_choice', 'orders.status', 'orders.created_at', 'orders.updated_at')
-                        ->where('id', '>', 0)
-                        ->orderBy('created_at', 'desc')
-                        ->groupBy('status', 'id', 'user_id', 'restaurant_id', 'delivery_choice', 'created_at', 'updated_at')
-                        ->get();
-                        dump($orders);
-        //                 ->map(function($order){
-        //                     $order->dishes = Dish::join('dish_order', 'dish_order.dish_id', 'dishes.id')
-        //                                     ->where('order_id', $order->id)
-        //                                     ->get();
-        //                     $order->restaurantName = Restaurant::where('restaurants.id', $order->restaurant_id)
-        //                                                         ->select('restaurants.restaurant_name')
-        //                                                         ->first()->restaurant_name;
-        //                     $totalPrice = 0;
-        //                     foreach($order->dishes as $item){
-        //                             $totalPrice += $item['amount'] * $item['price'];
-        //                     }
-        //                     if($order->delivery_choice === 1){
-        //                         $order->contactInfo = ContactInfo::where('order_id', $order->id)
-        //                                                         ->first();
-        //                         $totalPrice += Order::DELIVERY_PRICE;                          
-        //                     }
-        //                     $order->totalPrice = $totalPrice;
-        //                     $order->created = Carbon::create($order->created_at, 'UTC+2')->format('Y-m-d H:m');
-        //                     $order->updated = Carbon::parse($order->updated_at, 'UTC+2')->format('Y-m-d H:m');
-        //                     return $order;
-        //                 });
-        // $statuses = Order::STATUS;
-        // $deliveryChoices = Order::DELIVERY_CHOICES;
-        return Inertia::render('BackOffice/OrderList', ['orders' => $orders]);
+        $orders = Order::with(['dishes' => function($dish){
+                                                $dish->select('dish_name', 'price', 'id');
+                                            }, 
+                              'restaurant' => function($r){
+                                                $r->select('id','restaurant_name', 'city');
+                                            },
+                                'adress' =>function($a){
+                                                $a->select('order_id', 'city', 'street', 'street_nr', 'flat_nr', 'post_code', 'telephone_number', 'message');
+                                },
+                                'user' => function($u){
+                                                $u->select('id', 'name', 'email');
+                                }
+                                ])
+                        ->orderBy('status')
+                        ->get()
+                      ->map(function($order){
+
+                            $totalPrice = 0;
+                            foreach($order->dishes as $item){
+                                    $totalPrice += $item['pivot']['amount'] * $item['price'];
+                            }
+                            if($order->delivery_choice === 1){
+                                $totalPrice += Order::DELIVERY_PRICE;                          
+                            }
+                            $order->totalPrice = $totalPrice;
+                            $order->created = Carbon::create($order->created_at, 'UTC+2')->format('Y-m-d H:m');
+                            $order->updated = Carbon::parse($order->updated_at, 'UTC+2')->format('Y-m-d H:m');
+                            return $order;
+                      });
+
+        $statuses = Order::STATUS;
+        $deliveryChoices = Order::DELIVERY_CHOICES;
+        return Inertia::render('BackOffice/OrderList', ['orders' => $orders, 'statuses' => $statuses, 'deliveryChoices' => $deliveryChoices]);
     }
 }

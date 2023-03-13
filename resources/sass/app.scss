@@ -19,6 +19,14 @@
     --gold-shadow:#CDA941;
     --sand-color: #f3eec4;
     --darker-sand:#f1ebb0;
+
+
+    --light-pink--color:#CD975B;
+    --the-darher-gray:#958d83;
+    --the-gray:#B4A797;
+    --the-lighter-gray:#e1ddd7;
+    --the-gray-for-background:#A19586;
+    --the-orange-color:#C67502;
 }
 .bold {
     font-weight: 800;
@@ -174,44 +182,74 @@ svg{
 .container{
     max-width: calc(100% - 2vw);
 }
+body{
+    min-height:100vh;
+}
+.main-for-children{
+    background: rgb(205,193,176);
+background: linear-gradient(180deg, rgba(205,193,176,1) 91%, rgba(210,184,143,1) 92%, rgba(177,168,154,1) 93%, rgba(194,167,130,1) 93%, rgba(131,116,96,1) 96%, rgba(116,104,87,1) 98%, rgba(116,104,87,1) 99%, rgba(116,104,87,1) 100px);
+padding-bottom: 150px;
+padding-top: 150px;
+min-height: calc(100vh - 80px);
 
+}
+.front-footer{
+    height: 80px;
+background: #746857;
+}
 nav{
-    background-color: #784124;
-    box-shadow: 0 2px 8px var(--gold-shadow);
+    // background-image: url()'./../../public/images/bandau.png';
+    .nav-box{
+        width:100%;
+        padding:0 20px 0 40px;
+        display:flex;
+        justify-content:space-between;
+        height:100%;
+        align-items: center; 
+        background-image:url( './../../public/images/bandau.png');
+        box-shadow: 0px 0px 2px 6px hsla(26, 25%, 13%, 0.729);        
+        .nav-right-block{
+            height:100%;
+        }
+    }
+    position:absolute;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    width:100%;
+    height: 150px;
     .nav-logo{
         width: 80px;
         height:80px;
-        fill:var(--gold-color);
+        .logo-svg-svg{
+            background:linear-gradient(90deg, rgba(126,103,71,0.8199180795365021) 0%, rgba(255,143,5,0.3157163988642332) 16%, rgba(99,72,36,0.6938676593684349) 85%, rgba(128,105,73,1) 100%);
+        }
     }
     .nav-link{
         font-size: 30px;
         padding-top: 10px;
         font-family: var(--names-family);
-        color: var(--gold-color);
+        color: rgba(223,179,113,1);
         &:hover{
-            color:var(--dark-gold);
+            background-color: #514634;
         }
     }
     .nav-dropdown, .nav-cart-link{
         display: flex;
         align-items: center;
         padding: 0 10px;
-        background-color: var(--salad-green);
         font-size: 15px;
-        height:100%;
-        color: var(--dark-salad);
-        border-right: var(--dark-salad) solid 1px;
+        color: rgba(223,179,113,1);
         &:hover{
-            color:var(--salad-green);
-            background-color: var(--dark-salad);
+            background-color: #514634;
+
         }
     }
     .nav-cart-link-box{
         .nav-cart-link{
-            color: var(--dark-salad);
             text-decoration: none;
             &:hover{
-                color:var(--salad-green);
+                background-color: #514634;
             }
         }
     }
@@ -237,8 +275,9 @@ nav{
 }
 // front
 .card{
-    box-shadow: 2px 2px 8px var(--gold-shadow);
-    background-color: var(--sand-color);
+    // box-shadow: 2px 2px 8px var(--gold-shadow);
+    background-color: transparent;
+    border:none;
 }
 .card-header{
     display:flex;
@@ -257,8 +296,7 @@ nav{
 }
 
 .restaurant-list-front{
-    background-color: #FCC9A3;
-    background-image: url('./../../public/images/food.jfif');
+    
     .restaurant-list{
         .restaurant-list-grid{
             display:grid;
@@ -295,7 +333,6 @@ nav{
     }
 }
 .dishes-list{
-    background-color: var(--light-gold);
     .dish-list-grid{
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -355,8 +392,8 @@ nav{
     }
 }
 .sort-filter-search{
-    background-color: var(--gold-color);
-    box-shadow: 0px 0px 4px 1px var(--gold-shadow);
+    background: rgb(126,103,71);
+background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157163988642332) 16%, rgba(99,72,36,0.6938676593684349) 60%, rgba(128,105,73,1) 75%);
     padding: 30px;
     max-width: 700px;
     .card-header{
@@ -593,8 +630,28 @@ nav{
         }
     }
 }
-.dishes-list{
-    
+.order-back{
+    .card-body-box{
+        display:flex;
+        justify-content: center;
+        .order-card-body{
+            width: 80%;
+            background-color: var(--sand-color);
+            padding:calc(10px + 1vw);
+            .one-back-order{
+                padding: 8px;
+                border-bottom: #262626 2px solid;
+                &.headings{
+                    font-weight: 700;
+                }
+                .order-first-line{
+                    display:grid;
+                    grid-template-columns: repeat(7, 2fr) 1fr;
+                }
+            }
+            
+        }
+    }
 }
 .create-form{
     .form-row{

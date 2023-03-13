@@ -22,12 +22,16 @@ class Order extends Model
                               1 => 'Courier delivery'];
     
     public function dishes(){
-        return $this->belongsToMany(Dish::class);
+        return $this->belongsToMany(Dish::class, 'dish_order')
+                    ->withPivot('amount');
     }
     public function adress(){
         return $this->hasOne(ContactInfo::class);
     }
     public function restaurant(){
         return $this->belongsTo(Restaurant::class);
+    }
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 }

@@ -5,20 +5,20 @@ import Message from '@/components/Message';
 import NavLink from '@/components/inertiaComponents/NavLink';
 import ResponsiveNavLink from '@/components/inertiaComponents/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
-import AreYouSureModal from "@/components/AreYouSureModal";
+import AreYouSureModal from "@/components/inertiaComponents/AreYouSureModal";
 import ConfirmCartModal from '@/components/frontOffice/cart/ConfirmCartModal';
 import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfoModal';
+import Footer from '@/components/frontOffice/Footer';
 
 export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo, changeContactOrder, setChangeContactOrder, cart, setCart, setContactInfo}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     return (
-        <div className="min-h-screen bg-gray-100 authentificated-layout">
+        <div className="authentificated-layout">
                         <EditContactInfoModal  changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder} setContactInfo={setContactInfo}></EditContactInfoModal>
                         <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
                         <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} setCart={setCart}></ConfirmCartModal>
             <nav>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-24 items-center">
+                <div className="nav-box">
                         <div className="flex items-center">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
@@ -31,7 +31,7 @@ export default function Authenticated({ auth, header, message, children, modalIn
                                 </NavLink>
                             </div>
                         </div>
-                        <div className="hidden sm:flex sm:items-center sm:ml-6">
+                        <div className="hidden sm:flex sm:items-center sm:ml-6 nav-right-block">
                         {/* PRADZIA */}
                             <div className="relative nav-dropdown">
                                 <Dropdown>
@@ -56,9 +56,7 @@ export default function Authenticated({ auth, header, message, children, modalIn
                                 </Dropdown>
                             </div>
                             <div className="nav-cart-link-box">
-                                <div className="h-24">
                                     <Link href={route('show-cart')} className="nav-cart-link">Show cart</Link>
-                                </div>
                             </div>
                             <div className="nav-cart-link-box">
                                 <div className="h-24">
@@ -108,7 +106,6 @@ export default function Authenticated({ auth, header, message, children, modalIn
                                 </svg>
                             </button>
                         </div>
-                    </div>
                 </div>
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
@@ -140,9 +137,10 @@ export default function Authenticated({ auth, header, message, children, modalIn
                 </header>
             )}
 
-            <main>
+            <main className="main-for-children">
                 {children}
             </main>
+            <Footer></Footer>
         </div>
     );
 }
