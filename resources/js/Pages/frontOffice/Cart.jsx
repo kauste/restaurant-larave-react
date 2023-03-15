@@ -29,7 +29,7 @@ function Cart(props){
                         <Head title="Cart"/>
             <div className="py-12 cart">
                 <div className="max-w-7xl mx-auto sm:px-0 ">
-                    <div className="container">
+                    <div className="container for--zoom">
                         <div className="card-header">
                             <h2>Dishes in Cart</h2>
                         </div>

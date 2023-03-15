@@ -9,6 +9,10 @@ function Message({message}){
             setIsNavBottomSeen(window.scrollY > document.querySelector('nav').offsetHeight);
 
         })
+        useEffect(() => {
+            setIsNavBottomSeen(window.scrollY > document.querySelector('nav').offsetHeight);
+        }, [])
+
         useEffect(()=> {
             if(isNavBottomSeen){
                 setMessageStyle({

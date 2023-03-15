@@ -10,17 +10,7 @@
 :root{
     --names-family:'The Girl Next Door', cursive;
     --casual-family: 'IBM Plex Serif', serif;
-    --gold-color: #E1B131;
-    --dark-gold:#B78019;
-    --salad-green:#AFB95D;
-    --dark-salad:#5D5002;
-    --light-gold: #F6EA70;
-    --dark-gray:#d9d4bd;
-    --gold-shadow:#CDA941;
-    --sand-color: #f3eec4;
-    --darker-sand:#f1ebb0;
-
-
+    --dark-brown: #281F18;
     --light-pink--color:#CD975B;
     --the-darher-gray:#958d83;
     --the-gray:#B4A797;
@@ -43,14 +33,14 @@
     font-weight: 800;
 }
 .message{
-    background-color: var(--gold-color);
+    background-color: var(--the-orange-color);
     padding:10px;
     display:flex;
     justify-content: center;
     font-size: 15px;
 }
 .messages{
-    background-color: var(--light-gold);
+    background-color: var(--the-orange-color);
     display:flex;
     flex-direction: column;
     justify-content: center;
@@ -59,8 +49,7 @@
         width: 100%;
         padding:5px 10px;
         text-align: center;
-        border-bottom: var(--dark-salad) 1px solid;
-        color: #DC3545;
+        border-bottom: var(--dark-brown) 1px solid;
     }
 }
 .amount-input{
@@ -71,7 +60,7 @@
     &:focus{
         --tw-ring-color: none;
         border:none;
-        border: var(--dark-salad) 2px solid;
+        border: var(--dark-brown) 2px solid;
     }
 }
 .small-dish-img{
@@ -83,7 +72,8 @@
 .modal-box{
     width:100%;
     height:100%;
-    background-color: rgba(153, 153, 153, 0.167);
+    overflow: hidden;
+    background-color: rgba(116,104,87,0.5);
     position: fixed;
     z-index: 999;
     top:0;
@@ -91,12 +81,10 @@
     display:flex;
     justify-content: center;
     align-items: center;
-        .modal-mine{
+            .modal-mine{
             display:block;
             padding: 50px 80px;
-            border-radius: 30px;
-            background-color: var(--gold-shadow);
-            border: solid black 3px;
+            background-color: rgb(205,193,176);
             .modal-content{
                 .modal-header{
                     border-bottom: solid black 1px;
@@ -147,7 +135,7 @@
                                     --tw-ring-color: none;
                                     --tw-ring-shadow: none;
                                     border: 1px #6b7280 solid;
-                                    box-shadow: 0 0 0 2px var(--dark-salad);
+                                    box-shadow: 0 0 0 2px var(--dark-brown);
                                     outline-offset:0;
                                 }
                             }
@@ -229,6 +217,12 @@ min-height: calc(100vh - 80px);
 }
 
 nav{
+    position:absolute;
+    display:block;
+    justify-content: space-between;
+    align-items: center;
+    width:100%;
+    height: 150px;
     .nav-box{
         width:100%;
         padding:0 20px 0 40px;
@@ -242,21 +236,12 @@ nav{
             height:100%;
         }
     }
-    position:absolute;
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    width:100%;
-    height: 150px;
     .nav-logo{
         width: 80px;
         height:80px;
         .logo-svg-svg{
             background:linear-gradient(90deg, rgba(126,103,71,0.8199180795365021) 0%, rgba(255,143,5,0.3157163988642332) 16%, rgba(99,72,36,0.6938676593684349) 85%, rgba(128,105,73,1) 100%);
         }
-    }
-    .nav-main-name{
-
     }
     .nav-link{
         font-size: 30px;
@@ -289,7 +274,7 @@ nav{
     }
     .nav-dropdown{
         .dropdown-content{
-            background-color: var(--dark-salad);
+            background-color: var(--dark-brown);
             left:50%;
             transform: translateX(-50%);
             padding: 10px 0;
@@ -299,8 +284,7 @@ nav{
                 padding: 10px 30px;
                 width:100%;
                 &:hover{
-                background-color: var(--salad-green);
-                color:var(--dark-salad)
+                background-color:#514634; 
 
                 }
             }
@@ -308,10 +292,7 @@ nav{
     }
 }
 // front
-.front-footer{
-    height: 80px;
-    background: #746857;
-}
+
 .card{
     // box-shadow: 2px 2px 8px var(--gold-shadow);
     background-color: transparent;
@@ -444,10 +425,9 @@ nav{
                     position: absolute;
                     background-color: var(--dark-gray);
                     visibility:hidden;
-                    // border: var(--dark-salad) 1px solid;
                     padding: 3px 6px;
                     font-size: 12px;
-                    // font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
+
                 }
                 &:hover{
                     cursor: pointer;
@@ -493,13 +473,13 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
         &:focus{
             --tw-ring-color: none;
             --tw-ring-shadow: none;
-            border: var(--dark-salad) 2px solid;
+            border: var(--dark-brown) 2px solid;
         }
     }
     .search-input {
         width:calc(200px + 10vw);
         &:focus{
-            outline: var(--dark-salad) 2px solid;
+            outline: var(--dark-brown) 2px solid;
         }
     }
 }
@@ -554,15 +534,34 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
     }
 }
 .cart, .order{
+    .container{
+        .all-orders{
+            background: linear-gradient(27deg, #1b1610 5px, transparent 5px) 0 5px,
+                        linear-gradient(207deg, #1b1610 5px, transparent 5px) 10px 0px,
+                        linear-gradient(27deg, #3e3325 5px, transparent 5px) 0px 10px,
+                        linear-gradient(207deg, #3e3325  5px, transparent 5px) 10px 5px,
+                        linear-gradient(90deg, #2a2319 10px, transparent 10px),
+                        linear-gradient(#332a1e 25%, #211c14  25%, #211c14 50%, transparent 50%, transparent 75%, #433728 75%, #433728);
+            background-color: #14100c;
+            background-size: 20px 20px;
+            padding: 0.7vw ;
+        }
+    }
     .cart-restaurant, .order-restaurant{
-        margin-bottom: 30px;
-        padding:1vw 2vw;
+        box-sizing: border-box;
+        background-color: #CDC1B0;
+        padding:0.2vw 2vw;
+        box-shadow: 2px 2px 8px #62584B;
+        border-radius:0;
+        &:not(:last-child){
+            margin-bottom: 0.7vw;
+        }
         .cart-grid{
             display:grid;
             grid-template-columns: repeat(6, 1fr);
             justify-items: center;
             align-items: center;
-            border-bottom: var(--dark-salad) 1px solid;
+            border-bottom: var(--dark-brown) 1px solid;
             &:not(.bold){
                 margin-bottom: 0;
                 padding: 10px;
@@ -623,7 +622,7 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
             padding: 0 10px;
             h3{
                 text-align: center;
-                font-size: calc(10px + 2vw);
+                font-size: calc(14px + 0.5vw);
                 font-family: var(--names-family) !important;
                 font-weight: 800;
             }
@@ -643,7 +642,7 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
         align-items: center;
         padding: 5px;
         margin-bottom:20px;
-        border: var(--dark-salad) 1px solid;
+        border: var(--dark-brown) 1px solid;
         padding: 10px 20px;
         width: fit-content;
     }
@@ -652,10 +651,13 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
         grid-template-columns: 1.5fr repeat(4, 1fr);
         justify-items: center;
         align-items: center;
-        border-bottom: var(--dark-salad) 1px solid;
+        border-bottom: var(--dark-brown) 1px solid;
+        margin-bottom: 0;
         &:not(.bold){
-            margin-bottom: 0;
-            padding: 10px;
+            padding: calc(2px + 0.2vw);
+        }
+        &.bold{
+            padding-bottom: 8px;
         }
         li{
             padding: 0 3px;
@@ -674,15 +676,18 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
         }
     }
 }
+.front-footer{
+    height: 100px;
+    background: #746857;
+}
 // back
 .restaurant-list-back{
     background-color: #FCC9A3;
-    background-image: url('./../../public/images/food.jfif');
     .restaurant-list{
         .restaurant-list-grid{
             display:grid;
             grid-template-columns: 1.5fr 1fr 1fr 2fr 3fr;
-            border-bottom: var(--dark-salad) 1px solid;
+            border-bottom: var(--dark-brown) 1px solid;
             &:not(.headings){
                 grid-template-rows: 70px;
                 align-items: center;

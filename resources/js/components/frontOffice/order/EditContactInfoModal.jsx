@@ -4,6 +4,23 @@ import { useEffect, useState } from "react";
 function EditContactInfoModal({setChangeContactOrder, changeContactOrder, setMessage}){
     if(changeContactOrder !== null && changeContactOrder !== undefined){
         const [courierData, setCourierData ] = useState({});
+        const backgroundZoomTiming = {
+            duration: 300,
+            iterations: 1,
+            fill:'forwards',
+            easing: 'ease'
+          };
+
+        const cancel = () => {
+            document.querySelector('.for--zoom').animate([{ transform:'scale(1)'}], backgroundZoomTiming)
+            setTimeout(() => {
+                setChangeContactOrder(null)
+            }, 0.3)
+        }
+        useEffect(() => {
+            document.querySelector('.for--zoom').animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
+        }, [])
+
         useEffect(() => {
             setCourierData({
                 city: changeContactOrder.contactInfo.city,
@@ -39,7 +56,7 @@ function EditContactInfoModal({setChangeContactOrder, changeContactOrder, setMes
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Delivery</h5>
-                            <button type="button" className="close" onClick={() => setChangeContactOrder(null)}>
+                            <button type="button" className="close" onClick={cancel}>
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -82,7 +99,7 @@ function EditContactInfoModal({setChangeContactOrder, changeContactOrder, setMes
                         </form>
                         <div className="d-flex gap-3 justify-content-end">
                             <button type="button" className="btn btn-danger" onClick={updateOrder}>Edit</button>
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => setChangeContactOrder(null)}>Cancel</button>
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={cancel}>Cancel</button>
                         </div>
                     </div>
                 </div>
