@@ -1,4 +1,4 @@
-function BackRestaurant({restaurants, restaurant, setForEditRestaurant, showRestaurantDishesUrl, deleteRestaurantUrl, setModalInfo, setRestaurants, setMessage}){
+function BackRestaurant({restaurants, restaurant, setForEditRestaurant, showRestaurantDishesUrl, deleteRestaurantUrl, setModalInfo, setRestaurants, setMessage, zoomSmaller, zoomDOM}){
     const confirm = () => {
         axios.delete(deleteRestaurantUrl + '/' + restaurant.id)
         .then(res => {
@@ -11,7 +11,12 @@ function BackRestaurant({restaurants, restaurant, setForEditRestaurant, showRest
         })
     }
     const showModal = () => {
-        setModalInfo({text:'Are you sure you want to delete this restaurant?', confirm:confirm})
+        zoomSmaller();
+        setModalInfo({text:'Are you sure you want to delete this restaurant?', confirm:confirm, 'zoomDOM':zoomDOM})
+    }
+    const showEditModal = () => {
+        zoomSmaller()
+        setForEditRestaurant(restaurant)
     }
     
     return(
@@ -22,11 +27,11 @@ function BackRestaurant({restaurants, restaurant, setForEditRestaurant, showRest
             <li>From {restaurant.work_starts}h to {restaurant.work_ends}h</li>
             <li className="controls">
                 <div className="show-edit">
-                    <a className="btn btn-outline-danger" href={showRestaurantDishesUrl + '/' + restaurant.id} title="Show restaurant dishes">Show dishes</a>
-                    <div className="btn btn-outline-success" title="Edit restaurant dishes" onClick={() => setForEditRestaurant(restaurant)}>Edit</div>
+                    <a className="one-color-btn orange-outline-btn" href={showRestaurantDishesUrl + '/' + restaurant.id} title="Show restaurant dishes">Show dishes</a>
+                    <button className="one-color-btn brown-outline-btn" title="Edit restaurant dishes" onClick={showEditModal}>Edit</button>
                     
                 </div>
-                <div className="btn btn-danger" onClick={showModal} title="Delete restaurant dishes">Delete</div>
+                <button className="one-color-btn orange-btn" onClick={showModal} title="Delete restaurant dishes">Delete</button>
             </li>
         </ul>
     )

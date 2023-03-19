@@ -2,7 +2,7 @@ import axios from "axios";
 import CartDish from "./CartDish";
 import { useEffect, useState } from "react";
 
-function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComfirmModalInfo, cart, setMessage, setCart}){
+function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComfirmModalInfo, cart, setMessage, setCart, zoomDOM}){
     
     const [cartData, setCartData] = useState(restaurant.cartInfo);
 
@@ -16,7 +16,7 @@ function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComf
         })
     }
     const showModal = () => {
-        setModalInfo({'text':'Are you sure you want to delete this cart?', 'confirm': cancelCart});
+        setModalInfo({'text':'Are you sure you want to delete this cart?', 'confirm': cancelCart, 'zoomDOM':zoomDOM});
     }
 
     const confirmOrderModal =() => {
@@ -37,7 +37,7 @@ function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComf
                         <li></li>
                     </ul>
                     {
-                        cartData.map((cartDish, index) => <CartDish key={index} cartDish={cartDish} asset={asset} setModalInfo={setModalInfo} cartData={restaurant.cartInfo} setCartData={setCartData} setCart={setCart} cart={cart} restaurant={restaurant} setMessage={setMessage}></CartDish>)
+                        cartData.map((cartDish, index) => <CartDish key={index} cartDish={cartDish} asset={asset} setModalInfo={setModalInfo} cartData={restaurant.cartInfo} setCartData={setCartData} setCart={setCart} cart={cart} restaurant={restaurant} setMessage={setMessage} zoomDOM={zoomDOM}></CartDish>)
                     }
                     <ul className="grid-for-extra">
                         <li></li>
@@ -46,8 +46,8 @@ function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComf
                     </ul>
                 </div>
                 <div className="d-flex justify-content-end gap-3 p-4">
-                    <button className="btn btn-outline-danger btn-lg" type="button" onClick={showModal}>Cancel</button>
-                    <button className="btn btn-danger btn-lg" type="button" onClick={confirmOrderModal}>Order</button>
+                    <button className="cancel-btn" type="button" onClick={showModal}>Cancel</button>
+                    <button className="pattern-btn order-btn" type="button" onClick={confirmOrderModal}>Order</button>
                 </div>
             </div>
     )

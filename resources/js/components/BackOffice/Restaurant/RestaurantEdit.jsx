@@ -1,6 +1,6 @@
 import axios from "axios";
 
-function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, updateRestaurantUrl, setRestaurants, setMessage}) {
+function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, updateRestaurantUrl, setRestaurants, setMessage, zoomBack}) {
     if (forEditRestaurant) {
     const fillForm = (event) => {
         const name = event.target.name;
@@ -13,9 +13,14 @@ function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, u
         .then(res => {
             const removedRestaurant = restaurants.filter((restaurant) => {return restaurant.id !== forEditRestaurant.id});
             setRestaurants([forEditRestaurant, ...removedRestaurant]);
-            setMessage(res.data.message)
             setForEditRestaurant(null);
+            zoomBack();
+            setMessage(res.data.message)
         })
+    }
+    const cancel = () => {
+        setForEditRestaurant(null)
+        zoomBack();
     }
 
         return (
@@ -25,7 +30,7 @@ function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, u
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Edit restaurant</h5>
-                                <button type="button" className="close" onClick={() => setForEditRestaurant(null)}>
+                                <button type="button" className="close" onClick={cancel}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -54,8 +59,8 @@ function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, u
                                 </form>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="btn btn-danger"onClick={updateRestaurant}>Edit</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => setForEditRestaurant(null)}>Cancel</button>
+                                <button type="button" className="one-color-btn orange-outline-btn"  data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="one-color-btn brown-btn" onClick={updateRestaurant}>Edit</button>
                             </div>
                         </div>
                     </div>

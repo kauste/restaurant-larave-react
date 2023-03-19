@@ -3,7 +3,7 @@ import DeliveryAdress from "./DeliveryAdress";
 import axios from "axios";
 import Messages from "../../Messages";
 
-function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, setCart }) {
+function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, setCart, zoomDOM }) {
 
     if (comfirmModalInfo !== null && comfirmModalInfo != undefined) {
         const [messages, setMessages] = useState(null);
@@ -18,13 +18,13 @@ function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, setCart
             easing: 'ease'
           };
           const cancel = () => {
-              document.querySelector('.for--zoom').animate([{ transform:'scale(1)'}], backgroundZoomTiming)
+              zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
               setTimeout(() => {
                   setComfirmModalInfo(null)
               }, 0.3)
           }
           useEffect(() => {
-              document.querySelector('.for--zoom').animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
+              zoomDOM.animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
           }, [])
 
         const onOptionChange = (e) => {
@@ -41,6 +41,7 @@ function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, setCart
             if(delivery === null) return;
             axios.post(route('confirm-cart'), {restaurantId:comfirmModalInfo.restaurantId, deliveryData:delivery})
             .then(res => {
+                zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
                 if(res.data.errors !== undefined){
                     setMessages(res.data.errors);
                     setTimeout(()=> {
@@ -53,6 +54,8 @@ function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, setCart
                     setComfirmModalInfo(null);
                     comfirmModalInfo.setMessage(res.data.message)
                 }
+              
+
             })
         }, [delivery])
         
@@ -82,8 +85,8 @@ function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, setCart
                                 <DeliveryAdress courier={courier} setCourierData={setCourierData} courierData={courierData}></DeliveryAdress>
                             </form>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="btn btn-danger" onClick={confirmCart}>Confirm</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="one-color-btn brown-btn" onClick={confirmCart}>Confirm</button>
                             </div>
                         </div>
                     </div>

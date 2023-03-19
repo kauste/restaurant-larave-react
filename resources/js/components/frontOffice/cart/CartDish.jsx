@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCartData, restaurant, setMessage}){
+function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCartData, restaurant, setMessage, zoomDOM}){
     const [amount, setAmount] = useState(cartDish.amount);
     const deleteItem = () => {
         axios.delete(route('delete-cart-item') + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id)
@@ -15,6 +15,14 @@ function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCa
                 setCartData(cartData.filter((dish) => dish.restaurant_id !== cartDish.restaurant_id || dish.dish_id !== cartDish.dish_id));
                 msg = res.data.message;
             }
+            const backgroundZoomTiming = {
+                duration: 300,
+                iterations: 1,
+                fill:'forwards',
+                easing: 'ease'
+              };
+              zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
+
             setModalInfo(null);
             setMessage(msg)
         })
@@ -26,7 +34,7 @@ function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCa
         })
     }
     const showModal = () => {
-        setModalInfo({'text':'Are you sure you want to delete this item?', 'confirm': deleteItem});
+        setModalInfo({'text':'Are you sure you want to delete this item?', 'confirm': deleteItem, 'zoomDOM':zoomDOM});
     }
 
     return(
@@ -35,11 +43,11 @@ function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCa
                 <img className="small-dish-img" src={asset + '/' + cartDish.dish_info.picture_path} alt={cartDish.dish_info.dish_name}></img>
             </li>
             <li>{cartDish.dish_info.dish_name}</li>
-            <li className="d-flex gap-2">
+            <li className="d-flex gap-2 amount-edit-form">
                 <input className="amount-input" type="number" value={amount} onChange={e => setAmount(e.target.value)}/>
-                <button type="button" className="btn btn-danger" onClick={editAmount}>
-                    <svg fill="#fff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
-                        width="22px" height="22px" viewBox="0 0 405.272 405.272"
+                <button type="button" className="pattern-btn edit-btn" onClick={editAmount}>
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+                     viewBox="0 0 405.272 405.272"
                         xmlSpace="preserve">
                     <g>
                         <path d="M393.401,124.425L179.603,338.208c-15.832,15.835-41.514,15.835-57.361,0L11.878,227.836
@@ -52,7 +60,7 @@ function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCa
             <li>{cartDish.dish_info.price} eu.</li>
             <li>{(cartDish.dish_info.price * cartDish.amount).toFixed(2)} eu.</li>
             <li>
-                <button type="button" className="btn btn-danger" onClick={showModal}>Delete</button>
+                <button type="button" className="pattern-btn" onClick={showModal}>Delete</button>
             </li>
         </ul>
     )

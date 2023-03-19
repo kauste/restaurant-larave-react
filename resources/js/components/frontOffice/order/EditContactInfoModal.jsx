@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function EditContactInfoModal({setChangeContactOrder, changeContactOrder, setMessage}){
+function EditContactInfoModal({setChangeContactOrder, changeContactOrder}){
     if(changeContactOrder !== null && changeContactOrder !== undefined){
         const [courierData, setCourierData ] = useState({});
         const backgroundZoomTiming = {
@@ -12,13 +12,13 @@ function EditContactInfoModal({setChangeContactOrder, changeContactOrder, setMes
           };
 
         const cancel = () => {
-            document.querySelector('.for--zoom').animate([{ transform:'scale(1)'}], backgroundZoomTiming)
+            changeContactOrder.zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
             setTimeout(() => {
                 setChangeContactOrder(null)
             }, 0.3)
         }
         useEffect(() => {
-            document.querySelector('.for--zoom').animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
+            changeContactOrder.zoomDOM.animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
         }, [])
 
         useEffect(() => {
@@ -44,8 +44,9 @@ function EditContactInfoModal({setChangeContactOrder, changeContactOrder, setMes
                 changeContactOrder.setContactInfo({...changeContactOrder.contactInfo, ...courierData});
                 const newData = {city:courierData.city, street:courierData.street, street_nr:courierData.streetNumber, flat_nr:courierData.flat, telephone_number:courierData.telNr, post_code:courierData.postCode, message:courierData.message}
                 changeContactOrder.setContactInfo({...changeContactOrder.contactInfo, ...newData});
-                changeContactOrder.setMessage(res.data.message);
+                changeContactOrder.zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
                 setChangeContactOrder(null);
+                changeContactOrder.setMessage(res.data.message);
             })
         }
 
@@ -98,8 +99,8 @@ function EditContactInfoModal({setChangeContactOrder, changeContactOrder, setMes
             </div>
                         </form>
                         <div className="d-flex gap-3 justify-content-end">
-                            <button type="button" className="btn btn-danger" onClick={updateOrder}>Edit</button>
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                            <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                            <button type="button" className="one-color-btn brown-btn" onClick={updateOrder}>Edit</button>
                         </div>
                     </div>
                 </div>

@@ -49,13 +49,13 @@ function SortFilterSearch({sortAndFilterUrl, setRestaurantDishes, restaurants}){
                     </select>
                 </div>
                 <div>
-                    <button className="btn btn-danger ml-2" onClick={sortAndFilter}>SORT AND FILTER</button>
+                    <button className="simple-button ml-2" onClick={sortAndFilter}>SORT AND FILTER</button>
                 </div>
             </div>
             <div className="d-flex align-items-center ml-2 mt-5">
                 <label className="mr-2" htmlFor="search">Search</label>
                 <input className="search-input"  value={search} onChange={e => setSearch(e.target.value)}></input>
-                <button className="btn btn-danger ml-2" onClick={doSearch}>SEARCH</button>
+                <button className="simple-button ml-2" onClick={doSearch}>SEARCH</button>
             </div>
         </div>
     </div>

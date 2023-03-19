@@ -4,7 +4,7 @@ import RestaurantCreate from "@/components/BackOffice/Restaurant/RestaurantCreat
 import RestaurantEdit from "@/components/BackOffice/Restaurant/RestaurantEdit";
 import AuthenticatedBack from "@/Layouts/AuthenticatedBack";
 import { Head } from "@inertiajs/inertia-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function RestaurantList(props) {
     const [restaurantList, setRestaurantList] = useState([]);
@@ -13,7 +13,28 @@ function RestaurantList(props) {
     const [forEditRestaurant, setForEditRestaurant] = useState(null);
     const [modalInfo, setModalInfo] = useState(null);
     const [message, setMessage] = useState(null);
+    const [zoomDOM, setZoomDOM] = useState(null);
+    const backgroundZoomTiming = {
+        duration: 300,
+        iterations: 1,
+        fill:'forwards',
+        easing: 'ease'
+      };
+    const zoomSmaller = () => {
+        zoomDOM.animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
+    }
+      const zoomBack = () => {
+          zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
+      }
+    const zoomContainer = useRef();
 
+    const create = () => {
+        setShouldCreate(true)
+        zoomSmaller()
+    }
+    useEffect(() => {
+        setZoomDOM(zoomContainer.current);
+    })
     useEffect(() => {
         setRestaurantList(restaurants);
     }, [restaurants])
@@ -27,16 +48,16 @@ function RestaurantList(props) {
     return (
         <AuthenticatedBack auth={props.auth} message={message}>
             <Head title="Restaurants"/>
-            <RestaurantCreate restaurants={restaurants} shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} storeRestaurantUrl={props.storeRestaurantUrl} setRestaurants={setRestaurants} setMessage={setMessage}></RestaurantCreate>
-            <RestaurantEdit restaurants={restaurants} forEditRestaurant={forEditRestaurant} setForEditRestaurant={setForEditRestaurant} updateRestaurantUrl={props.updateRestaurantUrl} setRestaurants={setRestaurants} setMessage={setMessage}></RestaurantEdit>
+            <RestaurantCreate restaurants={restaurants} shouldCreate={shouldCreate} setShouldCreate={setShouldCreate} storeRestaurantUrl={props.storeRestaurantUrl} setRestaurants={setRestaurants} setMessage={setMessage} zoomBack={zoomBack}></RestaurantCreate>
+            <RestaurantEdit restaurants={restaurants} forEditRestaurant={forEditRestaurant} setForEditRestaurant={setForEditRestaurant} updateRestaurantUrl={props.updateRestaurantUrl} setRestaurants={setRestaurants} setMessage={setMessage} zoomBack={zoomBack}></RestaurantEdit>
             <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
             <div className="py-12 restaurant-list-back">
                 <div className="max-w-7xl mx-auto  lg:px-8">
-                    <div>
+                    <div ref={zoomContainer}>
                         <div className="w-100 d-flex justify-content-end">
-                            <div className="btn btn-success btn-lg m-3" onClick={()=> setShouldCreate(true)}>Create new restaurant</div>
+                            <button className="one-color-btn brown-outline-btn btn-lg m-3" onClick={create}>Create new restaurant</button>
                         </div>
-                        <div className="container">
+                        <div className="">
                             <div className="row justify-content-center">
                                 <div className="card">
                                     <div className="card-header">
@@ -55,7 +76,7 @@ function RestaurantList(props) {
                                             </li>
                                             <li>
                                                 {
-                                                    restaurantList.map((restaurant, index) => <BackRestaurant key={index} setRestaurants={setRestaurants} restaurants={restaurants} restaurant={restaurant} showRestaurantDishesUrl={props.showRestaurantDishesUrl} deleteRestaurantUrl={props.deleteRestaurantUrl} setForEditRestaurant={setForEditRestaurant} setModalInfo={setModalInfo} setMessage={setMessage}></BackRestaurant>)
+                                                    restaurantList.map((restaurant, index) => <BackRestaurant key={index} zoomSmaller={zoomSmaller} zoomDOM={zoomDOM} setRestaurants={setRestaurants} restaurants={restaurants} restaurant={restaurant} showRestaurantDishesUrl={props.showRestaurantDishesUrl} deleteRestaurantUrl={props.deleteRestaurantUrl} setForEditRestaurant={setForEditRestaurant} setModalInfo={setModalInfo} setMessage={setMessage}></BackRestaurant>)
                                                 }
                                             </li>
                                         </ul>

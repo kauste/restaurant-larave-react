@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import RestaurantCheckbox from "./RestaurantCheckbox";
 
-function EditDish({, dishForEdit, setDishForEdit , restaurants, setNewestDishes, setMessage }) {
+function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, setMessage }) {
     if (typeof(dishForEdit) === 'object' && dishForEdit !== null) {
 
         const [checkBoxData, setCheckboxData] = useState([]);

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import DeliveryInfo from "./DeliveryInfo";
 import OrderDish from "./OrderDish";
 
-function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, setChangeContactOrder, setMessage }) {
+function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, setChangeContactOrder, setMessage, zoomDOM }) {
     const [showBody, setShowBody] = useState('d-none');
     const [contactInfo, setContactInfo] = useState(order.contactInfo);
 
@@ -42,7 +42,7 @@ function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, se
                 </div>
             </div>
             <div className={`card-body ${showBody}`}>
-                <DeliveryInfo deliveryChoice={order.delivery_choice} orderId={order.id} contactInfo={contactInfo} setContactInfo={setContactInfo} orderStatus={order.status} setChangeContactOrder={setChangeContactOrder} setMessage={setMessage}></DeliveryInfo>
+                <DeliveryInfo deliveryChoice={order.delivery_choice} orderId={order.id} contactInfo={contactInfo} setContactInfo={setContactInfo} orderStatus={order.status} setChangeContactOrder={setChangeContactOrder} setMessage={setMessage} zoomDOM={zoomDOM}></DeliveryInfo>
                 <ul className="bold order-grid">
                     <li></li>
                     <li>Dish</li>

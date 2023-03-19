@@ -1,7 +1,7 @@
-function DeliveryInfo({deliveryChoice, contactInfo, setContactInfo, orderStatus, setChangeContactOrder, orderId, setMessage}){
+function DeliveryInfo({deliveryChoice, contactInfo, setContactInfo, orderStatus, setChangeContactOrder, orderId, setMessage, zoomDOM}){
 
     const changeAdress = () => {
-        setChangeContactOrder({orderId:orderId, contactInfo:contactInfo, setContactInfo:setContactInfo, setMessage: setMessage});
+        setChangeContactOrder({orderId:orderId, contactInfo:contactInfo, setContactInfo:setContactInfo, setMessage: setMessage, zoomDOM:zoomDOM});
     }
     if(deliveryChoice === 1){
         return (
@@ -12,7 +12,7 @@ function DeliveryInfo({deliveryChoice, contactInfo, setContactInfo, orderStatus,
                         <div>Message to courier: {contactInfo.message ? contactInfo.message : <i>no message</i>}</div>
                     </div>
                     <div>
-                        {orderStatus < 2 ? <button className="btn btn-outline-danger" onClick={changeAdress}>Edit</button> : null}
+                        {orderStatus < 2 ? <button className="pattern-btn" onClick={changeAdress}>Edit</button> : null}
                     </div>
                 </div>
         )

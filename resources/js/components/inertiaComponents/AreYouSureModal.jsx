@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function AreYouSureModal({modalInfo, setModalInfo}) {
     if(modalInfo !== null && modalInfo !== undefined){
@@ -10,11 +10,12 @@ function AreYouSureModal({modalInfo, setModalInfo}) {
           };
           
         useEffect(() => {
-            document.querySelector('.for--zoom').animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
+            // console.log(modalInfo.zoomDOM);
+            modalInfo.zoomDOM.animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
         }, [])
 
         const cancel = () => {
-            document.querySelector('.for--zoom').animate([{ transform:'scale(1)'}], backgroundZoomTiming)
+            modalInfo.zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
             setTimeout(() => {
                 setModalInfo(null)
             }, 0.3)
@@ -34,8 +35,8 @@ function AreYouSureModal({modalInfo, setModalInfo}) {
                                 <p>{modalInfo.text}</p>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="btn btn-danger" onClick={modalInfo.confirm}>Confirm</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="one-color-btn brown-btn" onClick={modalInfo.confirm}>Confirm</button>
                             </div>
                         </div>
                     </div>

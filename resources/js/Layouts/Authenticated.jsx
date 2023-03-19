@@ -10,13 +10,13 @@ import ConfirmCartModal from '@/components/frontOffice/cart/ConfirmCartModal';
 import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfoModal';
 import Footer from '@/components/frontOffice/Footer';
 
-export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo, changeContactOrder, setChangeContactOrder, cart, setCart, setContactInfo}) {
+export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo, changeContactOrder, setChangeContactOrder, cart, setCart, setContactInfo, zoomDOM}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     return (
         <div className="authentificated-layout">
                         <EditContactInfoModal  changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder} setContactInfo={setContactInfo}></EditContactInfoModal>
                         <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
-                        <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} setCart={setCart}></ConfirmCartModal>
+                        <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} setCart={setCart} zoomDOM={zoomDOM}></ConfirmCartModal>
             <nav>
                 <div className="nav-box">
                         <div className="flex items-center">

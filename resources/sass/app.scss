@@ -16,7 +16,11 @@
     --the-gray:#B4A797;
     --the-lighter-gray:#e1ddd7;
     --the-gray-for-background:#A19586;
+    --bg-color:#CDC1B0;
     --the-orange-color:#C67502;
+    --darker-orange-color:#a25f02;
+    --the-orange-brown:#5c2401;
+
 }
 @property --expand-light{
   initial-value: 150;
@@ -28,7 +32,11 @@
     inherits: false;
     syntax: '<number>';
   }
-
+  @property --btnColor {
+    initial-value: #3e3325;
+    inherits: false;
+    syntax: '<color>';
+  }
 .bold {
     font-weight: 800;
 }
@@ -109,6 +117,18 @@
                         font-size: 15px;
                         margin-bottom:10px;
                     }
+                    .form-row{
+                        input.form-control{
+                            border-radius:0;
+                            border:none;
+                            &:focus{
+                                box-shadow: none;
+                                border:none;
+
+                                // outline: none;
+                            }
+                        }
+                    }
                     .delivery-form{
                         margin-top: 10px;
                         font-style: italic;
@@ -127,18 +147,7 @@
                             label{
                                 padding-right: 5px;
                             }
-                            input, textarea{
-                                border-radius: 5px;
-                                padding: 3px 9px;
-                                box-sizing: border-box;
-                                &:focus{
-                                    --tw-ring-color: none;
-                                    --tw-ring-shadow: none;
-                                    border: 1px #6b7280 solid;
-                                    box-shadow: 0 0 0 2px var(--dark-brown);
-                                    outline-offset:0;
-                                }
-                            }
+
                             textarea{
                                 resize: none;
                                 height: 150px;
@@ -176,16 +185,6 @@ button, a:not(.restaurant-have-dish){
 
     }
 }
-.simple-button{
-    background-color: #6B5133;
-    padding: 8px 20px;
-    color:rgba(223,179,113,1);
-    transition: background-color ease-out 0.22s, color ease-out 0.22s;
-    &:hover{
-        background-color: #2c2116;
-        color:rgb(255, 190, 92);
-    }
-}
 svg{
     .st0{
         fill-rule:evenodd;
@@ -204,23 +203,119 @@ svg{
 .container{
     max-width: calc(100% - 2vw);
 }
+.simple-button{
+    background-color: #6B5133;
+    padding: 8px 20px;
+    color:rgba(223,179,113,1);
+    transition: background-color ease-out 0.22s, color ease-out 0.22s;
+    &:hover{
+        background-color: #2c2116;
+        color:rgb(255, 190, 92);
+    }
+}
+.pattern-btn{
+    background: linear-gradient(27deg, #1b1610 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #1b1610 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, var(--btnColor) 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, var(--btnColor) 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #2a2319 10px, transparent 10px),
+    linear-gradient(#332a1e 25%, #211c14  25%, #211c14 50%, transparent 50%, transparent 75%, #433728 75%, #433728);
+    background-color: #14100c;
+    background-size: 20px 20px;
+    box-sizing: border-box;
+    height: calc(22px + 1vw);
+    padding: calc(12px + 0.5vw)  calc(18px + 0.5vw);
+   color:#a58357;
+   display: flex;
+   align-items: center;
+   font-size: calc(12px + 0.5vw);
+   line-height: calc(12px + 0.5vw);
+   font-weight: 900;
+   &.edit-btn{
+       svg{
+           width: 17px;
+           height:17px;
+        }
+        fill: #a58357;
+        padding: calc(6px + 0.5vw)  calc(4px + 0.5vw);
+    }
+    &.order-btn{
+        padding: calc(16px + 0.5vw)  calc(22px + 0.5vw);
+    }
+
+    &:hover{
+        animation: change-btn 0.3s ease forwards;
+        color: #ba9461;
+        fill: #ba9461
+    }
+}
+.one-color-btn{
+    box-sizing: border-box;
+    height: calc(20px + 1vw);
+    padding: calc(10px + 0.5vw)  calc(12px + 0.5vw);
+    display: flex;
+    align-items: center;
+    font-size: calc(8px + 0.5vw);
+    // line-height: calc(8px + 0.5vw);
+    text-decoration: none;
+    font-weight: 700;
+    transition: all ease-in 0.2s;
+    &.brown-btn{
+        background-color: var(--dark-brown);
+        border: var(--dark-brown) 1px solid;
+        color: var(--bg-color);
+         &:hover{
+            background-color: var(--the-orange-brown);
+            border: var(--the-orange-brown) 1px solid;
+        }
+    }
+    &.brown-outline-btn{
+        border: var(--dark-brown) 1px solid;
+        color:var(--dark-brown);
+        &:hover{
+             color: var(--bg-color);
+            background-color: var(--dark-brown);
+        }
+    }
+    
+    &.orange-outline-btn{
+        border: var(--the-orange-color) 1px solid;
+        color: var(--the-orange-color);
+        &:hover{
+            background-color: var(--the-orange-color);
+            color: var(--bg-color);
+
+        }
+    }
+    &.orange-btn{
+        border: var(--the-orange-color) 1px solid;
+        background-color: var(--the-orange-color);
+        color: var(--bg-color);
+        &:hover{
+            border: var(--darker-orange-color) 1px solid;
+            background-color: var(--darker-orange-color);
+        }
+    }
+    &.btn-lg{
+        transform: scale(1.2);
+    }
+
+}
 body{
     min-height:100vh;
 }
 .main-for-children{
     background: rgb(205,193,176);
-background: linear-gradient(180deg, rgba(205,193,176,1) 91%, rgba(210,184,143,1) 92%, rgba(177,168,154,1) 93%, rgba(194,167,130,1) 93%, rgba(131,116,96,1) 96%, rgba(116,104,87,1) 98%, rgba(116,104,87,1) 99%, rgba(116,104,87,1) 100px);
-padding-bottom: 150px;
+padding-bottom: 40px;
 padding-top: 150px;
 min-height: calc(100vh - 80px);
-
 }
 
 nav{
     position:absolute;
     display:block;
-    justify-content: space-between;
-    align-items: center;
+    // justify-content: space-between;
+    // align-items: center;
     width:100%;
     height: 150px;
     .nav-box{
@@ -239,6 +334,9 @@ nav{
     .nav-logo{
         width: 80px;
         height:80px;
+        position: absolute;
+        top:185px;
+        filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.94));
         .logo-svg-svg{
             background:linear-gradient(90deg, rgba(126,103,71,0.8199180795365021) 0%, rgba(255,143,5,0.3157163988642332) 16%, rgba(99,72,36,0.6938676593684349) 85%, rgba(128,105,73,1) 100%);
         }
@@ -319,6 +417,7 @@ nav{
     .restaurant-list{
         .restaurant-list-grid{
             box-sizing: border-box;
+            height:calc(55px + 1vw);
             padding: 0px 100px 0px 20px;
             display:grid;
             grid-template-columns: 1.5fr 1fr 1fr 1.5fr 1fr;
@@ -329,6 +428,7 @@ nav{
                 grid-template-rows: 70px;
                 align-items: center;
                 li:not(.restaurant-name, .controls){
+                    box-sizing: border-box;
                     font-family: var(--casual-family);
                     font-weight: 400;
                     letter-spacing: 0.5px;
@@ -336,6 +436,9 @@ nav{
                 &:hover{
                     border: #433728 2px solid;
                     border-top:none;
+                    cursor:default;
+                    .restaurant-name{
+                    }
                 }
                 .controls{
                     justify-self: center;
@@ -350,6 +453,7 @@ nav{
                 font-size: 17px;
             }
             li{
+                box-sizing: border-box;
                 padding-left:10px;
 
             }
@@ -423,7 +527,7 @@ nav{
                 .tootlip{
                     display:block;
                     position: absolute;
-                    background-color: var(--dark-gray);
+                    background-color: var(--the-gray-for-background);
                     visibility:hidden;
                     padding: 3px 6px;
                     font-size: 12px;
@@ -431,7 +535,7 @@ nav{
                 }
                 &:hover{
                     cursor: pointer;
-                    background-color: var(--gold-color);
+                    // background-color: var(--gold-color);
                     .tootlip{
                         visibility: visible;
                     }
@@ -460,11 +564,11 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
     }
     .sort-filter{
         display:flex;
+        gap:10px;
         justify-content: space-between;
     }
     .sort-select, .filter-select, .search-input {
         width:auto;
-        border-radius: 10px;
         border: #999 1px solid;
         padding: 7px;
         font-size: 15px;
@@ -473,13 +577,12 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
         &:focus{
             --tw-ring-color: none;
             --tw-ring-shadow: none;
-            border: var(--dark-brown) 2px solid;
         }
     }
     .search-input {
         width:calc(200px + 10vw);
         &:focus{
-            outline: var(--dark-brown) 2px solid;
+            outline: none;
         }
     }
 }
@@ -676,13 +779,46 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
         }
     }
 }
-.front-footer{
-    height: 100px;
+.cart{
+    .container{
+        .cart-restaurant{
+
+            .cancel-btn{
+                box-sizing: border-box;
+                height: calc(22px + 1vw);
+                padding: calc(14px + 0.5vw)  calc(20px + 0.5vw);
+                display: flex;
+                align-items: center;
+                font-size: calc(12px + 0.5vw);
+                line-height: calc(12px + 0.5vw);
+                font-weight: 900;
+                border: var(--the-orange-color) 2px solid;
+                color: var(--the-orange-color);
+                transition: all ease-in 0.2s;
+                &:hover{
+                    background-color: var(--the-orange-color);
+                    color: var(--bg-color);
+                }
+            }
+            .cart-grid{
+                .amount-edit-form{
+                    .amount-input{
+                        height: calc(22px + 1vw);
+                        
+                    }
+                   
+                }
+                
+            }
+        }
+    }
+}
+footer{
+    height: 150px;
     background: #746857;
 }
 // back
 .restaurant-list-back{
-    background-color: #FCC9A3;
     .restaurant-list{
         .restaurant-list-grid{
             display:grid;
@@ -864,5 +1000,15 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
     to {
         --expand-light2:160;
         --expand-light:450;
+    }
+}
+@keyframes text-bigger{
+    to{
+        font-size: 1.6em;
+    }
+}
+@keyframes change-btn {
+    to{
+        --btnColor: #614d33;
     }
 }
