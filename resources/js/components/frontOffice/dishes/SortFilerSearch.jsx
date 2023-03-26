@@ -1,6 +1,10 @@
+import Contexts from "@/components/Contexts";
 import axios from "axios";
-import { useState } from "react";
-function SortFilterSearch({sortAndFilterUrl, setRestaurantDishes, restaurants}){
+import { useContext, useState } from "react";
+function SortFilterSearch({restaurants}){
+    
+    const {setRestaurantDishes} = useContext(Contexts.FrontContext);
+
     const [selectValue, setSelectValue] = useState('default');
     const [restaurant, setRestaurant] = useState(0);
     const [search, setSearch] = useState('');

@@ -29,6 +29,7 @@ Route::delete('/dish-delete/{id?}', [DishController::class, 'destroy'])->name('d
 });
 // Order
 Route::get('back-order', [OrderController::class, 'backIndex'])->name('back-order');
+Route::put('change-status/{id?}', [OrderController::class, 'changeStatus'])->name('change-status');
 
 
 Route::get('/', function () {
@@ -50,15 +51,17 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//Front offce
-Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
-//restaurant
+
+// Guest and front office
 Route::get('/user-restaurant-list', [FrontController::class, 'restaurants'])->name('user-restaurants');
 Route::get('/restaurant-dishes/{id?}', [FrontController::class, 'restaurantDishes'])->name('restaurant-dishes');
-//dishes
 Route::get('/user-dish-list', [FrontController::class, 'dishes'])->name('user-dishes');
 Route::get('/dish-sort-and-filter', [FrontController::class, 'sortAndFilter'])->name('sort-and-filter');
 Route::get('/search-dish', [FrontController::class, 'searchDish'])->name('search-dish');
+//Front offce
+Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
+//restaurant
+//dishes
 //cart
 Route::get('show-cart', [CartController::class, 'showCart'])->name('show-cart');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('user-add-to-cart');

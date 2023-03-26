@@ -35,6 +35,7 @@ function OrderList(props) {
                                         <div>Created</div>
                                         <div>Updated</div>
                                         <div>Status</div>
+                                        <div>Delivery choice</div>
                                         <div>User name</div>
                                         <div>User email</div>
                                         <div>Restaurant name</div>

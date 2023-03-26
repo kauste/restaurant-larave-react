@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 
-function Message({message}){
+function Message({message, navDOM}){
     if(message !== null && message !== undefined){
         const [messageStyle, setMessageStyle] = useState({});
         const [isNavBottomSeen, setIsNavBottomSeen] = useState(false);
 
         window.addEventListener('scroll', ()=> {
-            setIsNavBottomSeen(window.scrollY > document.querySelector('nav').offsetHeight);
+            setIsNavBottomSeen(window.scrollY > navDOM.offsetHeight);
 
         })
         useEffect(() => {
-            setIsNavBottomSeen(window.scrollY > document.querySelector('nav').offsetHeight);
+            setIsNavBottomSeen(window.scrollY > navDOM.offsetHeight);
         }, [])
 
         useEffect(()=> {

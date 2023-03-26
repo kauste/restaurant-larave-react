@@ -12,9 +12,6 @@ function Cart(props){
     const containerZoomRef = useRef();
 
     useEffect(() => {
-        const forBgColor = document.querySelector('.authentificated-layout');
-        forBgColor.style.background = 'rgb(236,202,88)';
-        forBgColor.style.background = 'linear-gradient(204deg, rgba(86,67,14,1) 0%, rgba(236,202,88,1) 50%, rgba(86,67,14,1) 100%)';
         setZoomDOM(containerZoomRef.current);
         console.log(containerZoomRef.current)
     }, [])

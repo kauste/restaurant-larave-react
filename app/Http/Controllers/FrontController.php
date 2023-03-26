@@ -8,22 +8,31 @@ use App\Models\Dish;
 use App\Models\Order;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Auth;
 use DB;
 
 class FrontController extends Controller
 {
     public function restaurants(){
+        dump('ce');
         $restaurants = Restaurant::all();
         $restaurants->map(function($restaurant){
             $restaurant['work_starts'] = Carbon::parse($restaurant['work_starts'])->format('H:i');
             $restaurant['work_ends'] = Carbon::parse($restaurant['work_ends'])->format('H:i');
             return $restaurant;
         });
-
-        return Inertia::render('frontOffice/RestaurantList', [
-                        'restaurants'=> $restaurants,
-                        ]);
+        dump(Auth::user());
+        if(Auth::user() !== null){
+            return Inertia::render('frontOffice/RestaurantList', [
+                            'restaurants'=> $restaurants,
+                            ]);
+        }
+        else {
+            return Inertia::render('Guest/RestaurantList', [
+                            'restaurants'=> $restaurants,
+                            ]);
+        }
     }
     public function dishes(){
         
@@ -38,12 +47,17 @@ class FrontController extends Controller
             $dish->restaurants = $restaurants;
             return $dish;
         });
-        return Inertia::render('frontOffice/DishList', [
-                        'asset' => asset('images/food') . '/',
-                        'dishes'=> $dishes,
-                        'defaultPic' => '/todays-special.jpg',
-                        'restaurants'=> $restaurants
-                        ]);
+        $props = [
+            'asset' => asset('images/food') . '/',
+            'dishes'=> $dishes,
+            'defaultPic' => '/todays-special.jpg',
+            'restaurants'=> $restaurants,
+        ];
+        if(Auth::user() !== null){
+            return Inertia::render('frontOffice/DishList', $props);
+        } else {
+            return Inertia::render('Guest/DishList', $props);
+        }
     }
 
     public function restaurantDishes(Request $request){
@@ -53,16 +67,22 @@ class FrontController extends Controller
                         ->select('dishes.*')
                         ->orderBy('dishes.dish_name')
                         ->get();
-        return Inertia::render('frontOffice/RestaurantDishes', [
-                                'restaurant' =>$restaurant,
-                                'dishes'=> $dishes,
-                                'asset' => asset('images/food'). '/',
-                                'defaultPic' => '/todays-special.jpg',
-                                ]);
+        $props =  [
+            'restaurant' =>$restaurant,
+            'dishes'=> $dishes,
+            'asset' => asset('images/food'). '/',
+            'defaultPic' => '/todays-special.jpg',
+            'userId' => Auth::user()?->id,
+        ];
+        if(Auth::user() !== null){
+            return Inertia::render('frontOffice/RestaurantDishes', $props);
+        } else {
+            return Inertia::render('Guest/RestaurantDishes', $props);
+        }
     }
 
     public function sortAndFilter(Request $request){
-
+        dump('ceeee');
         if($request->filter == 0){
             $dishes = match($request->price_sort){
                 'asc'=>Dish::select('dishes.id as dish_id', 'dishes.*')
@@ -75,17 +95,21 @@ class FrontController extends Controller
                 ->get(),
             };
         } else {
+
             $dishes = match($request->price_sort){
-                'asc'=>Dish::select('dishes.id as dish_id', 'dishes.*')
-                ->where('restaurants.id', '=', $request->filter)
+                'asc'=> Dish::whereHas('restaurants', function(Builder $query) use ($request){
+                    $query->where('id', '=', $request->filter);
+                })->select('dishes.id as dish_id', 'dishes.*')
                 ->orderBy('price', 'asc')
                 ->get(), 
-                'desc'=>Dish::select('dishes.id as dish_id', 'dishes.*')
-                ->where('restaurants.id', '=', $request->filter)
+                'desc'=> Dish::whereHas('restaurants', function(Builder $query) use ($request){
+                    $query->where('id', '=', $request->filter);
+                })->select('dishes.id as dish_id', 'dishes.*')
                 ->orderBy('price', 'desc')
                 ->get(),
-                default => Dish::select('dishes.id as dish_id', 'dishes.*')
-                ->where('restaurants.id', '=', $request->filter)
+                default => Dish::whereHas('restaurants', function(Builder $query) use ($request){
+                    $query->where('id', '=', $request->filter);
+                })->select('dishes.id as dish_id', 'dishes.*')
                 ->get(),
             };
         }

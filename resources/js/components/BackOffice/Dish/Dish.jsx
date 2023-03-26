@@ -1,23 +1,25 @@
 import axios from "axios";
 import RestaurantInDish from "./RestaurantInDish";
-function Dish({dish, asset, defaultPic, setNewestDishes, newestDishes, setModalInfo, setMessage, setDishForEdit}) {
+function Dish({dish, asset, defaultPic, setNewestDishes, newestDishes, setModalInfo, setMessage, setDishForEdit, zoomDOM, zoomSmaller, zoomBack}) {
 
 
     const deleteDish = () => {
         axios.delete(route('dish-delete') + '/' + dish.id)
         .then(res => {
             setNewestDishes(newestDishes.filter((oneDish) =>  oneDish.id != dish.id))
-            setMessage(res.data.message)
             setModalInfo(null);
+            zoomBack();
+            setMessage(res.data.message);
         })
     }
     
     const showModal = () => {
-        setModalInfo({text: 'Are you sure you want to delete dish' + dish.dish_name, confirm:deleteDish})
+        setModalInfo({text: 'Are you sure you want to delete dish' + dish.dish_name, confirm:deleteDish, 'zoomDOM':zoomDOM})
     }
 
     const showEdit = () => {
         setDishForEdit(dish);
+        zoomSmaller();
     }
     return (
         <li className="align-center">
@@ -33,9 +35,9 @@ function Dish({dish, asset, defaultPic, setNewestDishes, newestDishes, setModalI
                         (dish.restaurants).map((restaurant, index) => <RestaurantInDish key={index} restaurant={restaurant} index={index} allRestaurants={dish.restaurants}></RestaurantInDish>)
                     }
                 </li>
-                <li className="d-flex gap-3">
-                    <div className="btn btn-outline-danger" onClick={showEdit}>Edit</div>
-                    <div className="btn btn-danger" onClick={showModal}>Delete</div>
+                <li className="d-flex gap-2">
+                    <button className="one-color-btn orange-outline-btn btn-xs" onClick={showModal}>Delete</button>
+                    <button className="one-color-btn brown-btn btn-xs" onClick={showEdit}>Edit</button>
                 </li>
             </ul>
         </li>

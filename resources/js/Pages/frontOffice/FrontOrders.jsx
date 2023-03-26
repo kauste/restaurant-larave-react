@@ -13,9 +13,6 @@ function FrontOrders(props) {
     useEffect(() => {
         setOrders(props.orders);
         setZoomDOM(zoomContainer.current);
-        const forBgColor = document.querySelector('.authentificated-layout');
-        forBgColor.style.background = 'rgb(236,202,88)';
-        forBgColor.style.background = 'linear-gradient(204deg, rgba(86,67,14,1) 0%, rgba(236,202,88,1) 50%, rgba(86,67,14,1) 100%)';
     }, [])
     // window.addEventListener('storage', () => {
     //     if(localStorage.getItem('message')){

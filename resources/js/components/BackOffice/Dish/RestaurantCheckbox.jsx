@@ -8,7 +8,7 @@ function RestaurantCheckbox ({oneRestaurant, checkBoxData, setCheckboxData, chec
     }
 
     useEffect(() => {
-        if(checkedRestaurants.includes(oneRestaurant.id)){
+        if( checkedRestaurants !== undefined && checkedRestaurants !== null && checkedRestaurants.includes(oneRestaurant.id)){
             setIsChecked(r => !r)
         }
     }, [checkedRestaurants])

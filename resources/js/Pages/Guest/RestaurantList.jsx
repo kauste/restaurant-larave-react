@@ -1,5 +1,5 @@
 import Restaurant from "@/components/frontOffice/restaurants/Restaurant";
-import Authenticated from "@/Layouts/Authenticated";
+import GuestLayout from "@/Layouts/GuestLayout";
 import { Head } from "@inertiajs/inertia-react";
 import { useEffect, useState } from "react";
 
@@ -8,9 +8,8 @@ function RestaurantList(props) {
     useEffect(() => {
         setRestaurantList(props.restaurants);
     }, [])
-
     return (
-        <Authenticated auth={props.auth}>
+        <GuestLayout>
             <Head title="Restaurants"/>
             <div className="py-12 restaurant-list-front">
                 <div className="max-w-7xl mx-auto  lg:px-8">
@@ -45,7 +44,7 @@ function RestaurantList(props) {
                     </div>
                 </div>
             </div>
-        </Authenticated>
+        </GuestLayout>
     )
 }
 export default RestaurantList;

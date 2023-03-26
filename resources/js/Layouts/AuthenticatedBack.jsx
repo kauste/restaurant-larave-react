@@ -27,19 +27,13 @@ export default function AuthenticatedBack({ auth, header, children, message }) {
                     </div>
                     <div className="hidden sm:flex sm:items-center sm:ml-6">
                         <div className="nav-cart-link-box">
-                            <div className="h-24">
-                                <Link href={route('restaurant-list')} className="nav-cart-link">Restaurants</Link>
-                            </div>
+                            <Link href={route('restaurant-list')} className="nav-cart-link h-24">Restaurants</Link>
                         </div>
                         <div className="nav-cart-link-box">
-                            <div className="h-24">
-                                <Link href={route('dish-list')} className="nav-cart-link">Dishes</Link>
-                            </div>
+                            <Link href={route('dish-list')} className="nav-cart-link h-24">Dishes</Link>
                         </div>
                         <div className="nav-cart-link-box">
-                            <div className="h-24">
-                                <Link className="nav-cart-link" href={route('back-order')} >Orders</Link>
-                            </div>
+                            <Link className="nav-cart-link h-24" href={route('back-order')} >Orders</Link>
                         </div>
                         <div className="relative nav-dropdown ">
                             <Dropdown>

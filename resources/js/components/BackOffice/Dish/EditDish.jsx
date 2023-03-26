@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import RestaurantCheckbox from "./RestaurantCheckbox";
 
-function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, setMessage }) {
+function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, setMessage, zoomBack }) {
     if (typeof(dishForEdit) === 'object' && dishForEdit !== null) {
 
         const [checkBoxData, setCheckboxData] = useState([]);
@@ -23,7 +23,7 @@ function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, s
 
         useEffect(() => {
             dishForEdit.picture = null;
-            if(dishForEdit.restaurants !== [] || dishForEdit.restaurants !== null){
+            if(dishForEdit.restaurants !== null){
                 dishForEdit.restaurants.forEach(restaurant => {
                     setCheckedRestaurants(values => ([...values, restaurant.id]))
                 });
@@ -39,9 +39,14 @@ function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, s
             .then(res => {
                 const editedDish = {...res.data.editedDish, restaurants:res.data.restaurants}
                 setNewestDishes(values => ([...values.filter(d => d.id !== editedDish.id), editedDish]))
-                setMessage(res.data.message);
                 setDishForEdit(null);
+                zoomBack();
+                setMessage(res.data.message);
             })
+        }
+        const cancel = () => {
+            setDishForEdit(null)
+            zoomBack();
         }
         return (
             <div className="modal-box">
@@ -50,7 +55,7 @@ function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, s
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Edit dish</h5>
-                                <button type="button" className="close" onClick={() => setDishForEdit(null)}>
+                                <button type="button" className="close" onClick={cancel}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -90,8 +95,8 @@ function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, s
                                 </form>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="btn btn-danger" onClick={updateDish}>Create</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => setDishForEdit(null)}>Cancel</button>
+                                <button type="button" className="btn btn-danger" onClick={updateDish}>Edit</button>
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={cancel}>Cancel</button>
                             </div>
                         </div>
                     </div>

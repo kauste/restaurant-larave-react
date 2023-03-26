@@ -21,7 +21,7 @@ function AreYouSureModal({modalInfo, setModalInfo}) {
             }, 0.3)
         }
         return (
-            <div className="modal-box" style={{}}>
+            <div className="modal-box">
               <div className="modal-mine" role="dialog">
                     <div role="document">
                         <div className="modal-content">

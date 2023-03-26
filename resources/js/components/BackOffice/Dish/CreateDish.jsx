@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import RestaurantCheckbox from "./RestaurantCheckbox";
 
-function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, setNewestDishes, setMessage }) {
+function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, setNewestDishes, setMessage, zoomBack }) {
     if (shouldCreate === true) {
         const [formData, setFormData] = useState({ restaurants: [],
                                                   dish_name: '',
@@ -32,9 +32,14 @@ function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, 
             .then(res => {
                 const newestDish = {...res.data.newDish, restaurants:res.data.restaurants}
                 setNewestDishes([...newestDishes, newestDish])
-                setMessage(res.data.message)
                 setShouldCreate(false)
+                zoomBack()
+                setMessage(res.data.message)
             })
+        }
+        const cancel = () => {
+            setShouldCreate(false);
+            zoomBack()
         }
         return (
             <div className="modal-box">
@@ -43,7 +48,7 @@ function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, 
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Create new dish</h5>
-                                <button type="button" className="close" onClick={() => setShouldCreate(false)}>
+                                <button type="button" className="close" onClick={cancel}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -83,8 +88,8 @@ function CreateDish({ setShouldCreate, shouldCreate, restaurants, newestDishes, 
                                 </form>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={cancel}>Cancel</button>
                                 <button type="button" className="btn btn-danger" onClick={createDish}>Create</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => setShouldCreate(false)}>Cancel</button>
                             </div>
                         </div>
                     </div>

@@ -119,8 +119,6 @@ class OrderController extends Controller
         return response()->json(['message'=> 'Thank you for your order. Delivery information will appear on you order as soon as possible.']);
 
     }
-
-
     public function updateAdress(Request $request)
     {
         $contacts = ContactInfo::where('order_id', $request->orderId)->first();
@@ -134,7 +132,8 @@ class OrderController extends Controller
         $contacts->save();
         return response()->json(['message' => 'Contact information is edited.']);
     }
-    public function getInvoice(Request $request){
+    public function getInvoice(Request $request)
+    {
         $order = Order::where('orders.id', $request->orderId)
                         ->first();
         $order->food = Dish::join('dish_order','dish_order.dish_id', 'dishes.id')
@@ -184,7 +183,11 @@ class OrderController extends Controller
                                     $totalPrice += $item['pivot']['amount'] * $item['price'];
                             }
                             if($order->delivery_choice === 1){
+                                $order->deliveryPrice = Order::DELIVERY_PRICE;
                                 $totalPrice += Order::DELIVERY_PRICE;                          
+                            }
+                            else{
+                                $order->deliveryPrice = 0;
                             }
                             $order->totalPrice = $totalPrice;
                             $order->created = Carbon::create($order->created_at, 'UTC+2')->format('Y-m-d H:m');
@@ -195,5 +198,12 @@ class OrderController extends Controller
         $statuses = Order::STATUS;
         $deliveryChoices = Order::DELIVERY_CHOICES;
         return Inertia::render('BackOffice/OrderList', ['orders' => $orders, 'statuses' => $statuses, 'deliveryChoices' => $deliveryChoices]);
+    }
+    public function changeStatus(Request $request)
+    {
+        Order::where('id', $request->id)
+                ->update(['status' => $request->statusValue]);
+
+        return response()->json(['msg' => 'Status is changed']);
     }
 }

@@ -1,17 +1,23 @@
 import axios from "axios";
 import { useState } from "react";
-function DishInRestaurant({dish, asset, setMessage, defaultPic, restaurantId}) {
+function DishInRestaurant({dish, asset, setMessage, defaultPic, restaurantId, userId, setShouldShowModal}) {
 
  const [amount, setAmount] = useState(1);
 
     function addToCart(){
-        axios.post(route('user-add-to-cart'), {id:dish.id, dish_name:dish.dish_name, amount:amount, restaurant_id:restaurantId})
-        .then(res => {
-            setMessage(res.data.message);
-            setTimeout(()=> {
-            setMessage(null)
-            }, 20000)
-        })
+        console.log(userId);
+        if(userId !== null){
+            axios.post(route('user-add-to-cart'), {id:dish.id, dish_name:dish.dish_name, amount:amount, restaurant_id:restaurantId})
+            .then(res => {
+                setMessage(res.data.message);
+                setTimeout(()=> {
+                setMessage(null)
+                }, 20000)
+            })
+        }
+        else {
+            setShouldShowModal(true);
+        }
     }
 
     return (

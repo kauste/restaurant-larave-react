@@ -1,10 +1,9 @@
 
 import Dish from "@/components/frontOffice/dishes/Dish";
 import SortFilterSearch from "@/components/frontOffice/dishes/SortFilerSearch";
-import Authenticated from "@/Layouts/Authenticated";
+import GuestLayout from "@/Layouts/GuestLayout";
 import { Head } from "@inertiajs/inertia-react";
 import { useEffect, useState } from "react";
-import Contexts from '@/components/Contexts';
 
 function DishList(props) {
     const [restaurantDishes, setRestaurantDishes] = useState([]);
@@ -16,14 +15,13 @@ function DishList(props) {
 
     
     return (
-        <Contexts.FrontContext.Provider value={{setRestaurantDishes, }}>
-        <Authenticated auth={props.auth}>
+        <GuestLayout>
             <Head title="Dishes"/>
             <div className="py-12 dishes-list">
                 <div className="max-w-7xl mx-auto sm:px-0 ">
                     <div className="container">
                         <div className="row justify-content-center">
-                            <SortFilterSearch restaurants={props.restaurants}/>
+                            <SortFilterSearch setRestaurantDishes={setRestaurantDishes} restaurants={props.restaurants}/>
                         </div>
                         <div>
                             <div className="card-header">
@@ -40,9 +38,7 @@ function DishList(props) {
                     </div>
                 </div>
             </div>
-        </Authenticated>
-        </Contexts.FrontContext.Provider>
-
+        </GuestLayout>
     )
 }
 export default DishList;
