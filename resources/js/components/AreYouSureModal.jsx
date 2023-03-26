@@ -10,15 +10,12 @@ function AreYouSureModal({modalInfo, setModalInfo}) {
           };
           
         useEffect(() => {
-            // console.log(modalInfo.zoomDOM);
             modalInfo.zoomDOM.animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
         }, [])
 
         const cancel = () => {
             modalInfo.zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
-            setTimeout(() => {
-                setModalInfo(null)
-            }, 0.3)
+            setModalInfo(null)
         }
         return (
             <div className="modal-box">

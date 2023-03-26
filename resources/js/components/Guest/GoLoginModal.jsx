@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import Contexts from "../Contexts";
 
-function GoLoginModal ({shouldShowModal, setShouldShowModal, zoomDOM}) {
+function GoLoginModal () {
+    const {shouldShowModal, setShouldShowModal, zoomDOM} = useContext(Contexts.FrontContext);
     if(shouldShowModal !== null && shouldShowModal !== undefined && shouldShowModal !== false){
         const backgroundZoomTiming = {
             duration: 300,
@@ -9,16 +11,13 @@ function GoLoginModal ({shouldShowModal, setShouldShowModal, zoomDOM}) {
             easing: 'ease'
           };
         useEffect(() => {
-            // console.log(modalInfo.zoomDOM);
             zoomDOM.animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
         }, [])
 
         const cancel = () => {
             setShouldShowModal(false)
             zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
-            // setTimeout(() => {
-            //     setModalInfo(null)
-            // }, 0.3)
+
         }
         return (
             <div className="modal-box">

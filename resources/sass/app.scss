@@ -168,23 +168,6 @@
             }
         }  
 }
-button, a:not(.restaurant-have-dish){
-    text-transform: uppercase;
-
-}
-.button-href{
-    background: radial-gradient(150px 40px at right bottom,rgb(255, 190, 92), rgb(126,103,71), #6B5133);
-    padding: 8px 20px;
-    color:rgba(223,179,113,1);;
-    text-decoration: none;
-    transition: all 0.4s linear;
-    &:hover{
-        animation: change-color ease-out 0.2s forwards;
-        background: radial-gradient(calc(var(--expand-light) * 1px) calc(var(--expand-light2) * 1px) at right bottom,rgb(255, 190, 92), rgb(126,103,71), #6B5133);
-        color:rgb(55, 45, 31);
-
-    }
-}
 svg{
     .st0{
         fill-rule:evenodd;
@@ -202,6 +185,23 @@ svg{
 }
 .container{
     max-width: calc(100% - 2vw);
+}
+button, a:not(.restaurant-have-dish){
+    text-transform: uppercase;
+
+}
+.button-href{
+    background: radial-gradient(150px 40px at right bottom,rgb(255, 190, 92), rgb(126,103,71), #6B5133);
+    padding: 8px 20px;
+    color:rgba(223,179,113,1);;
+    text-decoration: none;
+    transition: all 0.4s linear;
+    &:hover{
+        animation: change-color ease-out 0.2s forwards;
+        background: radial-gradient(calc(var(--expand-light) * 1px) calc(var(--expand-light2) * 1px) at right bottom,rgb(255, 190, 92), rgb(126,103,71), #6B5133);
+        color:rgb(55, 45, 31);
+
+    }
 }
 .simple-button{
     background-color: #6B5133;

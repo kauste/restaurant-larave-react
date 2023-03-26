@@ -1,11 +1,17 @@
+import Contexts from "@/components/Contexts";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DeliveryInfo from "./DeliveryInfo";
 import OrderDish from "./OrderDish";
 
-function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, setChangeContactOrder, setMessage, zoomDOM }) {
+function FrontOrder({ order }) {
+    const { orders, setOrders, deliveryPrice, statuses, deliveryChoices, setChangeContactOrder, setMessage, setModalInfo, normalBackground, zoomDOM } = useContext(Contexts.FrontContext);
     const [showBody, setShowBody] = useState('d-none');
-    const [contactInfo, setContactInfo] = useState(order.contactInfo);
+    const [contactInfo, setContactInfo] = useState([]);
+
+    useEffect(() => {
+        setContactInfo(order.contactInfo);
+    }, [])
 
     const headerToggle = () => {
         let toggle = showBody === 'd-none' ? '' : 'd-none';
@@ -21,6 +27,20 @@ function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, se
             link.click()
         })
     }
+    const deleteOrder = () => {
+        axios.delete(route('client-delete-order') + '/' + order.id)
+        .then(res => {
+            setOrders(orders.filter((o) => o.id != order.id));
+            normalBackground();
+                setTimeout(() => {
+                setModalInfo(null)
+            }, 0.3)
+            setMessage(res.data.message)
+        })
+    }
+    const areYouSureInfo = {text: 'Are you sure you want to delete this order?', zoomDOM: zoomDOM, confirm:deleteOrder}
+
+    
     return (
         <div className="card order-restaurant">
             <div className="order-card-header" onClick={headerToggle}>
@@ -42,7 +62,7 @@ function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, se
                 </div>
             </div>
             <div className={`card-body ${showBody}`}>
-                <DeliveryInfo deliveryChoice={order.delivery_choice} orderId={order.id} contactInfo={contactInfo} setContactInfo={setContactInfo} orderStatus={order.status} setChangeContactOrder={setChangeContactOrder} setMessage={setMessage} zoomDOM={zoomDOM}></DeliveryInfo>
+                <DeliveryInfo deliveryChoice={order.delivery_choice} orderId={order.id} contactInfo={contactInfo} setContactInfo={setContactInfo} orderStatus={order.status} setChangeContactOrder={setChangeContactOrder}></DeliveryInfo>
                 <ul className="bold order-grid">
                     <li></li>
                     <li>Dish</li>
@@ -51,7 +71,7 @@ function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, se
                     <li>All units price</li>
                 </ul>
                 {
-                    order.dishes.map((orderDish, index) => <OrderDish key={index} orderDish={orderDish} asset={asset}></OrderDish>)
+                    order.dishes.map((orderDish, index) => <OrderDish key={index} orderDish={orderDish}></OrderDish>)
                 }
                 <ul className="grid-for-extra">
                     <li className="grid-item-invoice">
@@ -72,10 +92,13 @@ function FrontOrder({ asset, order, deliveryPrice, statuses, deliveryChoices, se
                     <li>{order.totalPrice} eu.</li>
                 </ul>
             </div>
-            {/* <div className="d-flex justify-content-end gap-3 p-4">
-            <button className="btn btn-outline-danger btn-lg" type="button" onClick={showModal}>Cancel</button>
-            <button className="btn btn-danger btn-lg" type="button" onClick={confirmOrderModal}>Order</button>
-        </div> */}
+            {
+                order.status === 1 ?
+                <div className="d-flex justify-content-end pb-3">
+                    <button className="one-color-btn orange-outline-btn" type="button" onClick={() => setModalInfo(areYouSureInfo)}>Cancel</button>
+                </div> 
+                : null
+            }
         </div>
     )
 }

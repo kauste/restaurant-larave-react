@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCartData, restaurant, setMessage, zoomDOM}){
+function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCartData, restaurant, setMessage, zoomDOM, normalBackground}){
     const [amount, setAmount] = useState(cartDish.amount);
     const deleteItem = () => {
         axios.delete(route('delete-cart-item') + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id)
@@ -15,14 +15,7 @@ function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCa
                 setCartData(cartData.filter((dish) => dish.restaurant_id !== cartDish.restaurant_id || dish.dish_id !== cartDish.dish_id));
                 msg = res.data.message;
             }
-            const backgroundZoomTiming = {
-                duration: 300,
-                iterations: 1,
-                fill:'forwards',
-                easing: 'ease'
-              };
-              zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
-
+            normalBackground();
             setModalInfo(null);
             setMessage(msg)
         })

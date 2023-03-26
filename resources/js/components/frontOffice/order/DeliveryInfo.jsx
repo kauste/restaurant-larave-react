@@ -1,9 +1,14 @@
-function DeliveryInfo({deliveryChoice, contactInfo, setContactInfo, orderStatus, setChangeContactOrder, orderId, setMessage, zoomDOM}){
+import Contexts from "@/components/Contexts";
+import { useContext } from "react";
+
+function DeliveryInfo({deliveryChoice, contactInfo, setContactInfo, orderStatus, setChangeContactOrder, orderId}){
+    const {setMessage, zoomDOM} = useContext(Contexts.FrontContext);
 
     const changeAdress = () => {
         setChangeContactOrder({orderId:orderId, contactInfo:contactInfo, setContactInfo:setContactInfo, setMessage: setMessage, zoomDOM:zoomDOM});
     }
-    if(deliveryChoice === 1){
+
+    if( contactInfo !== undefined && deliveryChoice === 1){
         return (
                 <div className="order-delivery-info-box">
                     <div className="order-delivery-info">

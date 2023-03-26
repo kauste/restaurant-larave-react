@@ -1,63 +1,64 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DeliveryAdress from "./DeliveryAdress";
 import axios from "axios";
 import Messages from "../../Messages";
+import Contexts from "@/components/Contexts";
 
-function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, setCart, zoomDOM }) {
+function ConfirmCartModal() {
+    
+    const {comfirmModalInfo, setComfirmModalInfo, cart, setCart, setCurier, courierData, messages, setMessages, smallerBackground, normalBackground} = useContext(Contexts.FrontContext);
+    const [delivery, setDelivery] = useState(null);
+    const [deliveryChoice, setDeliveryChoice] = useState('');
+
+    useEffect(() => {
+        if(comfirmModalInfo !== null && comfirmModalInfo !== undefined){
+            smallerBackground();        
+        }
+        else if(comfirmModalInfo !== undefined) {
+            normalBackground();        
+        }
+    }, [comfirmModalInfo])
+
+    useEffect(()=> {
+        if(delivery === null) return;
+        axios.post(route('confirm-cart'), {restaurantId:comfirmModalInfo.restaurantId, deliveryData:delivery})
+        .then(res => {
+            normalBackground();
+            if(res.data.errors !== undefined){
+                setMessages(res.data.errors);
+                setTimeout(()=> {
+                    setMessages(null)
+                }, 50000)
+            }
+            else{
+                setCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== comfirmModalInfo.restaurantId));
+                setDelivery(null);
+                setComfirmModalInfo(null);
+                comfirmModalInfo.setMessage(res.data.message)
+            }
+          
+
+        })
+    }, [delivery])
 
     if (comfirmModalInfo !== null && comfirmModalInfo != undefined) {
-        const [messages, setMessages] = useState(null);
-        const [courier, setCurier] = useState(false);
-        const [courierData, setCourierData] = useState({});
-        const [delivery, setDelivery] = useState(null);
-        const [deliveryChoice, setDeliveryChoice] = useState('');
-        const backgroundZoomTiming = {
-            duration: 300,
-            iterations: 1,
-            fill:'forwards',
-            easing: 'ease'
-          };
           const cancel = () => {
-              zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
+            setCurier(false);
+            setDeliveryChoice('');
               setTimeout(() => {
                   setComfirmModalInfo(null)
               }, 0.3)
           }
-          useEffect(() => {
-              zoomDOM.animate([{ transform:'scale(0.9)'}], backgroundZoomTiming)
-          }, [])
 
         const onOptionChange = (e) => {
             setDeliveryChoice(e.target.value);
             e.target.value === '1' ? setCurier(true) : setCurier(false);
-          }
+        }
         
         const confirmCart = () => {
-            const deliveryInfo = {deliveryChoice: deliveryChoice, courierData: deliveryChoice === '1' ? courierData : null}
+            const deliveryInfo = {deliveryChoice: deliveryChoice, courierData: courierData}
             setDelivery(deliveryInfo)
         }        
-
-        useEffect(()=> {
-            if(delivery === null) return;
-            axios.post(route('confirm-cart'), {restaurantId:comfirmModalInfo.restaurantId, deliveryData:delivery})
-            .then(res => {
-                zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
-                if(res.data.errors !== undefined){
-                    setMessages(res.data.errors);
-                    setTimeout(()=> {
-                        setMessages(null)
-                    }, 50000)
-                }
-                else{
-                    setCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== comfirmModalInfo.restaurantId));
-                    setDelivery(null);
-                    setComfirmModalInfo(null);
-                    comfirmModalInfo.setMessage(res.data.message)
-                }
-              
-
-            })
-        }, [delivery])
         
         return (
             <div className="modal-box">
@@ -82,7 +83,7 @@ function ConfirmCartModal({ comfirmModalInfo, setComfirmModalInfo, cart, setCart
                                         <label htmlFor="courier">Delivery by courier ({comfirmModalInfo.deliveryPrice} eu.)</label>
                                     </div>
                                 </div>
-                                <DeliveryAdress courier={courier} setCourierData={setCourierData} courierData={courierData}></DeliveryAdress>
+                                <DeliveryAdress></DeliveryAdress>
                             </form>
                             <div className="d-flex gap-3 justify-content-end">
                                 <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={cancel}>Cancel</button>

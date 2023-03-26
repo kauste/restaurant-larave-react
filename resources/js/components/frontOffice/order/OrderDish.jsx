@@ -1,5 +1,9 @@
-function OrderDish({asset, orderDish}){
+import Contexts from "@/components/Contexts";
+import { useContext } from "react";
 
+function OrderDish({ orderDish}){
+
+    const { asset } = useContext(Contexts.FrontContext);
 
     return(
         <ul className="order-grid">

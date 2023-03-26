@@ -206,4 +206,9 @@ class OrderController extends Controller
 
         return response()->json(['msg' => 'Status is changed']);
     }
+    public function clientDeleteOrder(Request $request)
+    {
+        Order::where('id', $request->orderId)->delete();
+        return response()->json(['message' => 'Order is canceled. If you would like, you can now form a new order.']);
+    }
 }

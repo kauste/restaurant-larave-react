@@ -1,5 +1,8 @@
+import Contexts from "@/components/Contexts";
+import { useContext } from "react";
 import RestaurantInDish from "./RestaurantInDish";
-function Dish({dish, asset, defaultPic}) {
+function Dish({dish}) {
+    const {asset, defaultPic} = useContext(Contexts.FrontContext);
     return (
         <li className="align-center">
             <ul className="one-dish">

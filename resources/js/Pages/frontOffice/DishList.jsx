@@ -7,23 +7,29 @@ import { useEffect, useState } from "react";
 import Contexts from '@/components/Contexts';
 
 function DishList(props) {
+
     const [restaurantDishes, setRestaurantDishes] = useState([]);
-    const defaultPic = props.defaultPic;
+    const [defaultPic, setDefaultPic]= useState('');
+    const [asset, setAsset] = useState('');
+    const [restaurants, setRestaurants] = useState([]);
 
     useEffect(() => {
         setRestaurantDishes(props.dishes);
+        setDefaultPic(props.defaultPic);
+        setAsset(props.asset);
+        setRestaurants(props.restaurants)
     }, [])
 
     
     return (
-        <Contexts.FrontContext.Provider value={{setRestaurantDishes, }}>
+        <Contexts.FrontContext.Provider value={{setRestaurantDishes, defaultPic, asset, restaurants}}>
         <Authenticated auth={props.auth}>
             <Head title="Dishes"/>
             <div className="py-12 dishes-list">
                 <div className="max-w-7xl mx-auto sm:px-0 ">
                     <div className="container">
                         <div className="row justify-content-center">
-                            <SortFilterSearch restaurants={props.restaurants}/>
+                            <SortFilterSearch/>
                         </div>
                         <div>
                             <div className="card-header">
@@ -32,7 +38,7 @@ function DishList(props) {
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        restaurantDishes.map((dish, index) => <Dish key={index} dish={dish} defaultPic={defaultPic} asset={props.asset} orderUrl={props.orderUrl}></Dish>)
+                                        restaurantDishes.map((dish, index) => <Dish key={index} dish={dish}></Dish>)
                                     }
                                 </ul>
                             </div>

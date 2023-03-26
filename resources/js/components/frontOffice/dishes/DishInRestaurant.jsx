@@ -1,18 +1,17 @@
+import Contexts from "@/components/Contexts";
 import axios from "axios";
-import { useState } from "react";
-function DishInRestaurant({dish, asset, setMessage, defaultPic, restaurantId, userId, setShouldShowModal}) {
+import { useContext, useState } from "react";
 
- const [amount, setAmount] = useState(1);
+function DishInRestaurant({dish, setShouldShowModal}) {
+
+    const {asset, setMessage, defaultPic, restaurantId, userId} = useContext(Contexts.FrontContext);
+    const [amount, setAmount] = useState(1);
 
     function addToCart(){
-        console.log(userId);
         if(userId !== null){
             axios.post(route('user-add-to-cart'), {id:dish.id, dish_name:dish.dish_name, amount:amount, restaurant_id:restaurantId})
             .then(res => {
                 setMessage(res.data.message);
-                setTimeout(()=> {
-                setMessage(null)
-                }, 20000)
             })
         }
         else {

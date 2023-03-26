@@ -7,7 +7,6 @@ function OrderList(props) {
 
     const [orders, setOrders] = useState([]);
     useEffect(() => {
-        console.log(props.orders)
         setOrders(props.orders)
     })
     const [message, setMessage] = useState(null);

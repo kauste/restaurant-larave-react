@@ -60,9 +60,6 @@ Route::get('/dish-sort-and-filter', [FrontController::class, 'sortAndFilter'])->
 Route::get('/search-dish', [FrontController::class, 'searchDish'])->name('search-dish');
 //Front offce
 Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
-//restaurant
-//dishes
-//cart
 Route::get('show-cart', [CartController::class, 'showCart'])->name('show-cart');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('user-add-to-cart');
 Route::delete('/delete-cart-item/{dishId?}/{restaurantId?}', [CartController::class, 'deleteCartItem'])->name('delete-cart-item');
@@ -73,7 +70,7 @@ Route::post('/order-store', [OrderController::class, 'store'])->name('confirm-ca
 Route::get('/show-orders', [OrderController::class, 'index'])->name('show-orders');
 Route::put('/update-order-adress/{orderId?}', [OrderController::class, 'updateAdress'])->name('update-order-adress');
 Route::get('/get-invoice/{orderId?}', [OrderController::class, 'getInvoice'])->name('get-invoice');
-
+Route::delete('client-delete-order/{orderId?}', [OrderController::class, 'clientDeleteOrder'])->name('client-delete-order');
 });
 
 require __DIR__.'/auth.php';

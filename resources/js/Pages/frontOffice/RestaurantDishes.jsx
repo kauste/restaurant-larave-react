@@ -2,22 +2,30 @@ import Authenticated from "@/Layouts/Authenticated";
 import { Head } from "@inertiajs/inertia-react";
 import DishInRestaurant from "@/components/frontOffice/dishes/DishInRestaurant";
 import { useEffect, useState } from "react";
+import Contexts from "@/components/Contexts";
 
 function RestaurantDishes(props){
+
     const [message, setMessage] = useState(null);
     const [dishes, setDishes] = useState([]);
     const [defaultPic, setDefaultPic] = useState('')
     const [restaurant, setRestaurant] = useState({});
+    const [restaurantId, setRestaurantId] = useState(null);
+    const [userId, setUserId] = useState(null);
     const [asset, setAsset] = useState('');
+
     useEffect(() =>{
         setDishes(props.dishes);
         setDefaultPic(props.defaultPic);
         setRestaurant(props.restaurant);
         setAsset(props.asset);
+        setRestaurantId(props.restaurant.id);
+        setUserId(props.userId);
     }, [])
+
     return (
-        <Authenticated auth={props.auth}
-                    message={message}>
+        <Contexts.FrontContext.Provider value={{defaultPic, restaurantId, asset, setMessage, userId, message}}>
+        <Authenticated auth={props.auth}>
             <Head title={restaurant.restaurant_name}/>
             <div className="py-12 dishes-list one-restaurant-dishes">
                 <div className="max-w-7xl mx-auto sm:px-0 ">
@@ -39,7 +47,7 @@ function RestaurantDishes(props){
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        dishes.map((dish, index) => <DishInRestaurant key={index} dish={dish} defaultPic={defaultPic} restaurantId={restaurant.id} asset={asset} setMessage={setMessage}></DishInRestaurant>)
+                                        dishes.map((dish, index) => <DishInRestaurant key={index} dish={dish}></DishInRestaurant>)
                                     }
                                 </ul>
                             </div>
@@ -48,6 +56,7 @@ function RestaurantDishes(props){
                 </div>
             </div>
         </Authenticated>
+        </Contexts.FrontContext.Provider>
     )
 }
 export default RestaurantDishes;

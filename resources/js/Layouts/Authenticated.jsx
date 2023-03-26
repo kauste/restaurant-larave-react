@@ -1,4 +1,4 @@
-import React, {  useEffect, useRef, useState } from 'react';
+import React, {  useContext, useEffect, useRef, useState } from 'react';
 import ApplicationLogo from '@/components/inertiaComponents/ApplicationLogo';
 import Dropdown from '@/components/inertiaComponents/Dropdown';
 import Message from '@/components/Message';
@@ -9,21 +9,33 @@ import AreYouSureModal from "@/components/AreYouSureModal";
 import ConfirmCartModal from '@/components/frontOffice/cart/ConfirmCartModal';
 import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfoModal';
 import Footer from '@/components/frontOffice/Footer';
+import Contexts from '@/components/Contexts';
 
-export default function Authenticated({ auth, header, message, children, modalInfo, setModalInfo, comfirmModalInfo, setComfirmModalInfo, changeContactOrder, setChangeContactOrder, cart, setCart, setContactInfo, zoomDOM}) {
+export default function Authenticated({ auth, header, children, modalInfo, setModalInfo, }) {
     
+    const {message, setMessage} = useContext(Contexts.FrontContext);
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [navDOM, setNavDOM] = useState(null);
     const navRef = useRef();
     const authentificatedDOM = useRef();
+
     useEffect(() => {
         setNavDOM(navRef.current)
     }, [])
+
+    useEffect(() => {
+        if(message !== null){
+            setTimeout(()=> {
+                setMessage(null)
+                }, 20000)
+        }
+    }, [message])
+
     return (
             <div className="authentificated-layout" ref={authentificatedDOM}>
-                            <EditContactInfoModal  changeContactOrder={changeContactOrder} setChangeContactOrder={setChangeContactOrder} setContactInfo={setContactInfo}></EditContactInfoModal>
+                            <EditContactInfoModal></EditContactInfoModal>
                             <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
-                            <ConfirmCartModal comfirmModalInfo={comfirmModalInfo} setComfirmModalInfo={setComfirmModalInfo} cart={cart} setCart={setCart} zoomDOM={zoomDOM}></ConfirmCartModal>
+                            <ConfirmCartModal></ConfirmCartModal>
                 <nav ref={navRef}>
                     <div className="nav-box">
                             <div className="flex items-center">

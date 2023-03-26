@@ -1,12 +1,25 @@
 import axios from "axios";
 import CartDish from "./CartDish";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import Contexts from "@/components/Contexts";
 
-function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComfirmModalInfo, cart, setMessage, setCart, zoomDOM}){
+function CartRestaurant({restaurant}){
     
-    const [cartData, setCartData] = useState(restaurant.cartInfo);
+    const {asset, deliveryPrice, setModalInfo, setComfirmModalInfo, cart, setMessage, setCart, zoomDOM} = useContext(Contexts.FrontContext);
+    const [cartData, setCartData] = useState([]);
 
+    useEffect(() => {
+        setCartData(restaurant.cartInfo)
+    }, [])
 
+    const showModal = () => {
+        setModalInfo({'text':'Are you sure you want to delete this cart?', 'confirm': cancelCart, 'zoomDOM':zoomDOM});
+    }
+
+    const confirmOrderModal =() => {
+        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'restaurantId': restaurant.cartInfo[0].restaurant_id, 'setMessage':setMessage});
+    }
+    
     const cancelCart = () => {
         axios.delete(route('delete-cart') + '/' + restaurant.cartInfo[0].restaurant_id)
         .then(res => {
@@ -14,13 +27,6 @@ function CartRestaurant({restaurant, asset, deliveryPrice, setModalInfo, setComf
             setModalInfo(null);
             setMessage(res.data.message)
         })
-    }
-    const showModal = () => {
-        setModalInfo({'text':'Are you sure you want to delete this cart?', 'confirm': cancelCart, 'zoomDOM':zoomDOM});
-    }
-
-    const confirmOrderModal =() => {
-        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'restaurantId': restaurant.cartInfo[0].restaurant_id, 'setMessage':setMessage});
     }
     return(
             <div className="card cart-restaurant">

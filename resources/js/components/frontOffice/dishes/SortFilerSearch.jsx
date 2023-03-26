@@ -1,9 +1,9 @@
 import Contexts from "@/components/Contexts";
 import axios from "axios";
 import { useContext, useState } from "react";
-function SortFilterSearch({restaurants}){
+function SortFilterSearch(){
     
-    const {setRestaurantDishes} = useContext(Contexts.FrontContext);
+    const {setRestaurantDishes, restaurants} = useContext(Contexts.FrontContext);
 
     const [selectValue, setSelectValue] = useState('default');
     const [restaurant, setRestaurant] = useState(0);
