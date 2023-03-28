@@ -121,14 +121,37 @@ class OrderController extends Controller
     }
     public function updateAdress(Request $request)
     {
+        $courierData = $request->all();
+        $validator = Validator::make($courierData, [
+            'city' => 'required|string|min:3|max:50',
+            'street' =>'required|string|min:3|max:50',
+            'streetNumber'=> 'required|string|min:1|max:8',
+            'flat' => 'nullable|string|min:1|max:8',
+            'postCode'  => 'required|numeric|digits_between:5,8',
+            'telNr' => 'required|numeric|digits:8',
+            'message' => 'nullable|string|min:1|max:200'
+        ]);
+        $validator->after(function ($validator) use ($courierData){
+            $exp = '/6\d{7}/';
+            if (preg_match($exp, $courierData['telNr']) != 1) {
+                $validator->errors()->add('telNr', 'Invalid telephone number!');
+            }
+        });
+        dump('yr');
+        if($validator->fails()){
+
+
+            $errors = $validator->errors()->all();
+            return response()->json(['errors' => $errors]);
+        }
         $contacts = ContactInfo::where('order_id', $request->orderId)->first();
-        $contacts->city = $request->all()['city'];
-        $contacts->street = $request->all()['street'];
-        $contacts->street_nr = $request->all()['streetNumber'];
-        $contacts->flat_nr = $request->all()['flat'] ?? null;
-        $contacts->post_code = $request->all()['postCode'];
-        $contacts->telephone_number = $request->all()['telNr'];
-        $contacts->message = $request->all()['message'] ?? null;
+        $contacts->city = $courierData['city'];
+        $contacts->street = $courierData['street'];
+        $contacts->street_nr = $courierData['streetNumber'];
+        $contacts->flat_nr = $courierData['flat'] ?? null;
+        $contacts->post_code = $courierData['postCode'];
+        $contacts->telephone_number = $courierData['telNr'];
+        $contacts->message = $courierData['message'] ?? null;
         $contacts->save();
         return response()->json(['message' => 'Contact information is edited.']);
     }
@@ -208,7 +231,7 @@ class OrderController extends Controller
     }
     public function clientDeleteOrder(Request $request)
     {
-        Order::where('id', $request->orderId)->delete();
+        Order::where('id', (int) $request->orderId)->delete();
         return response()->json(['message' => 'Order is canceled. If you would like, you can now form a new order.']);
     }
 }

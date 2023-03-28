@@ -8,10 +8,22 @@ use App\Models\Restaurant;
 use App\Models\Order;
 use Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
+
 
 class CartController extends Controller
 {
     public function addToCart (Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:dishes,id',
+            'restaurant_id' => 'required|integer|exists:restaurants,id',
+            'amount' => 'required|integer|min:1|max:50'
+        ]);
+        if($validator->stopOnFirstFailure()->fails()){
+            $error = $validator->errors()->all()[0];
+            return response()->json(['message' => $error]);
+        }
+
         $cart = $request->session()->get('cart', collect([]));
         $dishInCart = $cart->where('dish_id', $request->id)->where('restaurant_id', $request->restaurant_id);
         if(count($dishInCart) !== 0){
@@ -23,7 +35,7 @@ class CartController extends Controller
             });
         } 
         else {
-            $cart = $cart->push(['restaurant_id'=> (int) $request->restaurant_id, 'dish_id'=> (int) $request->id, 'amount' => (int) $request->amount]);
+            $cart = $cart->push(['restaurant_id'=> $request->restaurant_id, 'dish_id'=> $request->id, 'amount' => $request->amount]);
         }
         $request->session()->put('cart', $cart);
 
@@ -71,7 +83,7 @@ class CartController extends Controller
         $cart = $request->session()->get('cart', collect([]));
         $cart = $cart->map(function ($item) use ($request) {
             if($item['restaurant_id'] == $request->restaurantId && $item['dish_id'] == $request->dishId){
-                $item['amount'] = $request->amount;
+                $item['amount'] = (int) $request->amount;
             }
             return $item;
         });
