@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import ApplicationLogo from '@/components/inertiaComponents/ApplicationLogo';
 import Dropdown from '@/components/inertiaComponents/Dropdown';
 import NavLink from '@/components/inertiaComponents/NavLink';
 import ResponsiveNavLink from '@/components/inertiaComponents/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
 import Message from '@/components/Message';
+import Contexts from '@/components/Contexts';
+import Footer from '@/components/frontOffice/Footer';
 
-export default function AuthenticatedBack({ auth, header, children, message }) {
+export default function AuthenticatedBack({ auth, header, children }) {
+    const { message } = useContext(Contexts.BackContext);
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [navDOM, setNavDOM] = useState(null);
+    const navRef = useRef();
+
+    useEffect(() => {
+        setNavDOM(navRef.current);
+    }, [])
 
     return (
         <div className="authentificated-layout">
-            <nav>
+            <nav ref={navRef}>
                 <div className="nav-box">
                     <div className="flex items-center">
                         <div className="shrink-0 flex items-center">
@@ -98,7 +107,7 @@ export default function AuthenticatedBack({ auth, header, children, message }) {
                         </div>
                     </div>
                 </div>
-                <Message message={message}></Message>
+                <Message message={message} navDOM={navDOM}></Message>
             </nav>
 
             {header && (
@@ -108,6 +117,7 @@ export default function AuthenticatedBack({ auth, header, children, message }) {
             )}
 
             <main className="main-for-children">{children}</main>
+            <Footer/>
         </div>
     );
 }

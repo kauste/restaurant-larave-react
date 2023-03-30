@@ -15,10 +15,16 @@ use App\Http\Controllers\HomeController;
 // Restaurant
 Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
 Route::get('/restaurant-list', [RestaurantController::class, 'index'])->name('restaurant-list');
-Route::get('/back-restaurant-dishes/{restaurant?}', [RestaurantController::class, 'showDishes'])->name('restaurant-show-dishes'); // not used yet
 Route::post('/restaurant-store', [RestaurantController::class, 'store'])->name('restaurant-store');
 Route::put('/restaurant-update', [RestaurantController::class, 'update'])->name('restaurant-update');
 Route::delete('/restaurant-delete/{id?}', [RestaurantController::class, 'destroy'])->name('restaurant-delete');
+
+
+//Restaurant dishes
+Route::get('/back-restaurant-dishes/{restaurantId?}', [DishController::class, 'restaurantDishes'])->name('restaurant-show-dishes');
+Route::put('/add-dish-to-restaurant/{restaurantId?}', [DishController::class, 'addDishToRestaurant'])->name('add-dish-to-restaurant');
+Route::put('/remove-dish-from-restaurant/{restaurantId?}', [DishController::class, 'removeDishFromRestaurant'])->name('remove-dish-from-restaurant');
+
 
 //Dishes
 Route::get('/dish-list', [DishController::class, 'index'])->name('dish-list');

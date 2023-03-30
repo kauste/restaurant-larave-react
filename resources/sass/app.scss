@@ -474,27 +474,33 @@ nav{
         grid-template-columns: repeat(4, 1fr);
         gap: 30px;
         padding-left:0;
-        .one-dish::before{
-            content: '';
-            display: inline-block;
-            background: rgb(99,72,36);
-            background: linear-gradient(90deg, rgba(99,72,36,0.8367248022255778) 11%, rgba(126,103,71,1) 19%, rgba(126,103,71,1) 23%,rgba(223,179,113,1) 42%, rgba(128,105,73,0.7835035137101716) 100%);
-            width: 4px;
-            height: 158px;
-            top:50px;
-            left:25px;
-            position: absolute;
+        &.back-restaurant-dish-list-grid {
+            grid-template-columns: repeat(6, 1fr);
+
         }
-        .one-dish::after{
-            content: '';
-            display: inline-block;
-            background: rgb(99,72,36);
-            background: linear-gradient(0deg, rgba(99,72,36,0.8367248022255778) 11%, rgba(126,103,71,1) 19%, rgba(126,103,71,1) 23%, rgba(223,179,113,1) 42%, rgba(128,105,73,0.7835035137101716) 100%);
-            width: 178px;
-            height: 4px;
-            top:208px;
-            left:25px;
-            position: absolute;
+        &:not(.back-restaurant-dish-list-grid){
+            .one-dish::before{
+                content: '';
+                display: inline-block;
+                background: rgb(99,72,36);
+                background: linear-gradient(90deg, rgba(99,72,36,0.8367248022255778) 11%, rgba(126,103,71,1) 19%, rgba(126,103,71,1) 23%,rgba(223,179,113,1) 42%, rgba(128,105,73,0.7835035137101716) 100%);
+                width: 4px;
+                height: 158px;
+                top:50px;
+                left:25px;
+                position: absolute;
+            }
+            .one-dish::after{
+                content: '';
+                display: inline-block;
+                background: rgb(99,72,36);
+                background: linear-gradient(0deg, rgba(99,72,36,0.8367248022255778) 11%, rgba(126,103,71,1) 19%, rgba(126,103,71,1) 23%, rgba(223,179,113,1) 42%, rgba(128,105,73,0.7835035137101716) 100%);
+                width: 178px;
+                height: 4px;
+                top:208px;
+                left:25px;
+                position: absolute;
+            }
         }
         .one-dish{
             padding-left:0;

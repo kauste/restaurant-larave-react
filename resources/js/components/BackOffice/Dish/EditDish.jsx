@@ -1,14 +1,33 @@
 
+import Contexts from "@/components/Contexts";
+import Messages from "@/components/Messages";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RestaurantCheckbox from "./RestaurantCheckbox";
 
-function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, setMessage, zoomBack }) {
-    if (typeof(dishForEdit) === 'object' && dishForEdit !== null) {
+function EditDish() {
 
-        const [checkBoxData, setCheckboxData] = useState([]);
-        const [checkedRestaurants, setCheckedRestaurants] = useState([]);
-     
+    const {dishForEdit, setDishForEdit , restaurants, setNewestDishes, setMessage, messages, setMessages, zoomBack, shouldEdit, setShouldEdit } = useContext(Contexts.BackContext);
+    const [checkBoxData, setCheckboxData] = useState([]);
+    const [checkedRestaurants, setCheckedRestaurants] = useState([]);
+
+    useEffect(() => {
+        if(shouldEdit === false) return;
+        dishForEdit.picture = null;
+        if(dishForEdit.restaurants !== null){
+            dishForEdit.restaurants.forEach(restaurant => {
+                setCheckedRestaurants(values => ([...values, restaurant.id]))
+            });
+        }
+    }, [shouldEdit]);
+
+    useEffect(() => {
+        if(dishForEdit === null) return;
+        setDishForEdit({...dishForEdit, restaurants:checkBoxData})
+    }, [checkBoxData])
+
+    if (shouldEdit === true && typeof(dishForEdit) === 'object' && dishForEdit !== null) {
+
         const fillForm = (e) => {
             const name = e.target.name;
             let value;
@@ -18,36 +37,33 @@ function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, s
             else if(e.target.value){
                 value = e.target.value;
             }
+
             setDishForEdit(values => ({...values, [name]:value}));
         }
-
-        useEffect(() => {
-            dishForEdit.picture = null;
-            if(dishForEdit.restaurants !== null){
-                dishForEdit.restaurants.forEach(restaurant => {
-                    setCheckedRestaurants(values => ([...values, restaurant.id]))
-                });
-            }
-        }, [])
-
-        useEffect(() => {
-            setDishForEdit({...dishForEdit, restaurants:checkBoxData})
-        }, [checkBoxData])
-
-        const updateDish = () => {
-            axios.post(route('dish-update'), { _method: 'PUT', ...dishForEdit}, {headers:{"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}})
-            .then(res => {
-                const editedDish = {...res.data.editedDish, restaurants:res.data.restaurants}
-                setNewestDishes(values => ([...values.filter(d => d.id !== editedDish.id), editedDish]))
-                setDishForEdit(null);
-                zoomBack();
-                setMessage(res.data.message);
-            })
-        }
-        const cancel = () => {
+        const closeModal = () => {
+            setShouldEdit(false)
+            setCheckboxData([]);
+            setCheckedRestaurants([]);
             setDishForEdit(null)
             zoomBack();
         }
+        const updateDish = () => {
+            axios.post(route('dish-update'), { _method: 'PUT', ...dishForEdit}, {headers:{"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}})
+            .then(res => {
+                if(res.data.editedDish){
+                    setMessages(null);
+                    const editedDish = {...res.data.editedDish, restaurants:res.data.restaurants}
+                    setNewestDishes(values => ([...values.filter(d => d.id !== editedDish.id), editedDish]))
+                    closeModal();
+                    setMessage(res.data.message);
+                }
+                else {
+                    setMessages(res.data.messages)
+                }
+                
+            })
+        }
+
         return (
             <div className="modal-box">
                 <div className="modal-mine" role="dialog">
@@ -55,10 +71,11 @@ function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, s
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Edit dish</h5>
-                                <button type="button" className="close" onClick={cancel}>
+                                <button type="button" className="close" onClick={closeModal}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
+                            <Messages messages={messages} />
                             <div className="modal-body">
                                 <form className="create-form d-flex flex-column gap-3">
                                     <div className="form-row d-flex gap-10">
@@ -96,7 +113,7 @@ function EditDish({dishForEdit, setDishForEdit , restaurants, setNewestDishes, s
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
                                 <button type="button" className="btn btn-danger" onClick={updateDish}>Edit</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Cancel</button>
                             </div>
                         </div>
                     </div>

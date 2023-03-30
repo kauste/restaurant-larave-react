@@ -8,6 +8,7 @@ use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Image;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
 
 class DishController extends Controller
 {
@@ -35,6 +36,23 @@ class DishController extends Controller
     public function store(Request $request)
     {
         $dishData = $request->all();
+
+        $restaurants = collect($dishData)->filter(function ($value, string $key) {
+            return str_contains($key, 'restaurants');
+        })->toArray();
+
+        $dishData['restaurants'] = $restaurants;
+
+        $validator = Validator::make($dishData, [
+            'dish_name' => 'required|min:3|max:50',
+            'price' => 'required|decimal:0,2',
+            'picture' => 'required|image|mimes:jpg,bmp,png',
+            'restaurants' => 'nullable|array',
+            'restaurants.*' => 'nullable|integer|exists:restaurants,id'
+        ]);
+        if($validator->fails()){
+            return response()->json(['messages' => $validator->errors()->all()]);
+        };
         $dish = new Dish;
         $dish->dish_name = $dishData['dish_name'];
         $dish->price = $dishData['price'];
@@ -65,6 +83,24 @@ class DishController extends Controller
     public function update(Request $request)
     {
         $dishData = $request->all();
+
+        $restaurants = collect($dishData)->filter(function ($value, string $key) {
+            return str_contains($key, 'restaurants');
+        })->toArray();
+
+        $dishData['restaurants'] = $restaurants;
+
+        $validator = Validator::make($dishData, [
+            'dish_name' => 'required|min:3|max:50',
+            'price' => 'required|decimal:0,2',
+            'picture' => 'nullable|image|mimes:jpg,bmp,png',
+            'restaurants' => 'nullable|array',
+            'restaurants.*' => 'nullable|integer|exists:restaurants,id'
+        ]);
+        if($validator->fails()){
+            return response()->json(['messages' => $validator->errors()->all()]);
+        };
+
         $dish = Dish::where('id', $dishData['id'])->first();
         $dish->dish_name = $dishData['dish_name'];
         $dish->price = $dishData['price'];
@@ -81,19 +117,19 @@ class DishController extends Controller
                 $dish->picture_path = $file; 
             }
             $dish->save();
-            $restaurants = collect($dishData)->filter(function ($value, string $key) {
-                return str_contains($key, 'restaurants');
-            })->toArray();
+
             $restaurants = array_values($restaurants);
+
             $dish->restaurants()->detach();
+
             $dish->restaurants()->attach($restaurants);
-            
+
         return response()->json(['message'=> 'Dish "' . $dish->dish_name . '" dish is edited', 'editedDish' => $dish, 'restaurants' => $dish->restaurants]);
     }
 
     public function destroy(Request $request)
     {
-        $dish = Dish::where('id', $request->id)->first();
+        $dish = Dish::where('id', (int) $request->id)->first();
         $name = pathinfo($dish->picture_path, PATHINFO_FILENAME);
         $ext = pathinfo($dish->picture_path, PATHINFO_EXTENSION);
         $path = public_path('/images/food') . '/' . $name . '.' . $ext;
@@ -105,5 +141,72 @@ class DishController extends Controller
         $dish->delete();
 
         return response()->json(['message' => 'Dish "'. $dishName .'" is deleted.']);
+    }
+
+    public function restaurantDishes(Request $request)
+    {
+        $restaurant = Restaurant::where('id', '=', $request->restaurantId)->first();
+
+        $involvedDishes = Dish::join('restaurant_dish', 'restaurant_dish.dish_id', 'dishes.id')
+                                ->where('restaurant_dish.restaurant_id', $request->restaurantId)
+                        ->select('dishes.*')
+                        ->orderBy('dishes.dish_name')
+                        ->get()
+                        ->map(function($dish){
+                            $dish->isAdded = true;
+                            return $dish;
+                        });
+        $involvedDishesIds = $involvedDishes->pluck('id')->all();
+        $notInvolvedDishes = Dish::whereNotIn('id', $involvedDishesIds)
+                            ->get()
+                            ->map(function($dish){
+                                $dish->isAdded = false;
+                                return $dish;
+                            });
+
+        $dishes = $involvedDishes->merge($notInvolvedDishes);
+        $props =  [
+            'restaurant' => $restaurant,
+            'dishes' => $dishes,
+            'asset' => asset('images/food'). '/',
+            'defaultPic' => '/todays-special.jpg',
+        ];
+            return Inertia::render('BackOffice/RestaurantDishes', $props);
+
+    }
+    public function addDishToRestaurant(Request $request)
+    {
+        $data = ['restaurantId' => $request->restaurantId, 'dishId' => $request->dishId ];
+        $vadidator = Validator::make($data, [
+            'restaurantId' => 'required|exists:restaurants,id',
+            'dishId' => 'required|exists:dishes,id'
+        ])->validate();
+
+        $dishName = Dish::where('id', $request->dishId)->select('dish_name')->first()->dish_name;
+
+        Restaurant::where('id', $request->restaurantId)
+                    ->first()
+                    ->dishes()
+                    ->attach($request->dishId);
+
+        return response()->json(['message' => $dishName . ' is added to the restaurant menu.']);
+    }
+
+    public function removeDishFromRestaurant(Request $request)
+    {
+        $data = ['restaurantId' => $request->restaurantId, 'dishId' => $request->dishId ];
+        $vadidator = Validator::make($data, [
+            'restaurantId' => 'required|exists:restaurants,id',
+            'dishId' => 'required|exists:dishes,id'
+        ])->validate();
+
+        $dishName = Dish::where('id', $request->dishId)->select('dish_name')->first()->dish_name;
+
+        Restaurant::where('id', $request->restaurantId)
+                    ->first()
+                    ->dishes()
+                    ->detach($request->dishId); // skiriasi tik situ
+
+        return response()->json(['message' => $dishName . ' is removed from the restaurant menu.']);
     }
 }

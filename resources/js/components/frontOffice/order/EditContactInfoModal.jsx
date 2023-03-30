@@ -7,7 +7,12 @@ function EditContactInfoModal() {
 
     const { setChangeContactOrder, changeContactOrder, smallerBackground, normalBackground, messages, setMessages } = useContext(Contexts.FrontContext)
     const [courierData, setCourierData] = useState({});
+    const closeModal = () => {
+        setChangeContactOrder(null);
+        normalBackground();
+        setMessages(null);
 
+    }
     useEffect(() => {
         if (changeContactOrder !== null && changeContactOrder !== undefined) {
             smallerBackground();
@@ -23,7 +28,7 @@ function EditContactInfoModal() {
             });
         }
         else if (changeContactOrder !== undefined) {
-            normalBackground();
+            closeModal()
         }
     }, [changeContactOrder]);
 
@@ -37,17 +42,17 @@ function EditContactInfoModal() {
             axios.put(route('update-order-adress') + '/' + changeContactOrder.orderId, courierData)
                 .then(res => {
                     if (res.data.message) {
+                        if(messages){
+                            setMessages(null);
+                        }
                         changeContactOrder.setContactInfo({ ...changeContactOrder.contactInfo, ...courierData });
                         const newData = { city: courierData.city, street: courierData.street, street_nr: courierData.streetNumber, flat_nr: courierData.flat, telephone_number: courierData.telNr, post_code: courierData.postCode, message: courierData.message }
                         changeContactOrder.setContactInfo({ ...changeContactOrder.contactInfo, ...newData });
-                        setChangeContactOrder(null);
+                        closeModal();
                         changeContactOrder.setMessage(res.data.message);
                     }
                     else if (res.data.errors) {
                         setMessages(res.data.errors);
-                        setTimeout(()=> {
-                            setMessages(null)
-                        }, 50000)
                     }
 
                 })
@@ -60,7 +65,7 @@ function EditContactInfoModal() {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Delivery</h5>
-                                <button type="button" className="close" onClick={() => setChangeContactOrder(null)}>
+                                <button type="button" className="close" onClick={closeModal}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -103,7 +108,7 @@ function EditContactInfoModal() {
                                 </div>
                             </form>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={() => setChangeContactOrder(null)}>Cancel</button>
+                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={closeModal}>Cancel</button>
                                 <button type="button" className="one-color-btn brown-btn" onClick={updateOrder}>Edit</button>
                             </div>
                         </div>

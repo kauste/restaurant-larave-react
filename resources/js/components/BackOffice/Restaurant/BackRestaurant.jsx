@@ -1,6 +1,10 @@
-function BackRestaurant({restaurants, restaurant, setForEditRestaurant, showRestaurantDishesUrl, deleteRestaurantUrl, setModalInfo, setRestaurants, setMessage, zoomSmaller, zoomDOM}){
+import Contexts from "@/components/Contexts"
+import { useContext } from "react"
+
+function BackRestaurant({restaurant}){
+    const {restaurants, setRestaurants, setMessage, zoomDOM, zoomSmaller, setForEditRestaurant, setModalInfo} = useContext(Contexts.BackContext);
     const confirm = () => {
-        axios.delete(deleteRestaurantUrl + '/' + restaurant.id)
+        axios.delete(route('restaurant-delete') + '/' + restaurant.id)
         .then(res => {
             const newRestaurantList = restaurants.filter((oneRestaurant) => {
                                                             return oneRestaurant.id !== restaurant.id
@@ -27,7 +31,7 @@ function BackRestaurant({restaurants, restaurant, setForEditRestaurant, showRest
             <li>From {restaurant.work_starts}h to {restaurant.work_ends}h</li>
             <li className="controls">
                 <div className="show-edit">
-                    <a className="one-color-btn orange-outline-btn" href={showRestaurantDishesUrl + '/' + restaurant.id} title="Show restaurant dishes">Show dishes</a>
+                    <a className="one-color-btn orange-outline-btn" href={route('restaurant-show-dishes') + '/' + restaurant.id} title="Show restaurant dishes">Edit dishes</a>
                     <button className="one-color-btn brown-outline-btn" title="Edit restaurant dishes" onClick={showEditModal}>Edit</button>
                     
                 </div>

@@ -1,27 +1,41 @@
+import Contexts from "@/components/Contexts";
+import Messages from "@/components/Messages";
 import axios from "axios";
+import { useContext } from "react";
 
-function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, updateRestaurantUrl, setRestaurants, setMessage, zoomBack}) {
+function RestaurantEdit() {
+
+    const {restaurants, forEditRestaurant, setForEditRestaurant, setRestaurants, message, setMessage, zoomBack, messages, setMessages,} = useContext(Contexts.BackContext);
+
     if (forEditRestaurant) {
-    const fillForm = (event) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setForEditRestaurant(values => ({...values, [name]:value}))
-    }
 
-    const updateRestaurant = () => {
-        axios.put(updateRestaurantUrl, forEditRestaurant)
-        .then(res => {
-            const removedRestaurant = restaurants.filter((restaurant) => {return restaurant.id !== forEditRestaurant.id});
-            setRestaurants([forEditRestaurant, ...removedRestaurant]);
-            setForEditRestaurant(null);
+        const fillForm = (event) => {
+            const name = event.target.name;
+            const value = event.target.value;
+            setForEditRestaurant(values => ({...values, [name]:value}))
+        }
+        const closeModal = () => {
+            if(messages){
+                setMessages(null)
+            }
+            setForEditRestaurant(null)
             zoomBack();
-            setMessage(res.data.message)
-        })
-    }
-    const cancel = () => {
-        setForEditRestaurant(null)
-        zoomBack();
-    }
+        }
+        const updateRestaurant = () => {
+            axios.put(route('restaurant-update'), forEditRestaurant)
+            .then(res => {
+                if(res.data.message){
+                    const removedRestaurant = restaurants.filter((restaurant) => {return restaurant.id !== forEditRestaurant.id});
+                    setRestaurants([forEditRestaurant, ...removedRestaurant]);
+                    closeModal();
+                    setMessage(res.data.message);
+                }
+                else{
+                    setMessages(res.data.messages)
+                }
+            })
+        }
+
 
         return (
             <div className="modal-box">
@@ -30,10 +44,11 @@ function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, u
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Edit restaurant</h5>
-                                <button type="button" className="close" onClick={cancel}>
+                                <button type="button" className="close" onClick={closeModal}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
+                            <Messages messages={messages}></Messages>
                             <div className="modal-body">
                                 <form className="d-flex flex-column gap-2"method="post" action="{{route('restaurant-store')}}">
                                     <div className="form-row align-items-center d-flex gap-2">
@@ -59,7 +74,7 @@ function RestaurantEdit({restaurants, forEditRestaurant, setForEditRestaurant, u
                                 </form>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="one-color-btn orange-outline-btn"  data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="one-color-btn orange-outline-btn"  data-dismiss="modal" onClick={closeModal}>Cancel</button>
                                 <button type="button" className="one-color-btn brown-btn" onClick={updateRestaurant}>Edit</button>
                             </div>
                         </div>

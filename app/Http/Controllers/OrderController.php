@@ -13,6 +13,7 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Validator;
+use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
@@ -137,10 +138,7 @@ class OrderController extends Controller
                 $validator->errors()->add('telNr', 'Invalid telephone number!');
             }
         });
-        dump('yr');
         if($validator->fails()){
-
-
             $errors = $validator->errors()->all();
             return response()->json(['errors' => $errors]);
         }
@@ -224,6 +222,11 @@ class OrderController extends Controller
     }
     public function changeStatus(Request $request)
     {
+        $validator = Validator::make(['id' => $request->id, 'statusValue' => $request->statusValue],[
+            'id' => 'required|exists:orders,id',
+            'statusValue' => ['Required', Rule::in(array_keys(Order::STATUS))],
+        ])->validate();
+        
         Order::where('id', $request->id)
                 ->update(['status' => $request->statusValue]);
 

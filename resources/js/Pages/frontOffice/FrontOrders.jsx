@@ -50,7 +50,7 @@ function FrontOrders(props) {
     }, [message])
 
     return (
-        <Contexts.FrontContext.Provider value={{message, setMessage, orders, setOrders, changeContactOrder, setChangeContactOrder, zoomDOM, setChangeContactOrder, statuses, asset, deliveryPrice, deliveryChoices, setModalInfo, smallerBackground, normalBackground, messages, setMessages}}>
+        <Contexts.FrontContext.Provider value={{message, setMessage, orders, setOrders, changeContactOrder, setChangeContactOrder, zoomDOM, statuses, asset, deliveryPrice, deliveryChoices, setModalInfo, smallerBackground, normalBackground, messages, setMessages}}>
             <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo}>
                 <Head title="Orders" />
                 <div className="py-12 order">

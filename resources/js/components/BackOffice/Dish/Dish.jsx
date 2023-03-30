@@ -1,7 +1,10 @@
+import Contexts from "@/components/Contexts";
 import axios from "axios";
+import { useContext } from "react";
 import RestaurantInDish from "./RestaurantInDish";
-function Dish({dish, asset, defaultPic, setNewestDishes, newestDishes, setModalInfo, setMessage, setDishForEdit, zoomDOM, zoomSmaller, zoomBack}) {
-
+function Dish({dish}) {
+    
+    const { asset, defaultPic, setNewestDishes, newestDishes, setModalInfo, setMessage, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, setShouldEdit} = useContext(Contexts.BackContext);
 
     const deleteDish = () => {
         axios.delete(route('dish-delete') + '/' + dish.id)
@@ -18,6 +21,7 @@ function Dish({dish, asset, defaultPic, setNewestDishes, newestDishes, setModalI
     }
 
     const showEdit = () => {
+        setShouldEdit(true)
         setDishForEdit(dish);
         zoomSmaller();
     }

@@ -1,28 +1,42 @@
+import Contexts from "@/components/Contexts";
+import Messages from "@/components/Messages";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
-function RestaurantCreate({ restaurants, shouldCreate, setShouldCreate, storeRestaurantUrl, setRestaurants, setMessage, zoomBack }) {
+function RestaurantCreate() {
+    const { messages, setMessages, restaurants, shouldCreate, setShouldCreate, setRestaurants, setMessage, zoomBack } = useContext(Contexts.BackContext);
+    const [restaurantData, setRestaurantData] = useState({});
+
     if (shouldCreate === true) {
-        const [restaurantData, setRestaurantData] = useState({});
         const fillForm = (event) => {
             const name = event.target.name;
             const value = event.target.value;
             setRestaurantData(values => ({ ...values, [name]: value }))
         }
-
-        const createRestaurant = () => {
-            axios.post(storeRestaurantUrl, { restaurantData: restaurantData })
-                .then(res => {
-                    setRestaurants([...restaurants, {id:res.data.restaurantId, ...restaurantData}])
-                    zoomBack()
-                    setShouldCreate(false)
-                    setMessage(res.data.message)
-                })
-        }
-        const cancel = () => {
+        
+        const closeModal = () => {
+            if(messages){
+                setMessages(null);
+            }
             zoomBack()
             setShouldCreate(false)
         }
+
+        const createRestaurant = () => {
+            axios.post(route('restaurant-store'), { restaurantData: restaurantData })
+                .then(res => {
+                    if(res.data.restaurantId){
+                    setRestaurants([...restaurants, {id:res.data.restaurantId, ...restaurantData}])
+                    closeModal();
+
+                    setMessage(res.data.message)
+                    }
+                    else {
+                        setMessages(res.data.messages)
+                    }
+                })
+        }
+
         return (
             <div className="modal-box">
                 <div className="modal-mine" role="dialog">
@@ -30,10 +44,11 @@ function RestaurantCreate({ restaurants, shouldCreate, setShouldCreate, storeRes
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Create new restaurant</h5>
-                                <button type="button" className="close" onClick={cancel}>
+                                <button type="button" className="close" onClick={closeModal}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
+                            <Messages messages={messages}></Messages>
                             <div className="modal-body">
                                 <form className="d-flex flex-column gap-2" method="post" action="{{route('restaurant-store')}}">
                                     <div className="form-row align-items-center d-flex gap-2">
@@ -59,7 +74,7 @@ function RestaurantCreate({ restaurants, shouldCreate, setShouldCreate, storeRes
                                 </form>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={closeModal}>Cancel</button>
                                 <button type="button" className="one-color-btn brown-btn"  onClick={createRestaurant}>Create</button>
                             </div>
                         </div>

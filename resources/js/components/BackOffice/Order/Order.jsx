@@ -1,9 +1,11 @@
+import Contexts from "@/components/Contexts";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DishInOrder from "./DishInOrder";
 import OrderAdress from "./OrderAdress";
 
-function Order({ order, statuses, deliveryChoices }) {
+function Order({ order}) {
+    const { statuses, deliveryChoices, setMessage } = useContext(Contexts.BackContext);
     const [openDisplay, setOpenDisplay] = useState('none');
     const [statusColor, setStatusColor] = useState('black');
     const [styleOnDisplay, setStyleOnDisplay] = useState({});
@@ -28,12 +30,10 @@ function Order({ order, statuses, deliveryChoices }) {
 
     const toggle = () => {
         if (openDisplay === 'none') {
-
             setStyleOnDisplay({ border: 'black solid 2px', transform: 'scale(1.1)', backgroundColor: '#CDC1B0', boxShadow: '2px 2px 6px #222'})
             setOpenDisplay('block');
         } else {
             setStyleOnDisplay({ borderLeft: 'none', transform: 'scale(1)', boxShadow:'none' })
-
             setOpenDisplay('none')
         }
     }
@@ -46,7 +46,7 @@ function Order({ order, statuses, deliveryChoices }) {
         axios.put(route('change-status') + '/' + order.id, {statusValue:statusValue})
         .then(res => {
             setStatusChange(statusValue)
-            console.log(res.data.msg);
+            setMessage(res.data.msg);
         })
     }
     return (
@@ -82,7 +82,7 @@ function Order({ order, statuses, deliveryChoices }) {
                         <button className="one-color-btn orange-btn btn-xs" onClick={changeStatus}>Change</button>
                     </div>
 
-                    <div class="prices-box">
+                    <div className="prices-box">
                         <div className="one-price">Delivery price: {order.deliveryPrice} eur.</div>
                         <div className="one-price">Total price: {order.totalPrice} eur.</div>
                     </div>

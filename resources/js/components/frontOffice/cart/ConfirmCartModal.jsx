@@ -19,6 +19,18 @@ function ConfirmCartModal() {
         }
     }, [comfirmModalInfo])
 
+    const closeModal = () => {
+        if(messages){
+            setMessages(null);
+        }
+        setCurier(false);
+        setDeliveryChoice('');
+        setDelivery(null);
+          setTimeout(() => {
+              setComfirmModalInfo(null)
+          }, 0.3)
+      }
+
     useEffect(()=> {
         if(delivery === null) return;
         axios.post(route('confirm-cart'), {restaurantId:comfirmModalInfo.restaurantId, deliveryData:delivery})
@@ -26,29 +38,20 @@ function ConfirmCartModal() {
             normalBackground();
             if(res.data.errors !== undefined){
                 setMessages(res.data.errors);
-                setTimeout(()=> {
-                    setMessages(null)
-                }, 50000)
+
             }
             else{
+
                 setCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== comfirmModalInfo.restaurantId));
-                setDelivery(null);
-                setComfirmModalInfo(null);
+                closeModal();
                 comfirmModalInfo.setMessage(res.data.message)
             }
-          
-
         })
     }, [delivery])
 
+
+
     if (comfirmModalInfo !== null && comfirmModalInfo != undefined) {
-          const cancel = () => {
-            setCurier(false);
-            setDeliveryChoice('');
-              setTimeout(() => {
-                  setComfirmModalInfo(null)
-              }, 0.3)
-          }
 
         const onOptionChange = (e) => {
             setDeliveryChoice(e.target.value);
@@ -67,7 +70,7 @@ function ConfirmCartModal() {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Delivery</h5>
-                                <button type="button" className="close" onClick={cancel}>
+                                <button type="button" className="close" onClick={closeModal}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -86,7 +89,7 @@ function ConfirmCartModal() {
                                 <DeliveryAdress></DeliveryAdress>
                             </form>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={closeModal}>Cancel</button>
                                 <button type="button" className="one-color-btn brown-btn" onClick={confirmCart}>Confirm</button>
                             </div>
                         </div>
