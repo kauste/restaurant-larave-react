@@ -6,13 +6,15 @@ import AuthenticatedBack from "@/Layouts/AuthenticatedBack";
 import AreYouSureModal from "@/components/AreYouSureModal";
 
 function RestaurantDishes(props){
-
-    const [message, setMessage] = useState(null);
+    // from props
     const [dishes, setDishes] = useState([]);
-
     const [defaultPic, setDefaultPic] = useState('')
     const [restaurant, setRestaurant] = useState({});
     const [asset, setAsset] = useState('');
+
+
+    //not props
+    const [message, setMessage] = useState(null);
     const [modalInfo, setModalInfo] = useState(null);
     const [zoomDOM, setZoomDOM] = useState(null);
     const zoomContainer = useRef();
@@ -25,20 +27,24 @@ function RestaurantDishes(props){
       };
       
     useEffect(() =>{
-        setZoomDOM(zoomContainer.current);
         setDishes(props.dishes);
         setDefaultPic(props.defaultPic);
         setRestaurant(props.restaurant);
         setAsset(props.asset);
+
+        setZoomDOM(zoomContainer.current);
     }, [])
     const zoomBack = () => {
         zoomDOM.animate([{ transform:'scale(1)'}], backgroundZoomTiming)
     }
 
     useEffect(() => {
-        setTimeout(() => {
+        const messageSet = setTimeout(() => {
             setMessage(null);
         }, 20000)
+        return () => {
+            clearTimeout(messageSet);
+        }
     },[message])
 
     return (

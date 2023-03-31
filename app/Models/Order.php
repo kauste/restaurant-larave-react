@@ -8,10 +8,12 @@ use App\Models\Dish;
 use App\Models\Resraurant;
 use App\Models\ContactInfo;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Laravel\Scout\Searchable;
+
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     const DELIVERY_PRICE = 5;
     const STATUS = [ 1 => 'Ordered',
@@ -33,5 +35,12 @@ class Order extends Model
     }
     public function user(){
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+    #[SearchUsingPrefix(['created_at'])]
+    public function toSearchableArray()
+    {
+        return [
+            'created_at' => $this->created_at,
+        ];
     }
 }

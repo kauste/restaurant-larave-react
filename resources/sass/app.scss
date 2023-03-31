@@ -71,6 +71,25 @@
         border: var(--dark-brown) 2px solid;
     }
 }
+.date-label-input-box{
+    display:flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border:var(--dark-brown);
+    box-shadow: 0 0 2px 2px var(--dark-brown);
+    width: fit-content;
+    margin-bottom: 20px;
+    input{
+        height:40px;
+        width:140px;
+        &:focus{
+            --tw-ring-color: none;
+            border:none;
+            border: var(--dark-brown) 2px solid;
+        }
+    }
+}
 .small-dish-img{
     height: 80px;
     width: 80px;

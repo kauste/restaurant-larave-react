@@ -34,9 +34,12 @@ function DishList(props) {
     }, [newestDishes])
 
     useEffect(() => {
-        setTimeout(() => {
+        const messageSet = setTimeout(() => {
             setMessage(null);
         }, 20000)
+        return () => {
+            clearTimeout(messageSet);
+        }
     },[message])
 
     const backgroundZoomTiming = {

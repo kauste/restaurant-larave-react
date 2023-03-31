@@ -44,9 +44,12 @@ function RestaurantList(props) {
     }, [restaurants])
     
     useEffect(() => {
-        setTimeout(() => {
+        const messageSet = setTimeout(() => {
             setMessage(null);
         }, 20000)
+        return () => {
+            clearTimeout(messageSet);
+        }
     },[message])
 
     return (

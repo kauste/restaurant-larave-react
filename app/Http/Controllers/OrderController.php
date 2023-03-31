@@ -14,6 +14,8 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class OrderController extends Controller
 {
@@ -181,6 +183,7 @@ class OrderController extends Controller
         $pdf->setPaper('a4' , 'portrait');
         return $pdf->output();
     }
+    //back
     public function backIndex (){
         $orders = Order::with(['dishes' => function($dish){
                                                 $dish->select('dish_name', 'price', 'id');
@@ -218,7 +221,16 @@ class OrderController extends Controller
 
         $statuses = Order::STATUS;
         $deliveryChoices = Order::DELIVERY_CHOICES;
-        return Inertia::render('BackOffice/OrderList', ['orders' => $orders, 'statuses' => $statuses, 'deliveryChoices' => $deliveryChoices]);
+
+        $todayDate = Carbon::now('Europe/Vilnius')->format('Y-m-d');
+        $beforeTwoWeeksDate = Carbon::now('Europe/Vilnius')->subWeeks(2)->format('Y-m-d');
+
+        return Inertia::render('BackOffice/OrderList', ['orders' => $orders, 
+                                                        'statuses' => $statuses, 
+                                                        'deliveryChoices' => $deliveryChoices,
+                                                        'todayDate' => $todayDate,
+                                                        'beforeTwoWeeksDate' => $beforeTwoWeeksDate
+                                                        ]);
     }
     public function changeStatus(Request $request)
     {
@@ -236,5 +248,10 @@ class OrderController extends Controller
     {
         Order::where('id', (int) $request->orderId)->delete();
         return response()->json(['message' => 'Order is canceled. If you would like, you can now form a new order.']);
+    }
+    public function searchOrderDate(Request $request){
+        
+        $ordersIds = Order::search($request->all()['date'])->get()->pluck('id');
+        return response()->json(['ordersIds' => $ordersIds]);
     }
 }

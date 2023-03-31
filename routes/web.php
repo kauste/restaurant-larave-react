@@ -36,6 +36,7 @@ Route::delete('/dish-delete/{id?}', [DishController::class, 'destroy'])->name('d
 // Order
 Route::get('back-order', [OrderController::class, 'backIndex'])->name('back-order');
 Route::put('change-status/{id?}', [OrderController::class, 'changeStatus'])->name('change-status');
+Route::get('search-order-date', [OrderController::class, 'searchOrderDate'])->name('search-order-date');
 
 
 Route::get('/', function () {

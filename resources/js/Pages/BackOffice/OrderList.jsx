@@ -2,28 +2,48 @@ import Order from "@/components/BackOffice/Order/Order";
 import Contexts from "@/components/Contexts";
 import AuthenticatedBack from "@/Layouts/AuthenticatedBack";
 import { Head } from "@inertiajs/inertia-react";
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 function OrderList(props) {
-
+    //props
     const [orders, setOrders] = useState([]);
-    const [message, setMessage] = useState(null);
+    const [állOrders, setAllOrders] = useState([]); // not changebla constant, used for search
     const [statuses, setStatuses] = useState([]);
     const [deliveryChoices, setDeliveryChoices] = useState([]);
+    const [todayDate, setTodayDate] = useState('');
+    const [beforeTwoWeeksDate, setBeforeTwoWeeksDate] = useState('');
+    const [searchedDate, setSearchedDate] = useState('');
+    const [message, setMessage] = useState(null);
+
 
     useEffect(() => {
         setOrders(props.orders);
+        setAllOrders(props.orders);
         setStatuses(props.statuses);
         setDeliveryChoices(props.deliveryChoices);
-    })
+        setTodayDate(props.todayDate);
+        setBeforeTwoWeeksDate(props.beforeTwoWeeksDate);
+    }, [])
 
     useEffect(() => {
-        setTimeout(() => {
+        const messageSet = setTimeout(() => {
             setMessage(null);
         }, 20000)
-    }, [message])
+        return () => {
+            clearTimeout(messageSet);
+        }
+    },[message])
 
-
+    const search = () => {
+        axios.get(route('search-order-date') + '?date=' + searchedDate)
+        .then(res => {
+            setOrders(állOrders.filter(o => (res.data.ordersIds).includes(o.id)));
+        })
+    }
+    const reset = () => {
+        setOrders(állOrders);
+    }
 
     return (
         <Contexts.BackContext.Provider value={{message, setMessage, statuses, deliveryChoices}}>
@@ -37,6 +57,12 @@ function OrderList(props) {
                             </div>
                             <div className="card-body-box">
                                 <div className="order-card-body">
+                                <div className="date-label-input-box">
+                                    <label>Search date:</label>
+                                    <input type="date"  max={todayDate} min={beforeTwoWeeksDate} onChange={e => setSearchedDate(e.target.value)}/>
+                                    <button className="one-color-btn brown-outline-btn" onClick={search}>Search</button>
+                                    <button className="one-color-btn brown-btn" onClick={reset}>Reset</button>
+                                </div>
                                     <div className="one-back-order headings">
                                         <div className="order-first-line headings">
                                             <div>Created</div>
