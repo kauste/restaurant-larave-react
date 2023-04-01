@@ -262,7 +262,6 @@ class DishController extends Controller
                 });
                 $searchIds = $searchIds->flatten();
                 $dishesIds = array_values($searchIds->intersect($restaurantDishesIds)->toArray());
-                dump($dishesIds);
             }
         }
 

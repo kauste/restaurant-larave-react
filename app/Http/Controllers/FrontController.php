@@ -15,14 +15,12 @@ use DB;
 class FrontController extends Controller
 {
     public function restaurants(){
-        dump('ce');
         $restaurants = Restaurant::all();
         $restaurants->map(function($restaurant){
             $restaurant['work_starts'] = Carbon::parse($restaurant['work_starts'])->format('H:i');
             $restaurant['work_ends'] = Carbon::parse($restaurant['work_ends'])->format('H:i');
             return $restaurant;
         });
-        dump(Auth::user());
         if(Auth::user() !== null){
             return Inertia::render('frontOffice/RestaurantList', [
                             'restaurants'=> $restaurants,
@@ -82,7 +80,6 @@ class FrontController extends Controller
     }
 
     public function sortAndFilter(Request $request){
-        dump('ceeee');
         if($request->filter == 0){
             $dishes = match($request->price_sort){
                 'asc'=>Dish::select('dishes.id as dish_id', 'dishes.*')
