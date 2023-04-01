@@ -10,6 +10,7 @@ function FilterSearch() {
     const doSortAndFilter = () => {
         axios.get(route('back-search-and-filter-dish') + '?filter=' + filteValue + '&search=' + searchValue)
         .then(res => {
+            console.log(res.data.dishesIds)
             setDishes(allDishes.filter(dish => (res.data.dishesIds).includes(dish.id)))
         })
         console.log(filteValue);
