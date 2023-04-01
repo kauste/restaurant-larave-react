@@ -2,8 +2,8 @@ import AreYouSureModal from "@/components/AreYouSureModal";
 import CreateDish from "@/components/BackOffice/Dish/CreateDish";
 import Dish from "@/components/BackOffice/Dish/Dish";
 import EditDish from "@/components/BackOffice/Dish/EditDish";
+import FilterSearch from "@/components/BackOffice/Dish/FilterSearch";
 import Contexts from "@/components/Contexts";
-// import SortFilterSearch from "@/components/frontOffice/dishes/SortFilerSearch";
 import AuthenticatedBack from "@/Layouts/AuthenticatedBack";
 import { Head } from "@inertiajs/inertia-react";
 import { useEffect, useRef, useState } from "react";
@@ -14,8 +14,9 @@ function DishList(props) {
     const [modalInfo, setModalInfo] = useState(null);
     const [message, setMessage] = useState(null);
     const [messages, setMessages] = useState(null);
+    const [allDishes, setAllDishes] = useState([]); // it should be permanent, used for filter search
     const [dishes, setDishes] = useState([]);
-    const [newestDishes, setNewestDishes] = useState(props.dishes)
+    const [newestDishes, setNewestDishes] = useState(props.dishes); // used for adding, deleting and so on
     const [shouldCreate, setShouldCreate] = useState(false);
     const [shouldEdit, setShouldEdit] = useState(false);
     const [dishForEdit, setDishForEdit] = useState(null);
@@ -24,6 +25,7 @@ function DishList(props) {
     const defaultPic = props.defaultPic;
 
     useEffect(() => {
+        setAllDishes(props.dishes)
         setAsset(props.asset);
         setRestaurants(props.restaurants);
         setZoomDOM(zoomContainer.current);
@@ -59,7 +61,7 @@ function DishList(props) {
         setShouldCreate(true);
     }
     return (
-        <Contexts.BackContext.Provider value={{message, setMessage, messages, setMessages, defaultPic, asset, newestDishes, setNewestDishes, setModalInfo, dishForEdit, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, shouldCreate, setShouldCreate, shouldEdit, setShouldEdit, restaurants}}>
+        <Contexts.BackContext.Provider value={{message, setMessage, messages, setMessages, defaultPic, asset, newestDishes, setNewestDishes, setModalInfo, dishForEdit, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, shouldCreate, setShouldCreate, shouldEdit, setShouldEdit, restaurants, allDishes, setDishes}}>
             <AuthenticatedBack auth={props.auth}>
                 <Head title="Restaurants"/>
                 <CreateDish/>
@@ -72,7 +74,7 @@ function DishList(props) {
                         </div>
                         <div className="container">
                             <div className="row justify-content-center">
-                                {/* <SortFilterSearch setDishes={setDishes} sortAndFilterUrl={props.sortAndFilterUrl} searchUrl={props.searchUrl} restaurants={props.restaurants}/> */}
+                                <FilterSearch/>
                             </div>
                             <div>
                                 <div className="card-header">

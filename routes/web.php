@@ -32,6 +32,7 @@ Route::get('/dish-create', [DishController::class, 'create'])->name('dish-create
 Route::post('/dish-store', [DishController::class, 'store'])->name('dish-store');
 Route::put('/dish-update/{id?}', [DishController::class, 'update'])->name('dish-update');
 Route::delete('/dish-delete/{id?}', [DishController::class, 'destroy'])->name('dish-delete');
+Route::get('/back-search-and-filter-dish', [DishController::class, 'searchAndFilterDish'])->name('back-search-and-filter-dish');
 });
 // Order
 Route::get('back-order', [OrderController::class, 'backIndex'])->name('back-order');

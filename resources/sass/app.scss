@@ -325,6 +325,36 @@ button, a:not(.restaurant-have-dish){
 .input-xs{
     transform: scale(0.8);
 }
+.back-filter-and-search{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border:var(--dark-brown);
+    box-shadow: 0 0 2px 2px var(--dark-brown);
+    font-size: calc(10px + 0.5vw);
+    width:fit-content;
+    justify-content: center;
+    margin-top: 20px;
+    input, select {
+        border:none;
+        padding: 5px;
+        &:focus{
+            --tw-ring-color: none;
+            outline: none;
+            border: var(--dark-brown) 1px solid;
+        }
+    }
+    input {
+        width:calc(40vw + 100px);
+    }
+    .back-filter, .back-search{
+        display:flex;
+        gap:5px;
+        align-items: center;
+    }
+}
 body{
     min-height:100vh;
 }

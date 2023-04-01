@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Image;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class DishController extends Controller
 {
@@ -71,11 +73,10 @@ class DishController extends Controller
             }
             $dish->save();
 
-            $restaurants = collect($dishData)->filter(function ($value, string $key) {
-                return str_contains($key, 'restaurants');
-            })->toArray();
             $restaurants = array_values($restaurants);
+
             $dish->restaurants()->attach($restaurants);
+
             
         return response()->json(['message'=> 'New dish is added', 'newDish' => $dish, 'restaurants' => $dish->restaurants]);
     }
@@ -208,5 +209,62 @@ class DishController extends Controller
                     ->detach($request->dishId); // skiriasi tik situ
 
         return response()->json(['message' => $dishName . ' is removed from the restaurant menu.']);
+    }
+
+    public function searchAndFilterDish(Request $request) 
+    {
+        $data = $request->all();
+        // Validator::make($data, [
+        //     'filter' => 'required|exists:restaurants,id',
+        //     'search' => 'nullable|string',
+        // ])->validate();
+        if($data['filter'] == 0) {
+            if($data['search'] === null){
+                $dishesIds = Dish::select('id')->get()->pluck('id')->toArray();
+            }
+            else{
+                $searchData =  preg_split("/[\s,]*\\\"([^\\\"]+)\\\"[\s,]*|" . "[\s,]*'([^']+)'[\s,]*|" . "[\s,]+/", $data['search'], 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+                $dishesIds = collect($searchData)->map(function($word) {
+                    $ids = Dish::search($word)
+                                    ->query(fn($dish) => $dish->select('id'))
+                                    ->get()->pluck('id');
+                    return $ids;
+                                    
+
+                });
+                $dishesIds = $dishesIds->flatten()->toArray();
+            }
+        }
+        else {
+              $restaurantDishes = Restaurant::search($data['filter'])
+                                            ->query(function($restaurant){
+                                                $restaurant->select('id');
+                                            })
+                                            ->first()
+                                            ->load(['dishes' => function ($query) {
+                                                $query->select('dish_id');
+                                            }])->toArray();
+
+            $restaurantDishesIds = collect($restaurantDishes['dishes'])->flatten();
+
+            if($data['search'] === null){
+                $dishesIds = $restaurantDishesIds;
+            }
+            else{
+                $searchData =  preg_split("/[\s,]*\\\"([^\\\"]+)\\\"[\s,]*|" . "[\s,]*'([^']+)'[\s,]*|" . "[\s,]+/", $data['search'], 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+                $searchIds = collect($searchData)->map(function($word) {
+                    $ids = Dish::search($word)
+                                    ->query(fn($dish) => $dish->select('id'))
+                                    ->get()->pluck('id');
+                    return $ids;
+                                    
+
+                });
+                $searchIds = $searchIds->flatten();
+                $dishesIds = $searchIds->intersect($restaurantDishesIds)->all();
+            }
+        }
+
+        return response()->json(['dishesIds' => $dishesIds]);
     }
 }
