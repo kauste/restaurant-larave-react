@@ -36,7 +36,6 @@ function CreateDish() {
         }
 
         const createDish = () => {
-            console.log('ce');
             axios.post(route('dish-store'), formData, {headers:{Accept: "application/json", "Content-Type": "multipart/form-data"}})
             .then(res => {
                 if(res.data.newDish){
