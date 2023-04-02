@@ -236,6 +236,7 @@ class DishController extends Controller
             }
         }
         else {
+
               $restaurantDishes = Restaurant::search($data['filter'])
                                             ->query(function($restaurant){
                                                 $restaurant->select('id');
@@ -245,7 +246,10 @@ class DishController extends Controller
                                                 $query->select('dish_id');
                                             }])->toArray();
 
-            $restaurantDishesIds = collect($restaurantDishes['dishes'])->flatten();
+            $restaurantDishesIds = collect($restaurantDishes['dishes'])->map(function($dish){
+                unset($dish['pivot']);
+                return $dish;
+            })->flatten();
 
             if($data['search'] === null){
                 $dishesIds = $restaurantDishesIds;

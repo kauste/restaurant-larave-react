@@ -14,7 +14,7 @@ class Dish extends Model
 {
     use HasFactory, Searchable;
 
-    protected $hidden = ['pivot'];
+    // protected $hidden = ['pivot'];
 
     public function restaurants(){
         return $this->belongsToMany(Restaurant::class, 'restaurant_dish');
@@ -24,7 +24,6 @@ class Dish extends Model
                     ->withPivot('amount');
     }
 
-    #[SearchUsingPrefix(['dish_name'])]
     #[SearchUsingFullText(['price'])]
     public function toSearchableArray()
     {

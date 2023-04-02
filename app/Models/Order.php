@@ -9,7 +9,8 @@ use App\Models\Resraurant;
 use App\Models\ContactInfo;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Laravel\Scout\Searchable;
-
+use Carbon\Carbon;
+use App\Events\OrdersDeleted;
 
 class Order extends Model
 {
@@ -36,6 +37,11 @@ class Order extends Model
     public function user(){
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+    public static function deleteOrders(){
+        self::where('created_at', '<=', Carbon::now()->subWeeks(2))->delete();
+        return OrdersDeleted::dispatch();
+    }
+
     #[SearchUsingPrefix(['created_at'])]
     public function toSearchableArray()
     {

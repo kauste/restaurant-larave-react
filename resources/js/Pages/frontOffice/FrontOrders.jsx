@@ -59,6 +59,9 @@ function FrontOrders(props) {
                             <div className="card-header">
                                 <h2>Your Orders</h2>
                             </div>
+                            <div className="info-box">
+                                <div className="ïnfo">!!! Dear customers, please save your invoices in two weeks period, after this time, your orders will be deleted automatically.</div>
+                            </div>
                                 <div className="all-orders">
                                 {
                                     orders.map((order, index) => <FrontOrder key={index} order={order}></FrontOrder>)

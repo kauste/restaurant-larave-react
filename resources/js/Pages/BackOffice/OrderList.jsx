@@ -57,6 +57,9 @@ function OrderList(props) {
                             </div>
                             <div className="card-body-box">
                                 <div className="order-card-body">
+                                    <div className="info-box">
+                                        <div className="ïnfo">After two weeks orders will be deleted automatically.</div>
+                                    </div>
                                 <div className="date-label-input-box">
                                     <label>Search date:</label>
                                     <input type="date"  max={todayDate} min={beforeTwoWeeksDate} onChange={e => setSearchedDate(e.target.value)}/>

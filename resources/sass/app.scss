@@ -325,6 +325,15 @@ button, a:not(.restaurant-have-dish){
 .input-xs{
     transform: scale(0.8);
 }
+.info-box{
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    background-color: var(--light-pink--color);
+    font-family: var(--casual-family);
+    margin-bottom: 20px;
+    font-weight: 700;
+}
 .back-filter-and-search{
     display:flex;
     flex-wrap: wrap;
