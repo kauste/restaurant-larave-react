@@ -66,6 +66,8 @@ Route::get('/restaurant-dishes/{id?}', [FrontController::class, 'restaurantDishe
 Route::get('/user-dish-list', [FrontController::class, 'dishes'])->name('user-dishes');
 Route::get('/dish-sort-and-filter', [FrontController::class, 'sortAndFilter'])->name('sort-and-filter');
 Route::get('/search-dish', [FrontController::class, 'searchDish'])->name('search-dish');
+
+
 //Front offce
 Route::middleware(['auth', 'verified'], 'role:user')->group(function () {
 Route::get('show-cart', [CartController::class, 'showCart'])->name('show-cart');
