@@ -7,7 +7,7 @@ import RestaurantCheckbox from "./RestaurantCheckbox";
 
 function EditDish() {
 
-    const {dishForEdit, setDishForEdit , restaurants, setNewestDishes, setMessage, messages, setMessages, zoomBack, shouldEdit, setShouldEdit } = useContext(Contexts.BackContext);
+    const {dishForEdit, setDishForEdit , restaurants, setDishes, dishes, setMessage, messages, setMessages, zoomBack, shouldEdit, setShouldEdit } = useContext(Contexts.BackContext);
     const [checkBoxData, setCheckboxData] = useState([]);
     const [checkedRestaurants, setCheckedRestaurants] = useState([]);
 
@@ -52,8 +52,8 @@ function EditDish() {
             .then(res => {
                 if(res.data.editedDish){
                     setMessages(null);
-                    const editedDish = {...res.data.editedDish, restaurants:res.data.restaurants}
-                    setNewestDishes(values => ([...values.filter(d => d.id !== editedDish.id), editedDish]))
+                    const editedDish = {...res.data.editedDish, restaurants:res.data.restaurants, show:true}
+                    setDishes(values => ([...values.filter(d => d.id !== editedDish.id), editedDish].sort((a, b) => b.id - a.id)))
                     closeModal();
                     setMessage(res.data.message);
                 }

@@ -8,11 +8,11 @@ function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCa
         .then(res => {
             let msg;
             if(cartData.length === 1){
-                setCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
+                setCart(c => c.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
                 msg ='There is no dishes in cart, therefore cart is deleted.';
             }
             else{
-                setCartData(cartData.filter((dish) => dish.restaurant_id !== cartDish.restaurant_id || dish.dish_id !== cartDish.dish_id));
+                setCartData(cD => cD.filter((dish) => dish.restaurant_id !== cartDish.restaurant_id || dish.dish_id !== cartDish.dish_id));
                 msg = res.data.message;
             }
             normalBackground();

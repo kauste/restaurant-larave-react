@@ -48,6 +48,14 @@ function FrontOrders(props) {
                 setMessage(null)
             }, 20000)
     }, [message])
+    useEffect(() => {
+        window.Echo.channel('scheduler.deleted.orders')
+        .listen('OrdersDeleted', (e) => {
+            setOrders(allOrders => allOrders.filter(oneOrder => e.ordersIds.includes(oneOrder.id)));
+        })
+    }, [])
+
+
 
     return (
         <Contexts.FrontContext.Provider value={{message, setMessage, orders, setOrders, changeContactOrder, setChangeContactOrder, zoomDOM, statuses, asset, deliveryPrice, deliveryChoices, setModalInfo, smallerBackground, normalBackground, messages, setMessages}}>

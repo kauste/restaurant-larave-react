@@ -14,26 +14,21 @@ function DishList(props) {
     const [modalInfo, setModalInfo] = useState(null);
     const [message, setMessage] = useState(null);
     const [messages, setMessages] = useState(null);
-    const [allDishes, setAllDishes] = useState([]); // it should be permanent, used for filter search
     const [dishes, setDishes] = useState([]);
-    const [newestDishes, setNewestDishes] = useState(props.dishes); // used for adding, deleting and so on
     const [shouldCreate, setShouldCreate] = useState(false);
     const [shouldEdit, setShouldEdit] = useState(false);
     const [dishForEdit, setDishForEdit] = useState(null);
     const [zoomDOM, setZoomDOM] = useState(null);
+    const [thisNavDom, setThisNavDOM] = useState(null);
     const zoomContainer = useRef();
     const defaultPic = props.defaultPic;
 
     useEffect(() => {
-        setAllDishes(props.dishes)
+        setDishes(props.dishes.map(dish => ({...dish, show: true})));
         setAsset(props.asset);
         setRestaurants(props.restaurants);
         setZoomDOM(zoomContainer.current);
     }, [])
-
-    useEffect(() => {
-        setDishes(newestDishes);
-    }, [newestDishes])
 
     useEffect(() => {
         const messageSet = setTimeout(() => {
@@ -61,7 +56,7 @@ function DishList(props) {
         setShouldCreate(true);
     }
     return (
-        <Contexts.BackContext.Provider value={{message, setMessage, messages, setMessages, defaultPic, asset, newestDishes, setNewestDishes, setModalInfo, dishForEdit, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, shouldCreate, setShouldCreate, shouldEdit, setShouldEdit, restaurants, allDishes, setDishes}}>
+        <Contexts.BackContext.Provider value={{message, setThisNavDOM, setMessage, messages, setMessages, defaultPic, asset, setModalInfo, dishForEdit, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, shouldCreate, setShouldCreate, shouldEdit, setShouldEdit, restaurants, setDishes, dishes}}>
             <AuthenticatedBack auth={props.auth}>
                 <Head title="Restaurants"/>
                 <CreateDish/>
@@ -83,7 +78,7 @@ function DishList(props) {
                                 <div className="card-body">
                                     <ul className="dish-list-grid">
                                         {
-                                            dishes.map((dish, index) => <Dish key={index} dish={dish}></Dish>)
+                                            dishes.map((dish, index) => dish.show === true ? <Dish key={index} dish={dish}></Dish> : null)
                                         }
                                     </ul>
                                 </div>

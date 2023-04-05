@@ -23,7 +23,7 @@ function CartRestaurant({restaurant}){
     const cancelCart = () => {
         axios.delete(route('delete-cart') + '/' + restaurant.cartInfo[0].restaurant_id)
         .then(res => {
-            setCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
+            setCart( c => c.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
             setModalInfo(null);
             setMessage(res.data.message)
         })

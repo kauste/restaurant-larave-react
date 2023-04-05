@@ -453,7 +453,24 @@ nav{
     }
 }
 // front
-
+.paginator-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:10px;
+    div{
+        width:40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        &.active{
+            background: var(--darker-orange-color);
+            border: var(--darker-orange-color) 1px solid; 
+            color: var(--bg-color);
+        }
+    }
+}
 .card{
     // box-shadow: 2px 2px 8px var(--gold-shadow);
     background-color: transparent;
@@ -882,8 +899,55 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
     }
 }
 footer{
-    height: 150px;
-    background: #746857;
+    height: 80px;
+    padding: 10px 30px;
+    background: var(--the-orange-color);
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--casual-family);
+    color:black;
+
+    .left-corner{
+        font-size: 17px;
+        .website{
+            text-transform: lowercase;
+            color:black;
+            transition: all 0.3s linear;
+            &:hover{
+                color:black;
+                margin-left:10px;
+            }
+        }
+            
+    }
+    .right-corner{
+        display:flex;
+        gap: 10px;
+            svg{
+                display:flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .github-icon{
+                width: 50px;
+                height: 50px;
+                svg{
+                    width: 50px;
+                    height: 50px;
+                }
+            } 
+            .linkedin-icon {
+                margin-top:5px;
+                width:40px;
+                height:40px;
+                svg {
+                    width:40px;
+                    height:40px;
+                }
+            } 
+        }
+
 }
 // back
 .restaurant-list-back{

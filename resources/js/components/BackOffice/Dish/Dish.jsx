@@ -4,12 +4,13 @@ import { useContext } from "react";
 import RestaurantInDish from "./RestaurantInDish";
 function Dish({dish}) {
     
-    const { asset, defaultPic, setNewestDishes, newestDishes, setModalInfo, setMessage, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, setShouldEdit} = useContext(Contexts.BackContext);
+    const { asset, defaultPic, setDishes, setModalInfo, setMessage, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, setShouldEdit} = useContext(Contexts.BackContext);
 
     const deleteDish = () => {
+
         axios.delete(route('dish-delete') + '/' + dish.id)
         .then(res => {
-            setNewestDishes(newestDishes.filter((oneDish) =>  oneDish.id != dish.id))
+            setDishes(allDishes => allDishes.filter((oneDish) =>  oneDish.id != dish.id).sort((a, b) => b.id - a.id));
             setModalInfo(null);
             zoomBack();
             setMessage(res.data.message);

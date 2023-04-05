@@ -42,7 +42,7 @@ function ConfirmCartModal() {
             }
             else{
 
-                setCart(cart.filter((r) => r.cartInfo[0].restaurant_id !== comfirmModalInfo.restaurantId));
+                setCart( c => c.filter((r) => r.cartInfo[0].restaurant_id !== comfirmModalInfo.restaurantId));
                 closeModal();
                 comfirmModalInfo.setMessage(res.data.message)
             }

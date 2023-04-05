@@ -30,7 +30,7 @@ function FrontOrder({ order }) {
     const deleteOrder = () => {
         axios.delete(route('client-delete-order') + '/' + order.id)
         .then(res => {
-            setOrders(orders.filter((o) => o.id != order.id));
+            setOrders(values => values.filter((o) => o.id != order.id));
             normalBackground();
                 setTimeout(() => {
                 setModalInfo(null)

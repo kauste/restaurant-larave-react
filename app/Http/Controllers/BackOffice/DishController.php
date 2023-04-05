@@ -18,7 +18,7 @@ class DishController extends Controller
     {
         $restaurants = Restaurant::orderBy('restaurant_name', 'asc')->get();
 
-        $dishes = Dish::get();
+        $dishes = Dish::orderByDesc('id')->get();
         $dishes->map(function($dish){
             $restaurants = Restaurant::join('restaurant_dish', 'restaurant_dish.restaurant_id', 'restaurants.id')
                            ->select('restaurants.restaurant_name', 'restaurants.id', 'restaurants.city', 'restaurants.adress')
@@ -236,7 +236,6 @@ class DishController extends Controller
             }
         }
         else {
-
               $restaurantDishes = Restaurant::search($data['filter'])
                                             ->query(function($restaurant){
                                                 $restaurant->select('id');

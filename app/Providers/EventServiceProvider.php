@@ -21,9 +21,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-            OrdersDeleted::class => [
-                ReloadOrdersPage::class,
-        ],
     ];
 
     /**

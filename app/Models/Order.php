@@ -39,7 +39,8 @@ class Order extends Model
     }
     public static function deleteOrders(){
         self::where('created_at', '<=', Carbon::now()->subWeeks(2))->delete();
-        return OrdersDeleted::dispatch();
+        $ordersIds = self::select('id')->get()->pluck('id')->toArray();
+        return OrdersDeleted::dispatch($ordersIds);
     }
 
     #[SearchUsingPrefix(['created_at'])]

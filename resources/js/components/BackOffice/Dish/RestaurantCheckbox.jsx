@@ -18,7 +18,7 @@ function RestaurantCheckbox ({oneRestaurant, checkBoxData, setCheckboxData, chec
             setCheckboxData(values => ([...values, oneRestaurant.id]))
         }
         else {
-            setCheckboxData(checkBoxData.filter(thisRestaurant => { return thisRestaurant != oneRestaurant.id}))
+            setCheckboxData(cbD => cbD.filter(thisRestaurant => { return thisRestaurant != oneRestaurant.id}))
         }
     }, [isChecked])
 

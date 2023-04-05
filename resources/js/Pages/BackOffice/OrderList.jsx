@@ -38,13 +38,19 @@ function OrderList(props) {
     const search = () => {
         axios.get(route('search-order-date') + '?date=' + searchedDate)
         .then(res => {
-            setOrders(állOrders.filter(o => (res.data.ordersIds).includes(o.id)));
+            setOrders(ord => ord.filter(o => (res.data.ordersIds).includes(o.id)));
         })
     }
     const reset = () => {
         setOrders(állOrders);
     }
-
+    useEffect(() => {
+        window.Echo.channel('scheduler.deleted.orders')
+        .listen('OrdersDeleted', (e) => {
+            setOrders(allOrders => allOrders.filter(oneOrder => e.ordersIds.includes(oneOrder.id)));
+        })
+    }, [])
+    
     return (
         <Contexts.BackContext.Provider value={{message, setMessage, statuses, deliveryChoices}}>
             <AuthenticatedBack auth={props.auth}>

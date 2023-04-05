@@ -7,7 +7,7 @@ import RestaurantCheckbox from "./RestaurantCheckbox";
 
 function CreateDish() {
 
-    const { setShouldCreate, shouldCreate, restaurants, newestDishes, setNewestDishes, setMessage, messages, setMessages, zoomBack } = useContext(Contexts.BackContext);
+    const { setShouldCreate, shouldCreate, restaurants, setDishes, setMessage, messages, setMessages, zoomBack } = useContext(Contexts.BackContext);
 
     const [formData, setFormData] = useState({ restaurants: [],
         dish_name: '',
@@ -39,8 +39,8 @@ function CreateDish() {
             axios.post(route('dish-store'), formData, {headers:{Accept: "application/json", "Content-Type": "multipart/form-data"}})
             .then(res => {
                 if(res.data.newDish){
-                    const newestDish = {...res.data.newDish, restaurants:res.data.restaurants};
-                    setNewestDishes([...newestDishes, newestDish]);
+                    const newestDish = {...res.data.newDish, restaurants:res.data.restaurants, show:true};
+                    setDishes(allDishes => ([...allDishes.map((dish) => ({...dish, show:true})),  newestDish].sort((a, b) => b.id - a.id)))
                     closeModal()
                     setMessage(res.data.message);
                 }

@@ -1,6 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function ApplicationLogo({ className }) {
+	const [percentage, setPercentage ] = useState(0);
+	const [isMaxPerc, setIsMaxPerc] = useState(false);
+
+	const [isMax, setIsMax] = useState(false);
+	
+
+	const [wavePos, setWavePos] = useState(0.5);
+
+useEffect(() => {
+	const changePercentage = setTimeout(() => {
+		if(isMaxPerc){
+			percentage > 0 ? setPercentage(p => p - 1) : setIsMaxPerc(false);
+		}
+		else{
+			percentage <= 20 ? setPercentage(p => p + 1) : setIsMaxPerc(true);
+		}
+	}, 100)
+
+	return () => {
+		clearTimeout(changePercentage);
+	}
+}, [percentage, isMaxPerc])
+
+useEffect(() => {
+	const changeWave = setTimeout(() => {
+		if(isMax){
+			wavePos > 0.5 ? setWavePos(wp => wp - 0.00625) : setIsMax(false);
+		}
+		else{
+			wavePos <= 0.525 ? setWavePos(wp => wp + 0.00625) : setIsMax(true);
+		}
+	}, 100)
+	return () => {
+		clearTimeout(changeWave);
+	}
+}, [wavePos, isMax])
+
+
 	return (
 		<svg className={className + 'logo-svg-svg'} version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
 			viewBox="0 0 60 60" xmlSpace="preserve" fill="url(#GradientReflect)">
@@ -8,17 +46,17 @@ export default function ApplicationLogo({ className }) {
 				<radialGradient
 					id="GradientReflect"
 					cx="0.5"
-					cy="0.5"
+					cy={wavePos}
 					r="0.4"
 					fx="0.75"
 					fy="0.75"
 					spreadMethod="reflect">
-					<stop offset="0%" stopColor="rgba(223,179,113,1)" />
+					<stop offset={percentage + '%'} stopColor="rgba(223,179,113,1)" />
 					<stop offset="80%" stopColor="hsla(36, 70%, 17%, 1)" />
 				</radialGradient>
 
 			</defs>
-			<g>
+			<g> 
 				<path d="M18.35,20.805c0.195,0.195,0.451,0.293,0.707,0.293c0.256,0,0.512-0.098,0.707-0.293c0.391-0.391,0.391-1.023,0-1.414
 		c-1.015-1.016-1.015-2.668,0-3.684c0.87-0.87,1.35-2.026,1.35-3.256s-0.479-2.386-1.35-3.256c-0.391-0.391-1.023-0.391-1.414,0
 		s-0.391,1.023,0,1.414c0.492,0.492,0.764,1.146,0.764,1.842s-0.271,1.35-0.764,1.842C16.555,16.088,16.555,19.01,18.35,20.805z"/>

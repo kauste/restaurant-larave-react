@@ -12,12 +12,16 @@ function DishList(props) {
     const [defaultPic, setDefaultPic]= useState('');
     const [asset, setAsset] = useState('');
     const [restaurants, setRestaurants] = useState([]);
+    const [amountOfPages, setAmountOfPages] = useState(1);
+    const [requiredPage, setRequiredPage] = useState(1);
+    const perPage = 16;
 
     useEffect(() => {
-        setRestaurantDishes(props.dishes);
+        setRestaurantDishes(props.dishes.map((dish, index) => ({...dish, index:index + 1})));
         setDefaultPic(props.defaultPic);
         setAsset(props.asset);
         setRestaurants(props.restaurants)
+        setAmountOfPages(props.amountOfPages)
     }, [])
 
     
@@ -38,9 +42,14 @@ function DishList(props) {
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        restaurantDishes.map((dish, index) => <Dish key={index} dish={dish}></Dish>)
+                                        restaurantDishes.map((dish) => dish.index > (requiredPage - 1) * perPage && dish.index <= requiredPage * perPage ? <Dish key={dish.index} dish={dish}></Dish> : null)
                                     }
                                 </ul>
+                            </div>
+                            <div className="paginator-box">
+                                {
+                                    Array.from({ length: (amountOfPages)}, (_, i) => 1 + i).map((page) => <div onClick={() => setRequiredPage(page)} className={requiredPage == page ? 'active one-color-btn orange-outline-btn' : 'one-color-btn orange-outline-btn'}key={page}>{page}</div>)
+                                }
                             </div>
                         </div>
                     </div>
