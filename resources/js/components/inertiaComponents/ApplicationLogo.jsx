@@ -5,7 +5,6 @@ export default function ApplicationLogo({ className }) {
 	const [isMaxPerc, setIsMaxPerc] = useState(false);
 
 	const [isMax, setIsMax] = useState(false);
-	
 
 	const [wavePos, setWavePos] = useState(0.5);
 
@@ -51,8 +50,8 @@ useEffect(() => {
 					fx="0.75"
 					fy="0.75"
 					spreadMethod="reflect">
-					<stop offset={percentage + '%'} stopColor="rgba(223,179,113,1)" />
-					<stop offset="80%" stopColor="hsla(36, 70%, 17%, 1)" />
+					<stop offset={percentage + '%'} stopColor="#fff" />
+					<stop offset="80%" stopColor="#6D6C71" />
 				</radialGradient>
 
 			</defs>

@@ -38,7 +38,7 @@ function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCa
             <li>{cartDish.dish_info.dish_name}</li>
             <li className="d-flex gap-2 amount-edit-form">
                 <input className="amount-input" type="number" value={amount} onChange={e => setAmount(e.target.value)}/>
-                <button type="button" className="pattern-btn edit-btn" onClick={editAmount}>
+                <button type="button" className="one-color-btn green-btn" onClick={editAmount}>
                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
                      viewBox="0 0 405.272 405.272"
                         xmlSpace="preserve">
@@ -53,7 +53,7 @@ function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCa
             <li>{cartDish.dish_info.price} eu.</li>
             <li>{(cartDish.dish_info.price * cartDish.amount).toFixed(2)} eu.</li>
             <li>
-                <button type="button" className="pattern-btn" onClick={showModal}>Delete</button>
+                <button type="button" className="buttons gray-outline-btn" onClick={showModal}>Delete</button>
             </li>
         </ul>
     )

@@ -21,6 +21,7 @@ function Cart(props){
     const [courierData, setCourierData] = useState(null);
     //references
     const [zoomDOM, setZoomDOM] = useState(null);
+
     const containerZoomRef = useRef();
 
     useEffect(() => {
@@ -46,7 +47,7 @@ function Cart(props){
 
     return(
         <Contexts.FrontContext.Provider value={{deliveryPrice, asset, setModalInfo, setComfirmModalInfo, cart, setCart, message, setMessage, zoomDOM, smallerBackground, normalBackground, comfirmModalInfo, setComfirmModalInfo, cart, setCart, courier, setCurier, courierData, setCourierData, messages, setMessages}}>
-            <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo}>
+            <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo} fromCart={true}>
                             <Head title="Cart"/>
                 <div className="py-12 cart">
                     <div className="max-w-7xl mx-auto sm:px-0 ">

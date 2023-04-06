@@ -11,29 +11,50 @@
     --names-family:'The Girl Next Door', cursive;
     --casual-family: 'IBM Plex Serif', serif;
     --dark-brown: #281F18;
-    --light-pink--color:#CD975B;
-    --the-darher-gray:#958d83;
-    --the-gray:#B4A797;
-    --the-lighter-gray:#e1ddd7;
+    --the-darher-gray:#59595a;
     --the-gray-for-background:#A19586;
-    --bg-color:#CDC1B0;
+    --bg-color:#fff;
+
+    --the-orange-brown:#5c2401;
+    //newest
     --the-orange-color:#C67502;
     --darker-orange-color:#a25f02;
-    --the-orange-brown:#5c2401;
+    --the-grey-color: #6D6C71;
+    --the-lighter-grey: rgb(162, 162, 162);
+    --the-light-gray:rgb(221, 220, 224);
+    --the-green-color:#AAF200;
+    --the-darker-green-color:#99da02;
+
+
 
 }
-@property --expand-light{
-  initial-value: 150;
-  inherits: false;
-  syntax: '<number>';
-}
-@property --expand-light2{
-    initial-value: 40;
-    inherits: false;
-    syntax: '<number>';
-  }
   @property --btnColor {
     initial-value: #3e3325;
+    inherits: false;
+    syntax: '<color>';
+  }
+  @property --greyBtnColor1 {
+    initial-value: #6D6C71;
+    inherits: false;
+    syntax: '<color>';
+  }
+  @property --greyBtnColor2 {
+    initial-value: #363637;
+    inherits: false;
+    syntax: '<color>';
+  }
+  @property --blackBtnColor {
+    initial-value: #000;
+    inherits: false;
+    syntax: '<color>';
+  }
+  @property --blackBtnColor2 {
+    initial-value: rgb(162, 162, 162);
+    inherits: false;
+    syntax: '<color>';
+  }
+  @property --greyOutlineColor {
+    initial-value: rgb(162, 162, 162);
     inherits: false;
     syntax: '<color>';
   }
@@ -41,14 +62,15 @@
     font-weight: 800;
 }
 .message{
-    background-color: var(--the-orange-color);
-    padding:10px;
+    background-color: black;
+    padding:5px;
     display:flex;
     justify-content: center;
     font-size: 15px;
+    color:#fff
 }
 .messages{
-    background-color: var(--the-orange-color);
+    background-color: var(--the-green-color);
     display:flex;
     flex-direction: column;
     justify-content: center;
@@ -204,23 +226,11 @@ svg{
 }
 .container{
     max-width: calc(100% - 2vw);
+    margin:0;
 }
 button, a:not(.restaurant-have-dish){
     text-transform: uppercase;
 
-}
-.button-href{
-    background: radial-gradient(150px 40px at right bottom,rgb(255, 190, 92), rgb(126,103,71), #6B5133);
-    padding: 8px 20px;
-    color:rgba(223,179,113,1);;
-    text-decoration: none;
-    transition: all 0.4s linear;
-    &:hover{
-        animation: change-color ease-out 0.2s forwards;
-        background: radial-gradient(calc(var(--expand-light) * 1px) calc(var(--expand-light2) * 1px) at right bottom,rgb(255, 190, 92), rgb(126,103,71), #6B5133);
-        color:rgb(55, 45, 31);
-
-    }
 }
 .simple-button{
     background-color: #6B5133;
@@ -232,52 +242,73 @@ button, a:not(.restaurant-have-dish){
         color:rgb(255, 190, 92);
     }
 }
-.pattern-btn{
-    background: linear-gradient(27deg, #1b1610 5px, transparent 5px) 0 5px,
-    linear-gradient(207deg, #1b1610 5px, transparent 5px) 10px 0px,
-    linear-gradient(27deg, var(--btnColor) 5px, transparent 5px) 0px 10px,
-    linear-gradient(207deg, var(--btnColor) 5px, transparent 5px) 10px 5px,
-    linear-gradient(90deg, #2a2319 10px, transparent 10px),
-    linear-gradient(#332a1e 25%, #211c14  25%, #211c14 50%, transparent 50%, transparent 75%, #433728 75%, #433728);
-    background-color: #14100c;
-    background-size: 20px 20px;
+.buttons{
     box-sizing: border-box;
-    height: calc(22px + 1vw);
-    padding: calc(12px + 0.5vw)  calc(18px + 0.5vw);
-   color:#a58357;
-   display: flex;
-   align-items: center;
-   font-size: calc(12px + 0.5vw);
-   line-height: calc(12px + 0.5vw);
-   font-weight: 900;
-   &.edit-btn{
-       svg{
-           width: 17px;
-           height:17px;
+    padding: calc(5px + 0.1vw)  calc(6px + 0.1vw);
+    display: flex;
+    align-items: center;
+    font-size: calc(8px + 0.5vw);
+    // line-height: calc(8px + 0.5vw);
+    text-decoration: none;
+    // font-weight: 700;
+    transition: all ease-in 0.2s;
+    &.gray-btn{
+        background: rgb(206,206,206);
+        background: linear-gradient(300deg,  var(--greyBtnColor1)  0%, var(--greyBtnColor2)  100%);
+        border-radius:10px;
+        color:#fff;
+        width: fit-content;
+        font-weight: 400;
+        font-size: calc(10px + 0.2vw);
+        &:hover{
+            // color:var(--the-grey-color);
+            animation: change-grey-btn linear 0.5s forwards;
+
         }
-        fill: #a58357;
-        padding: calc(6px + 0.5vw)  calc(4px + 0.5vw);
     }
-    &.order-btn{
-        padding: calc(16px + 0.5vw)  calc(22px + 0.5vw);
+    &.black-btn{
+        background: rgb(206,206,206);
+        background: linear-gradient(300deg,  var(--blackBtnColor)  0%, var(--greyBtnColor2)  100%);
+        border-radius:10px;
+        color:#fff;
+        width: fit-content;
+        font-weight: 400;
+        font-size: calc(10px + 0.2vw);
+        &:hover{
+            // color:var(--the-grey-color);
+            animation: change-black-btn linear 0.5s forwards;
+
+        }
+    }
+    &.gray-outline-btn{
+        border-image: linear-gradient(343deg, var(--greyBtnColor1) 9%, var(--greyBtnColor2) 48%, var(--greyBtnColor1)  87%) 1;
+        border-style: solid;
+        border-width: 2px;
+        color:#6D6C71;
+        width: fit-content;
+        height: calc(20px + 1vw);
+        font-size: calc(10px + 0.2vw);
+        padding: calc(10px + 0.5vw)  calc(12px + 0.5vw);
+        height: calc(20px + 1vw);
+        &:hover{
+            color: #363637;
+            animation: change-grey-btn linear 0.5s forwards;
+
+        }
     }
 
-    &:hover{
-        animation: change-btn 0.3s ease forwards;
-        color: #ba9461;
-        fill: #ba9461
-    }
 }
+
 .one-color-btn{
     box-sizing: border-box;
     height: calc(20px + 1vw);
     padding: calc(10px + 0.5vw)  calc(12px + 0.5vw);
     display: flex;
     align-items: center;
-    font-size: calc(8px + 0.5vw);
+    font-size: calc(10px + 0.2vw);
     // line-height: calc(8px + 0.5vw);
+    border-radius:9px;
     text-decoration: none;
-    font-weight: 700;
     transition: all ease-in 0.2s;
     &.brown-btn{
         background-color: var(--dark-brown);
@@ -300,6 +331,7 @@ button, a:not(.restaurant-have-dish){
     &.orange-outline-btn{
         border: var(--the-orange-color) 1px solid;
         color: var(--the-orange-color);
+        width: fit-content;
         &:hover{
             background-color: var(--the-orange-color);
             color: var(--bg-color);
@@ -310,9 +342,46 @@ button, a:not(.restaurant-have-dish){
         border: var(--the-orange-color) 1px solid;
         background-color: var(--the-orange-color);
         color: var(--bg-color);
+        width: fit-content;
         &:hover{
             border: var(--darker-orange-color) 1px solid;
             background-color: var(--darker-orange-color);
+        }
+    }
+    &.gray-btn{
+        border: var(--the-grey-color) 1px solid;
+        background-color: var(--the-grey-color);
+        color: var(--bg-color);
+        width: fit-content;
+        &:hover{
+            border: var(--the-lighter-grey) 1px solid;
+            background-color: var(--the-lighter-grey);
+        }
+    }
+    &.green-btn{
+            border: var(--the-green-color) 1px solid;
+        background-color: var(--the-green-color);
+        color: #fff;
+        width: fit-content;
+        svg{
+            width: 17px;
+            height:17px;
+        }
+        fill: #fff;
+        padding: calc(6px + 0.5vw)  calc(4px + 0.5vw);
+        border-radius:0;
+        &:hover{
+            border: var(--the-darker-green-color) 1px solid;
+            background-color: var(--the-darker-green-color)
+        }
+    }
+    &.orange-outline-btn{
+        border: var(--the-orange-color) 1px solid;
+        color: var(--the-orange-color);
+        &:hover{
+            background-color: var(--the-orange-color);
+            color: var(--bg-color);
+
         }
     }
     &.btn-lg{
@@ -329,7 +398,7 @@ button, a:not(.restaurant-have-dish){
     padding: 10px;
     display: flex;
     justify-content: center;
-    background-color: var(--light-pink--color);
+    background-color: #fff;
     font-family: var(--casual-family);
     margin-bottom: 20px;
     font-weight: 700;
@@ -368,7 +437,8 @@ body{
     min-height:100vh;
 }
 .main-for-children{
-    background: rgb(205,193,176);
+background-color: #fff;
+background: radial-gradient(var(--the-orange-color) 2px, #fff 2px) 0 0 / 50px 50px;;
 padding-bottom: 40px;
 padding-top: 150px;
 min-height: calc(100vh - 80px);
@@ -377,10 +447,9 @@ min-height: calc(100vh - 80px);
 nav{
     position:absolute;
     display:block;
-    // justify-content: space-between;
-    // align-items: center;
     width:100%;
-    height: 150px;
+    margin-top:50px;
+    height: 50px;
     .nav-box{
         width:100%;
         padding:0 20px 0 40px;
@@ -388,65 +457,91 @@ nav{
         justify-content:space-between;
         height:100%;
         align-items: center; 
-        background-image:url( './../../public/images/bandau.png');
-        box-shadow: 0px 0px 2px 6px hsla(26, 25%, 13%, 0.729);        
+        background-color: var(--the-orange-color);
         .nav-right-block{
             height:100%;
         }
     }
+    .logo-box{
+        padding: 25px 10px 40px;
+        background-color: var(--the-light-gray);
+        margin-top: 60px;
+    }
     .nav-logo{
-        width: 80px;
-        height:80px;
-        position: absolute;
-        top:185px;
-        filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.94));
-        .logo-svg-svg{
-            background:linear-gradient(90deg, rgba(126,103,71,0.8199180795365021) 0%, rgba(255,143,5,0.3157163988642332) 16%, rgba(99,72,36,0.6938676593684349) 85%, rgba(128,105,73,1) 100%);
-        }
+        width: 60px;
+        height:60px;
+        filter: drop-shadow(3px 5px 2px rgb(108, 108, 108));
+
     }
     .nav-link{
         font-size: 30px;
         padding-top: 10px;
         font-family: var(--names-family);
-        color: rgba(223,179,113,1);
+        color: #fff;
         transition: all ease-out 0.3s;
         &:hover{
-            color: #d29238
+            color:  #e7e7e7
         }
+
     }
     .nav-dropdown, .nav-cart-link{
         display: flex;
         align-items: center;
-        padding: 0 10px;
+        padding:10px;
         font-size: 15px;
-        color: rgba(223,179,113,1);
-        &:hover{
-            background-color: #514634;
-
+        color: #fff;
+        &:hover:not(.darker){
+            padding: 25px 10px 25px 10px;
+            color: var(--the-darher-gray);
+            background-color: var(--the-light-gray);
+            position:relative;
+            top:1px;
+        }
+          &.darker{
+            &:hover{
+            background-color: #2E2E2E;
+            position:relative;
+            top:1px;
+            padding: 25px 10px 25px 10px;
+            }
         }
     }
+
     .nav-cart-link-box{
         .nav-cart-link{
             text-decoration: none;
             &:hover{
-                background-color: #514634;
+                background-color: var(--the-light-gray);
+            }
+            &.darker{
+                &:hover{
+                    background-color: #2E2E2E;
+                }
             }
         }
     }
     .nav-dropdown{
         .dropdown-content{
-            background-color: var(--dark-brown);
+            background-color: var(--the-light-gray);
             left:50%;
             transform: translateX(-50%);
             padding: 10px 0;
             width: auto;
+            &.darker{
+                background-color: #2E2E2E;
+            }
             .dropdown-link{
                 text-transform: capitalize;
                 padding: 10px 30px;
                 width:100%;
                 &:hover{
-                background-color:#514634; 
+                background-color:var(--the-light-gray); 
 
+                }
+                &.darker{
+                    &:hover{
+                        background-color: #2E2E2E;
+                    }
                 }
             }
         }
@@ -454,6 +549,7 @@ nav{
 }
 // front
 .paginator-box{
+    margin-top: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -494,57 +590,40 @@ nav{
 
 .restaurant-list-front{
     
-    .restaurant-list{
-        .restaurant-list-grid{
-            box-sizing: border-box;
-            height:calc(55px + 1vw);
-            padding: 0px 100px 0px 20px;
-            display:grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1.5fr 1fr;
-            border: #433728 1px solid;
-            border-top:none;
-            border-radius: 50%;
-            &:not(.headings){
-                grid-template-rows: 70px;
-                align-items: center;
-                li:not(.restaurant-name, .controls){
-                    box-sizing: border-box;
-                    font-family: var(--casual-family);
-                    font-weight: 400;
-                    letter-spacing: 0.5px;
-                }
-                &:hover{
-                    border: #433728 2px solid;
-                    border-top:none;
-                    cursor:default;
-                }
-                .controls{
-                    justify-self: center;
-                }
-            }
-            &.headings{
-                border: #4A310D 3px solid;
-                border-top:none;
-                align-items: end;
-                padding-bottom: 15px;
-                font-weight: 600;
-                font-size: 17px;
-            }
-            li{
-                box-sizing: border-box;
-                padding-left:10px;
-
-            }
+    .restaurant-list-grid{
+        display:grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap:30px;
+        padding: 30px;
+        // border: var(--the-darher-gray) 2px solid;
+        // background-color: var(--the-light-gray);
+        .restaurant-list{
+            border-image: linear-gradient(315deg, black 11%, var(--the-orange-color) 50%) 1;
+            border-style: solid;
+            border-width: 2px;
+            background-color: #fff;
+            color:black;
+            font-family: var(--casual-family);
+            padding: 30px;
             .restaurant-name{
                 font-family: var(--names-family);
                 font-size: 20px;
                 font-weight: 500;
             }
+            &:hover{
+                animation: changeOutlineColor 0.2s linear forwards;
+            }
         }
+
     }
 }
 .dishes-list{
+    .container{
+        padding: 10px;
+        background-color: #fff;
+    }
     .dish-list-grid{
+        // background-color: #fff;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 30px;
@@ -554,26 +633,28 @@ nav{
 
         }
         &:not(.back-restaurant-dish-list-grid){
-            .one-dish::before{
-                content: '';
-                display: inline-block;
-                background: rgb(99,72,36);
-                background: linear-gradient(90deg, rgba(99,72,36,0.8367248022255778) 11%, rgba(126,103,71,1) 19%, rgba(126,103,71,1) 23%,rgba(223,179,113,1) 42%, rgba(128,105,73,0.7835035137101716) 100%);
-                width: 4px;
-                height: 158px;
-                top:50px;
-                left:25px;
-                position: absolute;
+            .one-dish{
+                position:relative;
             }
+            // .one-dish::before{
+            //     content: '';
+            //     display: inline-block;
+            //     background: rgb(99,72,36);
+            //     background: linear-gradient(90deg, rgba(99,72,36,0.8367248022255778) 11%, rgba(126,103,71,1) 19%, rgba(126,103,71,1) 23%,rgba(223,179,113,1) 42%, rgba(128,105,73,0.7835035137101716) 100%);
+            //     width: 4px;
+            //     height: 158px;
+            //     top:50px;
+            //     left:25px;
+            //     position: absolute;
+            // }
             .one-dish::after{
                 content: '';
                 display: inline-block;
-                background: rgb(99,72,36);
-                background: linear-gradient(0deg, rgba(99,72,36,0.8367248022255778) 11%, rgba(126,103,71,1) 19%, rgba(126,103,71,1) 23%, rgba(223,179,113,1) 42%, rgba(128,105,73,0.7835035137101716) 100%);
-                width: 178px;
-                height: 4px;
-                top:208px;
-                left:25px;
+                background: rgba(99,72,36,0.8367248022255778);
+                width: 280px;
+                height: 2px;
+                bottom:-10px;
+                left:0px;
                 position: absolute;
             }
         }
@@ -633,10 +714,22 @@ nav{
     }
 }
 .sort-filter-search{
-    background: rgb(126,103,71);
-background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157163988642332) 16%, rgba(99,72,36,0.6938676593684349) 60%, rgba(128,105,73,1) 75%);
     padding: 30px;
     max-width: 700px;
+//     background: rgb(126,103,71);
+// background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157163988642332) 16%, rgba(99,72,36,0.6938676593684349) 60%, rgb(255, 149, 0) 75%);
+    // border-image: linear-gradient(315deg, rgba(99,72,36,0.8367248022255778) 11%, var(--the-orange-color) 100%) 1;
+    // border-style: solid;
+    // border-width: 2px;
+    border:var(--greyOutlineColor) 2px solid;
+    background-color: var(--the-light-gray);
+    &:hover{
+        animation: changeOutlineColor linear 0.3s forwards;
+    }
+    &.active{
+        border: var(--the-grey-color) 2px solid;
+
+    }
     .card-header{
         padding: 0;
         transition: all 0.2s linear;
@@ -674,29 +767,15 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
 .one-restaurant-dishes{
     .about-restaurant{
         position:relative;
-
-        // &:before{
-        //     content: '';
-        //     display:inline-block;
-        //     position:absolute;
-        //     top: 30%;
-        //     left: -5%;
-        //     height:70%;
-        //     width:75%;
-        //             background: linear-gradient(27deg, #1b1610 5px, transparent 5px) 0 5px,
-        //                 linear-gradient(207deg, #1b1610 5px, transparent 5px) 10px 0px,
-        //                 linear-gradient(27deg, #3e3325 5px, transparent 5px) 0px 10px,
-        //                 linear-gradient(207deg, #3e3325  5px, transparent 5px) 10px 5px,
-        //                 linear-gradient(90deg, #2a2319 10px, transparent 10px),
-        //                 linear-gradient(#332a1e 25%, #211c14  25%, #211c14 50%, transparent 50%, transparent 75%, #433728 75%, #433728);
-        //     background-color: #14100c;
-        //     background-size: 20px 20px;
-            
-        //     z-index: -1;
-        // }
+        box-sizing: border-box;
+        width:100%;
+        background-color: #2E2E2E;
+    //         border-image: linear-gradient(315deg, black 11%, var(--the-orange-color) 100%) 1;
+    // border-style: solid;
+    // border-width: 2px;
+        color:#fff;
         
-    // color:rgba(223,179,113,1);
-        padding: 20px;
+        padding: 20px 100px;
         h2{
             font-weight: 800;
         }
@@ -736,11 +815,13 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
         }
     }
     .cart-restaurant, .order-restaurant{
-        box-sizing: border-box;
-        background-color: #CDC1B0;
+        box-sizing: content-box;
+        background-color: #fff;
+        // background-color: #2E2E2E;
+        border: #2E2E2E solid 2px;
         padding:0.2vw 2vw;
-        box-shadow: 2px 2px 8px #62584B;
         border-radius:0;
+        color:black;
         &:not(:last-child){
             margin-bottom: 0.7vw;
         }
@@ -749,14 +830,17 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
             grid-template-columns: repeat(6, 1fr);
             justify-items: center;
             align-items: center;
-            border-bottom: var(--dark-brown) 1px solid;
+            border-bottom: rgba(148,148,148,1)  1px solid;
+            margin-bottom: 0;
             &:not(.bold){
-                margin-bottom: 0;
-                padding: 10px;
+                padding: 0 10px;
             }
             li{
                 padding: 0 4px;
             }
+        }
+        input{
+            color:black;
         }
         .grid-for-extra{
             display:grid;
@@ -772,7 +856,7 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
             justify-items: center;
             align-items: center;
             margin-bottom: 0;
-            margin-top: 10px;
+            // margin-top: 10px;
         }
     }
 }
@@ -867,24 +951,6 @@ background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157
 .cart{
     .container{
         .cart-restaurant{
-
-            .cancel-btn{
-                box-sizing: border-box;
-                height: calc(22px + 1vw);
-                padding: calc(14px + 0.5vw)  calc(20px + 0.5vw);
-                display: flex;
-                align-items: center;
-                font-size: calc(12px + 0.5vw);
-                line-height: calc(12px + 0.5vw);
-                font-weight: 900;
-                border: var(--the-orange-color) 2px solid;
-                color: var(--the-orange-color);
-                transition: all ease-in 0.2s;
-                &:hover{
-                    background-color: var(--the-orange-color);
-                    color: var(--bg-color);
-                }
-            }
             .cart-grid{
                 .amount-edit-form{
                     .amount-input{
@@ -906,17 +972,17 @@ footer{
     justify-content: space-between;
     align-items: center;
     font-family: var(--casual-family);
-    color:black;
+    color:#fff;
 
     .left-corner{
         font-size: 17px;
         .website{
             text-transform: lowercase;
-            color:black;
+            color:#fff;
             transition: all 0.3s linear;
             &:hover{
                 color:black;
-                margin-left:10px;
+                margin-left:5px;
             }
         }
             
@@ -1193,12 +1259,7 @@ footer{
         }
     }
 }
-@keyframes change-color{
-    to {
-        --expand-light2:160;
-        --expand-light:450;
-    }
-}
+
 @keyframes text-bigger{
     to{
         font-size: 1.6em;
@@ -1207,5 +1268,22 @@ footer{
 @keyframes change-btn {
     to{
         --btnColor: #614d33;
+    }
+}
+@keyframes change-grey-btn {
+    to{
+        --greyBtnColor1:  #363637;
+        --greyBtnColor2: #6D6C71;
+    }
+}
+@keyframes change-black-btn {
+    to{
+        --blackBtnColor: rgb(162, 162, 162);
+        --blackBtnColor2:  black;
+    }
+}
+@keyframes changeOutlineColor{
+    to{
+        --greyOutlineColor: #6D6C71;
     }
 }

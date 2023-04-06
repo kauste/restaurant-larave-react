@@ -3,16 +3,52 @@ import axios from "axios";
 import { useContext, useState } from "react";
 function SortFilterSearch(){
     
-    const {setRestaurantDishes, restaurants} = useContext(Contexts.FrontContext);
+    const {setRestaurantDishes, restaurantDishes, restaurants, changePage, setRequiredPage, perPage, setAmountOfPages} = useContext(Contexts.FrontContext);
 
-    const [selectValue, setSelectValue] = useState('default');
+    const [sortValue, setSortValue] = useState('default');
     const [restaurant, setRestaurant] = useState(0);
     const [search, setSearch] = useState('');
     const [activenessState, setActivenessState] = useState('d-none');
 
-    const sortAndFilter = () => {
-        axios.get(route('sort-and-filter') + '?price_sort='+ selectValue +'&filter=' + restaurant)
-        .then(res => {setRestaurantDishes(res.data.dishes) });
+
+    const sort = () => {
+        if(sortValue === 'asc'){
+            setRestaurantDishes(rD => [...rD].sort((a, b) => parseFloat(a.price) - parseFloat(b.price)));
+        } 
+        else if(sortValue === 'desc'){
+            setRestaurantDishes(rD => [...rD].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
+        } 
+        else{
+            setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index));
+        }
+        changePage(1);
+        setAmountOfPages(Object.keys(restaurantDishes).length);
+
+    }
+    const filter = () => {
+        let z = 0;
+        setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPage) ? ({...dish, show:true}) : ({...dish, show:false})));
+        setRequiredPage(1);
+        let countDishes = 0;
+        restaurantDishes.map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ++countDishes : [].push())
+        console.log(countDishes);
+        setAmountOfPages(Math.ceil(countDishes / perPage));
+    }
+    const doSortAndFilter = () => {
+        if(restaurant === 'default'){
+            sort();
+        } else {
+            if(sortValue === 'default'){
+                filter();
+            }
+            
+        }
+
+        // axios.get(route('sort-and-filter') + '?price_sort='+ sortValue +'&filter=' + restaurant)
+        // .then(res => {
+        //     console.log('labas')
+        //     setRestaurantDishes(rd => rd.filter(dish => res.data.dishes.includes(dish.id)));
+        //  });
     }
     const doSearch = () => {
         axios.get(route('search-dish') +'?dish=' + search)
@@ -24,7 +60,7 @@ function SortFilterSearch(){
     }
 
     return(
-        <div className="sort-filter-search">
+        <div className={activenessState !== 'd-none' ? 'active sort-filter-search' : 'sort-filter-search'}>
         <div className="card-header d-flex align-items-center" onClick={displayToggle}>
             <h3 className="p-0 m-0">Sort, filter, search</h3>
             <span className="p-0 sfs-chevron">
@@ -37,7 +73,7 @@ function SortFilterSearch(){
             <div className="sort-filter">
                 <div>
                     <label className="mr-2 " htmlFor="priceSort">Sort by price</label>
-                    <select className="sort-select" id="priceSort" name="priceSort" value={selectValue} onChange={e => setSelectValue(e.target.value)}>
+                    <select className="sort-select" id="priceSort" name="priceSort" value={sortValue} onChange={e => setSortValue(e.target.value)}>
                         <option value="asc">Smallest first</option>
                         <option value="desc">Biggest first</option>
                         <option value="default">Default</option>
@@ -53,13 +89,13 @@ function SortFilterSearch(){
                     </select>
                 </div>
                 <div>
-                    <button className="simple-button ml-2" onClick={sortAndFilter}>SORT AND FILTER</button>
+                    <button className="buttons gray-btn ml-2" onClick={doSortAndFilter}>SORT AND FILTER</button>
                 </div>
             </div>
             <div className="d-flex align-items-center ml-2 mt-5">
                 <label className="mr-2" htmlFor="search">Search</label>
                 <input className="search-input"  value={search} onChange={e => setSearch(e.target.value)}></input>
-                <button className="simple-button ml-2" onClick={doSearch}>SEARCH</button>
+                <button className="buttons gray-btn ml-2" onClick={doSearch}>SEARCH</button>
             </div>
         </div>
     </div>

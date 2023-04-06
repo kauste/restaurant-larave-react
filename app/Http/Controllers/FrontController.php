@@ -85,43 +85,43 @@ class FrontController extends Controller
     public function sortAndFilter(Request $request){
         if($request->filter == 0){
             $dishes = match($request->price_sort){
-                'asc'=>Dish::select('dishes.id as dish_id', 'dishes.*')
+                'asc'=>Dish::select('id')
                 ->orderBy('price', 'asc')
-                ->get(), 
-                'desc'=>Dish::select('dishes.id as dish_id', 'dishes.*')
+                ->get()->pluck('id')->toArray(), 
+                'desc'=>Dish::select('id')
                 ->orderBy('price', 'desc')
-                ->get(),
-                default => Dish::select('dishes.id as dish_id', 'dishes.*')
-                ->get(),
+                ->get()->pluck('id')->toArray(),
+                default => Dish::select('id')
+                ->get()->pluck('id')->toArray(),
             };
         } else {
 
             $dishes = match($request->price_sort){
                 'asc'=> Dish::whereHas('restaurants', function(Builder $query) use ($request){
                     $query->where('id', '=', $request->filter);
-                })->select('dishes.id as dish_id', 'dishes.*')
+                })->select('dishes.id')
                 ->orderBy('price', 'asc')
-                ->get(), 
+                ->get()->pluck('id')->toArray(), 
                 'desc'=> Dish::whereHas('restaurants', function(Builder $query) use ($request){
                     $query->where('id', '=', $request->filter);
-                })->select('dishes.id as dish_id', 'dishes.*')
+                })->select('dishes.id')
                 ->orderBy('price', 'desc')
-                ->get(),
+                ->get()->pluck('id')->toArray(),
                 default => Dish::whereHas('restaurants', function(Builder $query) use ($request){
                     $query->where('id', '=', $request->filter);
-                })->select('dishes.id as dish_id', 'dishes.*')
-                ->get(),
+                })->select('dishes.id')
+                ->get()->pluck('id')->toArray(),
             };
         }
-        $dishes->map(function($dish){
-            $restaurants = Restaurant::join('restaurant_dish', 'restaurant_dish.restaurant_id', 'restaurants.id')
-                           ->select('restaurants.restaurant_name', 'restaurants.id')
-                           ->where('restaurant_dish.dish_id', '=', $dish->id)
-                           ->orderBy('restaurants.restaurant_name')
-                            ->get();
-            $dish->restaurants = $restaurants;
-            return $dish;
-        });
+        // $dishes->map(function($dish){
+        //     $restaurants = Restaurant::join('restaurant_dish', 'restaurant_dish.restaurant_id', 'restaurants.id')
+        //                    ->select('restaurants.restaurant_name', 'restaurants.id')
+        //                    ->where('restaurant_dish.dish_id', '=', $dish->id)
+        //                    ->orderBy('restaurants.restaurant_name')
+        //                     ->get();
+        //     $dish->restaurants = $restaurants;
+        //     return $dish;
+        // });
             return response()-> json([
                 'dishes'=> $dishes,
             ]);

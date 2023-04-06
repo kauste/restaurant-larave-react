@@ -19,6 +19,7 @@ function FrontOrders(props) {
     const [messages, setMessages] = useState(null);
     //dom
     const [zoomDOM, setZoomDOM] = useState(null);
+    
     const zoomContainer = useRef();
     // animate
     const backgroundZoomTiming = {

@@ -29,7 +29,7 @@ function DishInRestaurant({dish, setShouldShowModal}) {
                 <li>{dish.price} eu.</li>
                 <li className="form">
                         <input className="amount-input" type="number" min="1" max="50" value={amount} onChange={e => setAmount(e.target.value)}/>
-                        <button className="simple-button" type="button" onClick={addToCart}>Add to cart</button>
+                        <button className="one-color-btn green-btn" type="button" onClick={addToCart}>Add to cart</button>
                 </li>
             </ul>
         </li>

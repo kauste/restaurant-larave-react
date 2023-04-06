@@ -11,17 +11,26 @@ import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfo
 import Footer from '@/components/frontOffice/Footer';
 import Contexts from '@/components/Contexts';
 
-export default function Authenticated({ auth, header, children, modalInfo, setModalInfo, }) {
+export default function Authenticated({ auth, header, children, modalInfo, setModalInfo, fromCart, fromRestaurantDishes}) {
     
     const {message, setMessage} = useContext(Contexts.FrontContext);
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [navLinkStyle, setNavLinkStyle] = useState('');
     const [navDOM, setNavDOM] = useState(null);
+    const [mainForChildrenDOM, setMainForChildrenDOM] = useState(null);
+    const mainForChildrenRef = useRef();
     const navRef = useRef();
-    const authentificatedDOM = useRef();
 
     useEffect(() => {
         setNavDOM(navRef.current)
+        setMainForChildrenDOM(mainForChildrenRef.current)
+        setNavLinkStyle(fromCart || fromRestaurantDishes ? 'darker' : '')
     }, [])
+    // useEffect(() => {
+    //     console.log(fromCart);
+    //     console.log(mainForChildrenDOM);
+    //     fromCart && mainForChildrenDOM ? mainForChildrenDOM.style.backgroundColor = 'red' : '';
+    // }, [mainForChildrenDOM, fromCart])
 
     useEffect(() => {
         if(message !== null){
@@ -32,16 +41,16 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
     }, [message])
 
     return (
-            <div className="authentificated-layout" ref={authentificatedDOM}>
+            <div className="authentificated-layout" >
                             <EditContactInfoModal></EditContactInfoModal>
                             <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
                             <ConfirmCartModal></ConfirmCartModal>
                 <nav ref={navRef}>
-                    <div className="nav-box">
+                    <div className='nav-box'>
                             <div className="flex items-center">
                                 <div className="shrink-0 flex items-center">
-                                    <Link href="/">
-                                        <ApplicationLogo className="block nav-logo text-gray-500" />
+                                    <Link className="logo-box" href="/" style={{background: fromCart || fromRestaurantDishes ? '#2E2E2E' : '' }}>
+                                        <ApplicationLogo className="block nav-logo text-gray-500"  />
                                     </Link>
                                 </div>
                                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex nav-main-name">
@@ -52,11 +61,11 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
                             </div>
                             <div className="hidden sm:flex sm:items-center sm:ml-6 nav-right-block">
                             {/* PRADZIA */}
-                                <div className="relative nav-dropdown">
+                                <div className={'relative nav-dropdown ' + navLinkStyle}>
                                     <Dropdown>
                                         <Dropdown.Trigger>
                                             <span className="inline-flex rounded-md">
-                                                <button type="button" className="h-24 flex items-center transition ease-in-out duration-150">
+                                                <button type="button" className=" flex items-center transition ease-in-out duration-150">
                                                     Services
                                                     <svg className="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"fill="currentColor">
                                                         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
@@ -74,20 +83,20 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
                                         </Dropdown.Content>
                                     </Dropdown>
                                 </div>
-                                <div className="nav-cart-link-box">
-                                        <Link href={route('show-cart')} className="nav-cart-link h-24">Show cart</Link>
+                                <div className={'nav-cart-link-box ' + navLinkStyle}>
+                                        <Link href={route('show-cart')} className="nav-cart-link ">Show cart</Link>
                                 </div>
-                                <div className="nav-cart-link-box">
-                                    <div className="h-24">
-                                        <Link href={route('show-orders')} className="nav-cart-link h-24">Show orders</Link>
+                                <div className={'nav-cart-link-box ' + navLinkStyle}>
+                                    <div className="">
+                                        <Link href={route('show-orders')} className="nav-cart-link ">Show orders</Link>
                                     </div>
                                 </div>
                                 {/* PABAIGA */}
-                                <div className="relative nav-dropdown ">
+                                <div className={'relative nav-dropdown ' + navLinkStyle}>
                                     <Dropdown>
                                         <Dropdown.Trigger>
                                             <span className="inline-flex rounded-md">
-                                                <button type="button"className="h-24 flex items-center transition ease-in-out duration-150">
+                                                <button type="button"className=" flex items-center transition ease-in-out duration-150">
                                                     {auth.user.name}
                                                     <svg className="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
@@ -156,7 +165,7 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
                     </header>
                 )}
 
-                <main className="main-for-children">
+                <main className="main-for-children" ref={mainForChildrenRef} style={{background: fromCart || fromRestaurantDishes ? ' radial-gradient(#2E2E2E 2px, #fff 2px) 0 0 / 50px 50px' : '' }}>
                     {children}
                 </main>
                 <Footer></Footer>

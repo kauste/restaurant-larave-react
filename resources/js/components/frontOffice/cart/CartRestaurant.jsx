@@ -52,8 +52,8 @@ function CartRestaurant({restaurant}){
                     </ul>
                 </div>
                 <div className="d-flex justify-content-end gap-3 p-4">
-                    <button className="cancel-btn" type="button" onClick={showModal}>Cancel</button>
-                    <button className="pattern-btn order-btn" type="button" onClick={confirmOrderModal}>Order</button>
+                    <button className="buttons gray-outline-btn" type="button" onClick={showModal}>Cancel</button>
+                    <button className="one-color-btn green-btn btn-lg" type="button" onClick={confirmOrderModal}>Order</button>
                 </div>
             </div>
     )

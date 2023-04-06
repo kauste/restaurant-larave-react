@@ -14,19 +14,25 @@ function DishList(props) {
     const [restaurants, setRestaurants] = useState([]);
     const [amountOfPages, setAmountOfPages] = useState(1);
     const [requiredPage, setRequiredPage] = useState(1);
+
     const perPage = 16;
 
     useEffect(() => {
-        setRestaurantDishes(props.dishes.map((dish, index) => ({...dish, index:index + 1})));
+        setRestaurantDishes(props.dishes.map((dish, i) => ({...dish, index:i, show:(i < perPage ? true : false)})));
         setDefaultPic(props.defaultPic);
         setAsset(props.asset);
         setRestaurants(props.restaurants)
         setAmountOfPages(props.amountOfPages)
     }, [])
 
+    const changePage = (page) => {
+        setRestaurantDishes(rD => rD.map((dish, i) => ({...dish, show:(i < perPage * page && i >= perPage * (page - 1) ? true : false)})));
+        setRequiredPage(page);
+    }
+
     
     return (
-        <Contexts.FrontContext.Provider value={{setRestaurantDishes, defaultPic, asset, restaurants}}>
+        <Contexts.FrontContext.Provider value={{setRestaurantDishes, defaultPic, asset, restaurants, perPage, changePage, setRequiredPage, setAmountOfPages}}>
         <Authenticated auth={props.auth}>
             <Head title="Dishes"/>
             <div className="py-12 dishes-list">
@@ -42,13 +48,13 @@ function DishList(props) {
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        restaurantDishes.map((dish) => dish.index > (requiredPage - 1) * perPage && dish.index <= requiredPage * perPage ? <Dish key={dish.index} dish={dish}></Dish> : null)
+                                        restaurantDishes.map((dish) => dish.show ? <Dish key={dish.index} dish={dish}></Dish> : null)
                                     }
                                 </ul>
                             </div>
                             <div className="paginator-box">
                                 {
-                                    Array.from({ length: (amountOfPages)}, (_, i) => 1 + i).map((page) => <div onClick={() => setRequiredPage(page)} className={requiredPage == page ? 'active one-color-btn orange-outline-btn' : 'one-color-btn orange-outline-btn'}key={page}>{page}</div>)
+                                    Array.from({ length: (amountOfPages)}, (_, i) => 1 + i).map((page) => <div onClick={ () => changePage(page)} className={requiredPage == page ? 'active one-color-btn orange-outline-btn' : 'one-color-btn orange-outline-btn'}key={page}>{page}</div>)
                                 }
                             </div>
                         </div>

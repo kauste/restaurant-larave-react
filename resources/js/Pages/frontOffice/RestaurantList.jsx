@@ -17,7 +17,7 @@ function RestaurantList(props) {
             <Authenticated auth={props.auth}>
                 <Head title="Restaurants"/>
                 <div className="py-12 restaurant-list-front">
-                    <div className="max-w-7xl mx-auto  lg:px-8">
+                    <div className="max-w-10xl mx-auto  lg:px-8">
                         <div>
                             <div className="container">
                                 <div className="row justify-content-center">
@@ -26,17 +26,8 @@ function RestaurantList(props) {
                                             <h2>Our restaurants</h2>
                                         </div>
                                         <div className="card-body">
-                                            <ul className="restaurant-list">
-                                                <li>
-                                                    <ul className="restaurant-list-grid headings">
-                                                        <li>Restaurant Name</li>
-                                                        <li>City</li>
-                                                        <li>Adress</li>
-                                                        <li>Working Hours</li>
-                                                        <li></li>
-                                                    </ul>
-                                                </li>
-                                                <li>
+                                            <ul>
+                                                <li className="restaurant-list-grid">
                                                     {
                                                         restaurantList.map((restaurant, index) => <Restaurant key={index} restaurant={restaurant}></Restaurant>)
                                                     }

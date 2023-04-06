@@ -13,6 +13,7 @@ function RestaurantDishes(props){
     const [restaurantId, setRestaurantId] = useState(null);
     const [userId, setUserId] = useState(null);
     const [asset, setAsset] = useState('');
+    
 
     useEffect(() =>{
         setDishes(props.dishes);
@@ -25,12 +26,11 @@ function RestaurantDishes(props){
 
     return (
         <Contexts.FrontContext.Provider value={{defaultPic, restaurantId, asset, setMessage, userId, message}}>
-        <Authenticated auth={props.auth}>
+        <Authenticated auth={props.auth} fromRestaurantDishes={true}>
             <Head title={restaurant.restaurant_name}/>
+            
             <div className="py-12 dishes-list one-restaurant-dishes">
-                <div className="max-w-7xl mx-auto sm:px-0 ">
-                    <div className="container">
-                        <div className="about-restaurant">
+            <div className="about-restaurant">
                             <div className="card-header">
                                 <h2>{restaurant.restaurant_name}</h2>
                             </div>
@@ -40,6 +40,9 @@ function RestaurantDishes(props){
                                 <div><span className="bold">Working hours : </span>{restaurant.work_starts}h - {restaurant.work_ends}h</div>
                             </div>
                         </div>
+                <div className="max-w-7xl mx-auto sm:px-0 ">
+                    <div className="container">
+
                         <div>
                             <div className="card-header">
                                 <h2>Our dishes</h2>
