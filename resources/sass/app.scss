@@ -513,12 +513,14 @@ nav{
             &:hover{
                 background-color: var(--the-light-gray);
             }
-            &.darker{
-                &:hover{
-                    background-color: #2E2E2E;
-                }
-            }
+
         }
+    }
+    .nav-cart-link-box.darker{
+            .nav-cart-link:hover{
+                background-color: #2E2E2E;
+                color:#fff;
+            }
     }
     .nav-dropdown{
         .dropdown-content{
