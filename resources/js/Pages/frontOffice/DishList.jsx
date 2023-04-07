@@ -14,15 +14,16 @@ function DishList(props) {
     const [restaurants, setRestaurants] = useState([]);
     const [amountOfPages, setAmountOfPages] = useState(1);
     const [requiredPage, setRequiredPage] = useState(1);
-
-    const perPage = 16;
+    const [message, setMessage] = useState(null);
+    const [perPage, setPerPage] = useState(1);
 
     useEffect(() => {
-        setRestaurantDishes(props.dishes.map((dish, i) => ({...dish, index:i, show:(i < perPage ? true : false)})));
+        setPerPage(props.perPage);
+        setRestaurantDishes(props.dishes.map((dish, i) => ({...dish, index:i, show:(i < props.perPage ? true : false)})));
         setDefaultPic(props.defaultPic);
         setAsset(props.asset);
-        setRestaurants(props.restaurants)
-        setAmountOfPages(props.amountOfPages)
+        setRestaurants(props.restaurants);
+        setAmountOfPages(Math.ceil(Object.keys(props.dishes).length / props.perPage));
     }, [])
 
     const changePage = (page) => {
@@ -32,7 +33,7 @@ function DishList(props) {
 
     
     return (
-        <Contexts.FrontContext.Provider value={{setRestaurantDishes, defaultPic, asset, restaurants, perPage, changePage, setRequiredPage, setAmountOfPages}}>
+        <Contexts.FrontContext.Provider value={{setRestaurantDishes, message, setMessage, defaultPic, asset, restaurants, perPage, changePage, setRequiredPage, setAmountOfPages, restaurantDishes}}>
         <Authenticated auth={props.auth}>
             <Head title="Dishes"/>
             <div className="py-12 dishes-list">

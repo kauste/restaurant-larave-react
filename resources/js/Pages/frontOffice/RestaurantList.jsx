@@ -6,14 +6,14 @@ import { useEffect, useState } from "react";
 
 function RestaurantList(props) {
     const [restaurantList, setRestaurantList] = useState([]);
-    const message = null;
+    const [message, setMessage] = useState(null);
 
     useEffect(() => {
         setRestaurantList(props.restaurants);
     }, [])
 
     return (
-        <Contexts.FrontContext.Provider value={{message}}>
+        <Contexts.FrontContext.Provider value={{message, setMessage}}>
             <Authenticated auth={props.auth}>
                 <Head title="Restaurants"/>
                 <div className="py-12 restaurant-list-front">

@@ -9,7 +9,7 @@ function Dish({dish}) {
                 <li>
                     <img src={asset + dish.picture_path ?? asset + defaultPic} className="img"/>
                 </li>
-                <li className="dish-name">{dish.dish_name}<h1>{dish.index}</h1></li>
+                <li className="dish-name">{dish.dish_name}</li>
                 <li>{dish.price} eu.</li>
                 <li>
                     <span className="bold">At: </span>

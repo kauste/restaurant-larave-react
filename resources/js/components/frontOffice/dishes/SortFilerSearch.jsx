@@ -10,39 +10,66 @@ function SortFilterSearch(){
     const [search, setSearch] = useState('');
     const [activenessState, setActivenessState] = useState('d-none');
 
-
+    const sortDefaultFilterAll = () => {
+        setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map(dish => ({...dish, show:true})));
+        changePage(1);
+        setAmountOfPages(Math.ceil(Object.keys(restaurantDishes).length /perPage));
+    }
     const sort = () => {
         if(sortValue === 'asc'){
             setRestaurantDishes(rD => [...rD].sort((a, b) => parseFloat(a.price) - parseFloat(b.price)));
         } 
-        else if(sortValue === 'desc'){
+        else{
             setRestaurantDishes(rD => [...rD].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
         } 
-        else{
-            setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index));
-        }
+        setAmountOfPages(Math.ceil(Object.keys(restaurantDishes).length /perPage));
         changePage(1);
-        setAmountOfPages(Object.keys(restaurantDishes).length);
-
     }
     const filter = () => {
-        let z = 0;
-        setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPage) ? ({...dish, show:true}) : ({...dish, show:false})));
-        setRequiredPage(1);
+            // amount of dishes in this restaurant
+            let countDishes = 0;
+            restaurantDishes.map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ++countDishes : [].push())
+            // array of dishes in first page sorted by index
+            let z = 0;
+            setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPage) ? ({...dish, show:true}) : ({...dish, show:false})));
+            // amount of buttons for pages
+            setAmountOfPages(Math.ceil(countDishes / perPage));
+            // first page
+            setRequiredPage(1);
+    }
+
+    const filterAndSort = () => {
+        // count dishes in requested restaurant
         let countDishes = 0;
         restaurantDishes.map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ++countDishes : [].push())
-        console.log(countDishes);
+        //array of dishes in the first page, sorted by pride (asc and desc)
+        let z = 0;
+        if(sortValue === 'asc'){
+            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(a.price) - parseInt(b.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPage) ? ({...dish, show:true}) : ({...dish, show:false})));
+        }
+        else{
+            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(b.price) - parseInt(a.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPage) ? ({...dish, show:true}) : ({...dish, show:false})));
+        }
+        // amount of buttons for pages
         setAmountOfPages(Math.ceil(countDishes / perPage));
+        // first page
+        setRequiredPage(1);
     }
     const doSortAndFilter = () => {
-        if(restaurant === 'default'){
-            sort();
-        } else {
-            if(sortValue === 'default'){
-                filter();
-            }
-            
+        if(restaurant === 0 && sortValue === 'default'){
+            sortDefaultFilterAll();
         }
+        else if(restaurant === 0 && sortValue !== 'default'){
+            sort();
+        } 
+        else if( restaurant !== 0 && sortValue === 'default'){
+                filter();
+        }
+        else{
+            filterAndSort();
+        }
+            
+        
 
         // axios.get(route('sort-and-filter') + '?price_sort='+ sortValue +'&filter=' + restaurant)
         // .then(res => {

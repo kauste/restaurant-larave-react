@@ -60,16 +60,19 @@ function FrontOrders(props) {
 
     return (
         <Contexts.FrontContext.Provider value={{message, setMessage, orders, setOrders, changeContactOrder, setChangeContactOrder, zoomDOM, statuses, asset, deliveryPrice, deliveryChoices, setModalInfo, smallerBackground, normalBackground, messages, setMessages}}>
-            <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo}>
+            <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo} forOrders={true}>
                 <Head title="Orders" />
-                <div className="py-12 order">
+                <div className="py-12 order front">
                     <div className="max-w-7xl mx-auto sm:px-0 ">
                         <div className="container" ref={zoomContainer}>
                             <div className="card-header">
                                 <h2>Your Orders</h2>
                             </div>
                             <div className="info-box">
-                                <div className="ïnfo">!!! Dear customers, please save your invoices in two weeks period, after this time, your orders will be deleted automatically.</div>
+                                <div className="ïnfo">
+                                    <div>!!! Dear customers, please save your invoices in two weeks period, after this time, your orders will be deleted automatically.</div>
+                                    <div>!!! You can edit your delivery data until the start of delivering, after courier takes your order, we no longer change information.</div>
+                                </div>
                             </div>
                                 <div className="all-orders">
                                 {

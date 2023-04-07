@@ -11,32 +11,28 @@ import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfo
 import Footer from '@/components/frontOffice/Footer';
 import Contexts from '@/components/Contexts';
 
-export default function Authenticated({ auth, header, children, modalInfo, setModalInfo, fromCart, fromRestaurantDishes}) {
+export default function Authenticated({ auth, header, children, modalInfo, setModalInfo, fromCart, fromRestaurantDishes, forOrders}) {
     
     const {message, setMessage} = useContext(Contexts.FrontContext);
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [navLinkStyle, setNavLinkStyle] = useState('');
     const [navDOM, setNavDOM] = useState(null);
-    const [mainForChildrenDOM, setMainForChildrenDOM] = useState(null);
-    const mainForChildrenRef = useRef();
     const navRef = useRef();
-
+    
     useEffect(() => {
         setNavDOM(navRef.current)
-        setMainForChildrenDOM(mainForChildrenRef.current)
         setNavLinkStyle(fromCart || fromRestaurantDishes ? 'darker' : '')
     }, [])
-    // useEffect(() => {
-    //     console.log(fromCart);
-    //     console.log(mainForChildrenDOM);
-    //     fromCart && mainForChildrenDOM ? mainForChildrenDOM.style.backgroundColor = 'red' : '';
-    // }, [mainForChildrenDOM, fromCart])
+    
 
     useEffect(() => {
         if(message !== null){
-            setTimeout(()=> {
+           const messageSet =  setTimeout(()=> {
                 setMessage(null)
                 }, 20000)
+            return () => {
+                clearTimeout(messageSet);
+            }
         }
     }, [message])
 
@@ -165,7 +161,7 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
                     </header>
                 )}
 
-                <main className="main-for-children" ref={mainForChildrenRef} style={{background: fromCart || fromRestaurantDishes ? ' radial-gradient(#2E2E2E 2px, #fff 2px) 0 0 / 50px 50px' : '' }}>
+                <main className={ forOrders ? 'main-for-children orders-main' : 'main-for-children' } style={{background: fromCart || fromRestaurantDishes ? ' radial-gradient(#2E2E2E 2px, #fff 2px) 0 0 / 50px 50px' : '' }}>
                     {children}
                 </main>
                 <Footer></Footer>

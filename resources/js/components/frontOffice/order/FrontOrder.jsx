@@ -5,10 +5,10 @@ import DeliveryInfo from "./DeliveryInfo";
 import OrderDish from "./OrderDish";
 
 function FrontOrder({ order }) {
-    const { orders, setOrders, deliveryPrice, statuses, deliveryChoices, setChangeContactOrder, setMessage, setModalInfo, normalBackground, zoomDOM } = useContext(Contexts.FrontContext);
+    const { setOrders, deliveryPrice, statuses, deliveryChoices, setChangeContactOrder, setMessage, setModalInfo, normalBackground, zoomDOM } = useContext(Contexts.FrontContext);
     const [showBody, setShowBody] = useState('d-none');
     const [contactInfo, setContactInfo] = useState([]);
-
+    const [shadowToggle, setShadowToggle] = useState('');
     useEffect(() => {
         setContactInfo(order.contactInfo);
     }, [])
@@ -16,6 +16,7 @@ function FrontOrder({ order }) {
     const headerToggle = () => {
         let toggle = showBody === 'd-none' ? '' : 'd-none';
         setShowBody(toggle);
+        setShadowToggle(sT => sT === '' ? '0 0 0 4px #dddce0' : '');
     }
     const getInvoice = () => {
         axios.get(route('get-invoice') + '/' + order.id, {responseType: 'blob'})
@@ -42,7 +43,7 @@ function FrontOrder({ order }) {
 
     
     return (
-        <div className="card order-restaurant">
+        <div className="card order-restaurant" style={{boxShadow:shadowToggle}}>
             <div className="order-card-header" onClick={headerToggle}>
                 <div className="created-updated">
                     <div>Created: {order.created}</div>
@@ -95,7 +96,7 @@ function FrontOrder({ order }) {
             {
                 order.status === 1 ?
                 <div className="d-flex justify-content-end pb-3">
-                    <button className="one-color-btn orange-outline-btn" type="button" onClick={() => setModalInfo(areYouSureInfo)}>Cancel</button>
+                    <button className="buttons gray-outline-btn" type="button" onClick={() => setModalInfo(areYouSureInfo)}>Cancel</button>
                 </div> 
                 : null
             }

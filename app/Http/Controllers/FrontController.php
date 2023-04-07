@@ -35,8 +35,8 @@ class FrontController extends Controller
     public function dishes(){
         
         $restaurants = Restaurant::orderBy('restaurant_name', 'asc')->get();
-
-        $amountOfPages = (int) ceil(Dish::count() / 16);
+        $perPage = 16;
+        $amountOfPages = (int) ceil(Dish::count() / $perPage);
         $dishes = Dish::get();
         $dishes->map(function($dish){
             $restaurants = Restaurant::join('restaurant_dish', 'restaurant_dish.restaurant_id', 'restaurants.id')
@@ -52,7 +52,7 @@ class FrontController extends Controller
             'defaultPic' => '/todays-special.jpg',
             'restaurants'=> $restaurants,
             'amountOfPages' => $amountOfPages,
-
+            'perPage' => $perPage
         ];
         if(Auth::user() !== null){
             return Inertia::render('frontOffice/DishList', $props);

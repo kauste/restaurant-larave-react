@@ -17,7 +17,7 @@ function DeliveryInfo({deliveryChoice, contactInfo, setContactInfo, orderStatus,
                         <div>Message to courier: {contactInfo.message ? contactInfo.message : <i>no message</i>}</div>
                     </div>
                     <div>
-                        {orderStatus < 2 ? <button className="pattern-btn" onClick={changeAdress}>Edit</button> : null}
+                        {orderStatus < 2 ? <button className="one-color-btn green-btn" onClick={changeAdress}>Edit</button> : null}
                     </div>
                 </div>
         )

@@ -8,7 +8,8 @@
 @import 'bootstrap/scss/bootstrap';
 
 :root{
-    --names-family:'The Girl Next Door', cursive;
+    --logo-family: 'The Girl Next Door', cursive;
+    --names-family: 'STIX Two Text', serif;
     --casual-family: 'IBM Plex Serif', serif;
     --dark-brown: #281F18;
     --the-darher-gray:#59595a;
@@ -19,11 +20,12 @@
     //newest
     --the-orange-color:#C67502;
     --darker-orange-color:#a25f02;
-    --the-grey-color: #6D6C71;
-    --the-lighter-grey: rgb(162, 162, 162);
-    --the-light-gray:rgb(221, 220, 224);
+    --the-gray-color: #6D6C71;
+    --the-lighter-gray: #a2a2a2;
+    --the-light-gray:#dddce0;
     --the-green-color:#AAF200;
     --the-darker-green-color:#99da02;
+    --the-almost-black:#2E2E2E;
 
 
 
@@ -33,27 +35,22 @@
     inherits: false;
     syntax: '<color>';
   }
-  @property --greyBtnColor1 {
-    initial-value: #6D6C71;
+  @property  --grey-btn-angle {
+    initial-value:45deg;
     inherits: false;
-    syntax: '<color>';
-  }
-  @property --greyBtnColor2 {
-    initial-value: #363637;
-    inherits: false;
-    syntax: '<color>';
+    syntax: '<angle>';
   }
   @property --blackBtnColor {
-    initial-value: #000;
+    initial-value:rgb(162, 162, 162);
     inherits: false;
     syntax: '<color>';
   }
   @property --blackBtnColor2 {
-    initial-value: rgb(162, 162, 162);
+    initial-value:  #000;
     inherits: false;
     syntax: '<color>';
   }
-  @property --greyOutlineColor {
+  @property --grayOutlineColor {
     initial-value: rgb(162, 162, 162);
     inherits: false;
     syntax: '<color>';
@@ -69,6 +66,7 @@
     font-size: 15px;
     color:#fff
 }
+
 .messages{
     background-color: var(--the-green-color);
     display:flex;
@@ -84,7 +82,7 @@
 }
 .amount-input{
     width: 60px;
-    height:40px;
+    height: calc(30px + 0.5vw);
     padding: 10px;
     font-size: 15px;
     &:focus{
@@ -117,6 +115,10 @@
     width: 80px;
     object-fit: cover;
     object-position: center;
+}
+.login-form{
+    background: #fff;
+    border: var(--the-almost-black) 2px solid;
 }
 .modal-box{
     width:100%;
@@ -223,6 +225,11 @@ svg{
         .st2{
             fill:#FFFFFF;
         }
+    &.location-svg, &.time-svg{
+        height: 20px;
+        width:fit-content;
+        fill:var(--the-darker-green-color)
+    }
 }
 .container{
     max-width: calc(100% - 2vw);
@@ -244,55 +251,48 @@ button, a:not(.restaurant-have-dish){
 }
 .buttons{
     box-sizing: border-box;
-    padding: calc(5px + 0.1vw)  calc(6px + 0.1vw);
+    height: calc(30px + 0.5vw);
+    width: fit-content;
+    padding: calc(15px + 0.25vw)  calc(12px + 0.5vw);
+    display: flex;
+    font-size: calc(10px + 0.2vw);
     display: flex;
     align-items: center;
     font-size: calc(8px + 0.5vw);
-    // line-height: calc(8px + 0.5vw);
+    font-weight: 400;
     text-decoration: none;
-    // font-weight: 700;
     transition: all ease-in 0.2s;
     &.gray-btn{
         background: rgb(206,206,206);
-        background: linear-gradient(300deg,  var(--greyBtnColor1)  0%, var(--greyBtnColor2)  100%);
+        background: linear-gradient(var(--grey-btn-angle),  var(--the-almost-black)  0%, var(--the-lighter-gray)  100%);
         border-radius:10px;
         color:#fff;
-        width: fit-content;
-        font-weight: 400;
-        font-size: calc(10px + 0.2vw);
         &:hover{
-            // color:var(--the-grey-color);
-            animation: change-grey-btn linear 0.5s forwards;
+            animation: change-gray-btn linear 0.5s forwards;
 
         }
     }
     &.black-btn{
         background: rgb(206,206,206);
-        background: linear-gradient(300deg,  var(--blackBtnColor)  0%, var(--greyBtnColor2)  100%);
+        background: linear-gradient(300deg,  var(--blackBtnColor)  0%, var(--blackBtnColor2)  100%);
         border-radius:10px;
         color:#fff;
-        width: fit-content;
-        font-weight: 400;
-        font-size: calc(10px + 0.2vw);
+        transition: all linear 0.5s;
+        &:not(:hover){
+            animation: reverse-black-btn linear 0.5s forwards;
+        }
         &:hover{
-            // color:var(--the-grey-color);
             animation: change-black-btn linear 0.5s forwards;
-
         }
     }
     &.gray-outline-btn{
-        border-image: linear-gradient(343deg, var(--greyBtnColor1) 9%, var(--greyBtnColor2) 48%, var(--greyBtnColor1)  87%) 1;
+        border-image: linear-gradient(var(--grey-btn-angle), var(--the-almost-black) 9%, var(--the-lighter-gray) 48%, var(--the-almost-black)  87%) 1;
         border-style: solid;
         border-width: 2px;
         color:#6D6C71;
-        width: fit-content;
-        height: calc(20px + 1vw);
-        font-size: calc(10px + 0.2vw);
-        padding: calc(10px + 0.5vw)  calc(12px + 0.5vw);
-        height: calc(20px + 1vw);
         &:hover{
             color: #363637;
-            animation: change-grey-btn linear 0.5s forwards;
+            animation: change-gray-btn linear 0.3s;
 
         }
     }
@@ -301,8 +301,8 @@ button, a:not(.restaurant-have-dish){
 
 .one-color-btn{
     box-sizing: border-box;
-    height: calc(20px + 1vw);
-    padding: calc(10px + 0.5vw)  calc(12px + 0.5vw);
+    height: calc(30px + 0.5vw);
+    padding: calc(15px + 0.25vw)  calc(12px + 0.5vw);
     display: flex;
     align-items: center;
     font-size: calc(10px + 0.2vw);
@@ -349,13 +349,13 @@ button, a:not(.restaurant-have-dish){
         }
     }
     &.gray-btn{
-        border: var(--the-grey-color) 1px solid;
-        background-color: var(--the-grey-color);
+        border: var(--the-gray-color) 1px solid;
+        background-color: var(--the-gray-color);
         color: var(--bg-color);
         width: fit-content;
         &:hover{
-            border: var(--the-lighter-grey) 1px solid;
-            background-color: var(--the-lighter-grey);
+            border: var(--the-lighter-gray) 1px solid;
+            background-color: var(--the-lighter-gray);
         }
     }
     &.green-btn{
@@ -368,7 +368,6 @@ button, a:not(.restaurant-have-dish){
             height:17px;
         }
         fill: #fff;
-        padding: calc(6px + 0.5vw)  calc(4px + 0.5vw);
         border-radius:0;
         &:hover{
             border: var(--the-darker-green-color) 1px solid;
@@ -398,8 +397,9 @@ button, a:not(.restaurant-have-dish){
     padding: 10px;
     display: flex;
     justify-content: center;
-    background-color: #fff;
     font-family: var(--casual-family);
+    color: var(--the-light-gray);
+    background-color: var(--the-almost-black);
     margin-bottom: 20px;
     font-weight: 700;
 }
@@ -442,6 +442,11 @@ background: radial-gradient(var(--the-orange-color) 2px, #fff 2px) 0 0 / 50px 50
 padding-bottom: 40px;
 padding-top: 150px;
 min-height: calc(100vh - 80px);
+&.orders-main{
+    background: radial-gradient(#fff 2px, var(--the-almost-black)  2px) 0 0 / 50px 50px;
+
+}        
+    
 }
 
 nav{
@@ -476,7 +481,7 @@ nav{
     .nav-link{
         font-size: 30px;
         padding-top: 10px;
-        font-family: var(--names-family);
+        font-family: var(--logo-family);
         color: #fff;
         transition: all ease-out 0.3s;
         &:hover{
@@ -499,7 +504,7 @@ nav{
         }
           &.darker{
             &:hover{
-            background-color: #2E2E2E;
+            background-color: var(--the-almost-black);
             position:relative;
             top:1px;
             padding: 25px 10px 25px 10px;
@@ -518,7 +523,7 @@ nav{
     }
     .nav-cart-link-box.darker{
             .nav-cart-link:hover{
-                background-color: #2E2E2E;
+                background-color: var(--the-almost-black);
                 color:#fff;
             }
     }
@@ -526,25 +531,23 @@ nav{
         .dropdown-content{
             background-color: var(--the-light-gray);
             left:50%;
+            top:50px;
             transform: translateX(-50%);
             padding: 10px 0;
             width: auto;
-            &.darker{
-                background-color: #2E2E2E;
-            }
             .dropdown-link{
                 text-transform: capitalize;
                 padding: 10px 30px;
                 width:100%;
                 &:hover{
-                background-color:var(--the-light-gray); 
-
+                background-color:var(--the-darher-gray); 
+                color:#fff;
                 }
-                &.darker{
-                    &:hover{
-                        background-color: #2E2E2E;
-                    }
-                }
+            }
+        }
+        &.darker{
+            .dropdown-content{
+                background-color: var(--the-almost-black);
             }
         }
     }
@@ -590,15 +593,13 @@ nav{
     }
 }
 
+
 .restaurant-list-front{
-    
     .restaurant-list-grid{
         display:grid;
         grid-template-columns: repeat(4, 1fr);
         gap:30px;
         padding: 30px;
-        // border: var(--the-darher-gray) 2px solid;
-        // background-color: var(--the-light-gray);
         .restaurant-list{
             border-image: linear-gradient(315deg, black 11%, var(--the-orange-color) 50%) 1;
             border-style: solid;
@@ -607,16 +608,33 @@ nav{
             color:black;
             font-family: var(--casual-family);
             padding: 30px;
-            .restaurant-name{
-                font-family: var(--names-family);
-                font-size: 20px;
+            li.restaurant-name{
+                font-family: var(--logo-family);
+                font-size: calc(18px + 1vw);
                 font-weight: 500;
+                display:flex;
+                justify-content: center;
+                align-items: center;
+                height: calc(62px + 1vw);
             }
-            &:hover{
-                animation: changeOutlineColor 0.2s linear forwards;
+            li.li-with-svg{
+                margin-bottom: 8px;
+                display:flex;
+                align-items: center;
+                height: calc(18px + 1vw);
+
+                span:first-child{
+                    width: 30px;
+                    display:flex;
+                    justify-content: center;
+                }
+            }
+
+            li.controls{
+                display:flex;
+                justify-content: end;
             }
         }
-
     }
 }
 .dishes-list{
@@ -625,14 +643,12 @@ nav{
         background-color: #fff;
     }
     .dish-list-grid{
-        // background-color: #fff;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 30px;
         padding-left:0;
         &.back-restaurant-dish-list-grid {
             grid-template-columns: repeat(6, 1fr);
-
         }
         &:not(.back-restaurant-dish-list-grid){
             .one-dish{
@@ -718,19 +734,13 @@ nav{
 .sort-filter-search{
     padding: 30px;
     max-width: 700px;
-//     background: rgb(126,103,71);
-// background: linear-gradient(180deg, rgba(126,103,71,1) 0%, rgba(255,143,5,0.3157163988642332) 16%, rgba(99,72,36,0.6938676593684349) 60%, rgb(255, 149, 0) 75%);
-    // border-image: linear-gradient(315deg, rgba(99,72,36,0.8367248022255778) 11%, var(--the-orange-color) 100%) 1;
-    // border-style: solid;
-    // border-width: 2px;
-    border:var(--greyOutlineColor) 2px solid;
+    border:var(--grayOutlineColor) 2px solid;
     background-color: var(--the-light-gray);
     &:hover{
-        animation: changeOutlineColor linear 0.3s forwards;
+        animation: change-outline-color linear 0.3s forwards;
     }
     &.active{
-        border: var(--the-grey-color) 2px solid;
-
+        border: var(--the-gray-color) 2px solid;
     }
     .card-header{
         padding: 0;
@@ -771,10 +781,7 @@ nav{
         position:relative;
         box-sizing: border-box;
         width:100%;
-        background-color: #2E2E2E;
-    //         border-image: linear-gradient(315deg, black 11%, var(--the-orange-color) 100%) 1;
-    // border-style: solid;
-    // border-width: 2px;
+        background-color: var(--the-almost-black);
         color:#fff;
         
         padding: 20px 100px;
@@ -803,24 +810,14 @@ nav{
     }
 }
 .cart, .order{
-    .container{
-        .all-orders{
-            background: linear-gradient(27deg, #1b1610 5px, transparent 5px) 0 5px,
-                        linear-gradient(207deg, #1b1610 5px, transparent 5px) 10px 0px,
-                        linear-gradient(27deg, #3e3325 5px, transparent 5px) 0px 10px,
-                        linear-gradient(207deg, #3e3325  5px, transparent 5px) 10px 5px,
-                        linear-gradient(90deg, #2a2319 10px, transparent 10px),
-                        linear-gradient(#332a1e 25%, #211c14  25%, #211c14 50%, transparent 50%, transparent 75%, #433728 75%, #433728);
-            background-color: #14100c;
-            background-size: 20px 20px;
-            padding: 0.7vw ;
+    &.front{
+        h2{
+            color: var(--the-green-color);
         }
     }
     .cart-restaurant, .order-restaurant{
         box-sizing: content-box;
         background-color: #fff;
-        // background-color: #2E2E2E;
-        border: #2E2E2E solid 2px;
         padding:0.2vw 2vw;
         border-radius:0;
         color:black;
@@ -861,10 +858,25 @@ nav{
             // margin-top: 10px;
         }
     }
+    .cart-restaurant{
+        border: var(--the-almost-black)  solid 2px;
+    }
+
 }
 .order{
     font-size: calc(10px + 0.3vw);
+
+    .order-restaurant:has(.order-card-header:hover) {
+        box-shadow: 0 0 0 4px var(--the-light-gray);
+    }
+    .order-restaurant{
+        transition: all ease-in 0.3s;
+        box-shadow: 0 0 0 4px var(--the-gray-color);
+    }
+
+
     .order-card-header{
+        pointer-events: all;
         padding:1.5vw;
         width:100%;
         display:flex;
@@ -901,14 +913,13 @@ nav{
                 font-weight: 800;
             }
         }
-    
-        transition: all 0.2s linear;
-            &:hover{
-                cursor: pointer;
-                .sfs-chevron{
-                    transform: scale(1.1);
-                }
+        transition: all ease-in 0.3s;
+        &:hover{
+            cursor: pointer;
+            .sfs-chevron{
+                transform: scale(1.1);
             }
+        }
     }
     .order-delivery-info-box{
         display: flex;
@@ -946,22 +957,6 @@ nav{
             &:hover{
                 cursor: pointer;
                 transform: scale(1.1);
-            }
-        }
-    }
-}
-.cart{
-    .container{
-        .cart-restaurant{
-            .cart-grid{
-                .amount-edit-form{
-                    .amount-input{
-                        height: calc(22px + 1vw);
-                        
-                    }
-                   
-                }
-                
             }
         }
     }
@@ -1272,10 +1267,12 @@ footer{
         --btnColor: #614d33;
     }
 }
-@keyframes change-grey-btn {
-    to{
-        --greyBtnColor1:  #363637;
-        --greyBtnColor2: #6D6C71;
+@keyframes change-gray-btn {
+    50%{
+        --grey-btn-angle:49deg;
+    }
+    100%{
+        --grey-btn-angle:45deg;
     }
 }
 @keyframes change-black-btn {
@@ -1284,8 +1281,16 @@ footer{
         --blackBtnColor2:  black;
     }
 }
-@keyframes changeOutlineColor{
+@keyframes reverse-black-btn {
     to{
-        --greyOutlineColor: #6D6C71;
+        --blackBtnColor: black;
+        --blackBtnColor2:  rgb(162, 162, 162);
+    }
+}
+
+
+@keyframes change-outline-color{
+    to{
+        --grayOutlineColor: hwb(252 42% 56%);
     }
 }
