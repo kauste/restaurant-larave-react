@@ -6,7 +6,7 @@ import Contexts from "@/components/Contexts";
 
 function ConfirmCartModal() {
     
-    const {comfirmModalInfo, setComfirmModalInfo, cart, setCart, setCurier, courierData, messages, setMessages, smallerBackground, normalBackground} = useContext(Contexts.FrontContext);
+    const {comfirmModalInfo, setComfirmModalInfo, setCart, setCurier, courierData, messages, setMessages, smallerBackground, normalBackground} = useContext(Contexts.FrontContext);
     const [delivery, setDelivery] = useState(null);
     const [deliveryChoice, setDeliveryChoice] = useState('');
 

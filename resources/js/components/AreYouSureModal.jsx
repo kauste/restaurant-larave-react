@@ -32,8 +32,8 @@ function AreYouSureModal({modalInfo, setModalInfo}) {
                                 <p>{modalInfo.text}</p>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={cancel}>Cancel</button>
-                                <button type="button" className="one-color-btn brown-btn" onClick={modalInfo.confirm}>Confirm</button>
+                                <button type="button" className="one-color-btn black-outline-btn" data-dismiss="modal" onClick={cancel}>Cancel</button>
+                                <button type="button" className="one-color-btn black-btn" onClick={modalInfo.confirm}>Confirm</button>
                             </div>
                         </div>
                     </div>

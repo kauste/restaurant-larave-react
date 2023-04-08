@@ -1,7 +1,10 @@
+import Contexts from "@/components/Contexts";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
-function CartDish({cartDish, asset, setModalInfo, cartData, cart, setCart, setCartData, restaurant, setMessage, zoomDOM, normalBackground}){
+function CartDish({cartDish, cartData, setCartData, restaurant}){
+    
+    const { normalBackground, asset, setModalInfo, setCart, setMessage, zoomDOM } = useContext(Contexts.FrontContext);
     const [amount, setAmount] = useState(cartDish.amount);
     const deleteItem = () => {
         axios.delete(route('delete-cart-item') + '/' + cartDish.dish_id + '/' + cartDish.restaurant_id)
