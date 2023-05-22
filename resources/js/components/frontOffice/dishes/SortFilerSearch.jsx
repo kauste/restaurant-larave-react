@@ -97,7 +97,7 @@ function SortFilterSearch(){
             </span>
         </div>
         <div className={`card-body ${activenessState} mt-5 d-flex flex-column align-items-center`}>
-            <div className="sort-filter">
+            <div className="sort-filter d-flex flex-wrap gap-2 justify-center align-items-center">
                 <div>
                     <label className="mr-2 " htmlFor="priceSort">Sort by price</label>
                     <select className="sort-select" id="priceSort" name="priceSort" value={sortValue} onChange={e => setSortValue(e.target.value)}>
@@ -119,7 +119,7 @@ function SortFilterSearch(){
                     <button className="buttons gray-btn ml-2" onClick={doSortAndFilter}>SORT AND FILTER</button>
                 </div>
             </div>
-            <div className="d-flex align-items-center ml-2 mt-5">
+            <div className="d-flex flex-wrap gap-2 align-items-center justify-center ml-2 mt-5">
                 <label className="mr-2" htmlFor="search">Search</label>
                 <input className="search-input"  value={search} onChange={e => setSearch(e.target.value)}></input>
                 <button className="buttons gray-btn ml-2" onClick={doSearch}>SEARCH</button>

@@ -3,7 +3,7 @@ import ApplicationLogo from '@/components/inertiaComponents/ApplicationLogo';
 import { Link } from '@inertiajs/inertia-react';
 import NavLink from '@/components/inertiaComponents/NavLink';
 import ResponsiveNavLink from '@/components/inertiaComponents/ResponsiveNavLink';
-import Footer from '@/components/frontOffice/Footer';
+import FooterGuest from '@/components/Guest/FooterGuest';
 
 export default function GuestLayout({ children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -77,10 +77,10 @@ export default function GuestLayout({ children }) {
                 </div>
                 {/* <Message message={message} navDOM={navDOM}></Message> */}
             </nav>
-            <div className=" min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 main-for-children">
+            <div className="min-screen-height flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 main-for-children">
                 {children}
             </div>
-            <Footer/>
+            <FooterGuest/>
         </div>
     );
 }

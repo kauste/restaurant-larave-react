@@ -17,7 +17,7 @@ function RestaurantList(props) {
             <Authenticated auth={props.auth}>
                 <Head title="Restaurants"/>
                 <div className="py-12 restaurant-list-front">
-                    <div className="max-w-10xl mx-auto  lg:px-8">
+                    <div>
                         <div>
                             <div className="container">
                                 <div className="row justify-content-center">

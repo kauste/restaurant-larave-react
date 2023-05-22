@@ -28,7 +28,7 @@ function FilterSearch() {
                 <label htmlFor="search">Search:</label>
                 <input id="search" placeholder="Search by dish name or price..." onChange={(e) => setSearchValue(e.target.value)}></input>
             </div>
-            <button className="simple-button"onClick={doSortAndFilter}>Go!</button>
+            <button className="one-color-btn black-btn"onClick={doSortAndFilter}>Go!</button>
         </div>
      );
 }

@@ -53,7 +53,7 @@ function CartDish({cartDish, cartData, setCartData, restaurant}){
                     </svg>
                 </button>
             </li>
-            <li>{cartDish.dish_info.price} eu.</li>
+            <li class="one-dish-price">{cartDish.dish_info.price} eu.</li>
             <li>{(cartDish.dish_info.price * cartDish.amount).toFixed(2)} eu.</li>
             <li>
                 <button type="button" className="buttons gray-outline-btn" onClick={showModal}>Delete</button>

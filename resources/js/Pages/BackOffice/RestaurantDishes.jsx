@@ -11,13 +11,13 @@ function RestaurantDishes(props){
     const [defaultPic, setDefaultPic] = useState('')
     const [restaurant, setRestaurant] = useState({});
     const [asset, setAsset] = useState('');
-
-
     //not props
     const [message, setMessage] = useState(null);
     const [modalInfo, setModalInfo] = useState(null);
     const [zoomDOM, setZoomDOM] = useState(null);
     const zoomContainer = useRef();
+    const backgroundColor = '#fff';
+
 
     const backgroundZoomTiming = {
         duration: 300,
@@ -49,7 +49,7 @@ function RestaurantDishes(props){
 
     return (
         <Contexts.BackContext.Provider value={{defaultPic, asset, restaurant, setMessage, message, setModalInfo, zoomDOM, zoomBack}}>
-        <AuthenticatedBack auth={props.auth}>
+        <AuthenticatedBack auth={props.auth} backgroundColor={backgroundColor}>
             <Head title={restaurant.restaurant_name}/>
             <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
             <div className="py-12 dishes-list one-restaurant-dishes">

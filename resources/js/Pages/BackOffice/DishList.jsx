@@ -22,7 +22,7 @@ function DishList(props) {
     const [thisNavDom, setThisNavDOM] = useState(null);
     const zoomContainer = useRef();
     const defaultPic = props.defaultPic;
-
+    const backgroundColor = '#f8f8f8';
     useEffect(() => {
         setDishes(props.dishes.map(dish => ({...dish, show: true})));
         setAsset(props.asset);
@@ -57,15 +57,15 @@ function DishList(props) {
     }
     return (
         <Contexts.BackContext.Provider value={{message, setThisNavDOM, setMessage, messages, setMessages, defaultPic, asset, setModalInfo, dishForEdit, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, shouldCreate, setShouldCreate, shouldEdit, setShouldEdit, restaurants, setDishes, dishes}}>
-            <AuthenticatedBack auth={props.auth}>
+            <AuthenticatedBack auth={props.auth} backgroundColor={backgroundColor}>
                 <Head title="Restaurants"/>
                 <CreateDish/>
                 <EditDish/>
                 <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
                 <div className="py-12 dishes-list">
-                    <div className="max-w-7xl mx-auto sm:px-0 " ref={zoomContainer}>
-                        <div className="w-100 d-flex justify-content-end">
-                                <button className="one-color-btn brown-outline-btn btn-lg m-3" onClick={cresteNewDish} >Create new dish</button>
+                    <div  ref={zoomContainer}>
+                        <div className="button-bin">
+                                <button className="one-color-btn gray-btn btn-lg" onClick={cresteNewDish} >Create new dish</button>
                         </div>
                         <div className="container">
                             <div className="row justify-content-center">
@@ -76,7 +76,7 @@ function DishList(props) {
                                     <h2>Our dishes</h2>
                                 </div>
                                 <div className="card-body">
-                                    <ul className="dish-list-grid">
+                                    <ul className="back-dish-list">
                                         {
                                             dishes.map((dish, index) => dish.show === true ? <Dish key={index} dish={dish}></Dish> : null)
                                         }

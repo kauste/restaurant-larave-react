@@ -15,6 +15,7 @@ function OrderList(props) {
     const [beforeTwoWeeksDate, setBeforeTwoWeeksDate] = useState('');
     const [searchedDate, setSearchedDate] = useState('');
     const [message, setMessage] = useState(null);
+    const backgroundColor = '#fff';
 
 
     useEffect(() => {
@@ -53,7 +54,7 @@ function OrderList(props) {
     
     return (
         <Contexts.BackContext.Provider value={{message, setMessage, statuses, deliveryChoices}}>
-            <AuthenticatedBack auth={props.auth}>
+            <AuthenticatedBack auth={props.auth} backgroundColor={backgroundColor}>
                 <Head title="Orders" />
                 <div className="py-12">
                     <div className="order-back">
@@ -69,8 +70,8 @@ function OrderList(props) {
                                 <div className="date-label-input-box">
                                     <label>Search date:</label>
                                     <input type="date"  max={todayDate} min={beforeTwoWeeksDate} onChange={e => setSearchedDate(e.target.value)}/>
-                                    <button className="one-color-btn brown-outline-btn" onClick={search}>Search</button>
-                                    <button className="one-color-btn brown-btn" onClick={reset}>Reset</button>
+                                    <button className="one-color-btn black-outline-btn" onClick={search}>Search</button>
+                                    <button className="one-color-btn orange-btn" onClick={reset}>Reset</button>
                                 </div>
                                     <div className="one-back-order headings">
                                         <div className="order-first-line headings">

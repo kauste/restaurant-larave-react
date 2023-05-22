@@ -9,6 +9,7 @@ function Order({ order}) {
     const [openDisplay, setOpenDisplay] = useState('none');
     const [statusColor, setStatusColor] = useState('black');
     const [styleOnDisplay, setStyleOnDisplay] = useState({});
+    const [styleOnChevron, setStyleOnChevron] = useState({transform:'rotateX(0deg)'});
     const [statusValue, setStatusValue] = useState(order.status)
     const [statusChange, setStatusChange] = useState(order.status);
 
@@ -30,14 +31,23 @@ function Order({ order}) {
 
     const toggle = () => {
         if (openDisplay === 'none') {
-            setStyleOnDisplay({ border: 'black solid 2px', transform: 'scale(1.1)', backgroundColor: '#CDC1B0', boxShadow: '2px 2px 6px #222'})
+            setStyleOnDisplay({ transform: 'scale(1.1)', backgroundColor: '#f2f2f2', padding:'15px 30px', border:'none'})
             setOpenDisplay('block');
+            setStyleOnChevron({animation:'spin-chevron 0.6s ease'})
         } else {
             setStyleOnDisplay({ borderLeft: 'none', transform: 'scale(1)', boxShadow:'none' })
             setOpenDisplay('none')
+            setStyleOnChevron({animation:'spin-chevron 0.6s ease reverse'})
+
         }
     }
+    useEffect(() => {
+        if(styleOnChevron.animation === null || styleOnChevron.animation === undefined) return;
+        setTimeout(() => {
+            setStyleOnChevron(sCh => sCh.animation === 'spin-chevron 0.6s ease reverse' ? {transform:'rotateX(0)'} : {transform:'rotateX(540deg)'});
+        }, 600)
 
+    }, [styleOnChevron])
     const chooseSelect = (e) => {
         setStatusValue(e.target.value)
     } 
@@ -62,7 +72,7 @@ function Order({ order}) {
                 <div>{order.restaurant.restaurant_name}</div>
                 <div>{order.totalPrice} eur.</div>
                 <span className="p-0 sfs-chevron">
-                    <svg className="ml-2 -mr-0.5 h-7 w-7 pb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="ml-2 -mr-0.5 h-7 w-7 pb-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style={styleOnChevron}>
                         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                     </svg>
                 </span>

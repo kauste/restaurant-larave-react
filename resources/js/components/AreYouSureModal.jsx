@@ -19,7 +19,7 @@ function AreYouSureModal({modalInfo, setModalInfo}) {
         }
         return (
             <div className="modal-box">
-              <div className="modal-mine" role="dialog">
+              <div className="modal-mine r-u-sure" role="dialog">
                     <div role="document">
                         <div className="modal-content">
                             <div className="modal-header">

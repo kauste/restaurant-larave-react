@@ -8,7 +8,7 @@ import { Link } from '@inertiajs/inertia-react';
 import AreYouSureModal from "@/components/AreYouSureModal";
 import ConfirmCartModal from '@/components/frontOffice/cart/ConfirmCartModal';
 import EditContactInfoModal from '@/components/frontOffice/order/EditContactInfoModal';
-import Footer from '@/components/frontOffice/Footer';
+import Footer from '@/components/Footer';
 import Contexts from '@/components/Contexts';
 
 export default function Authenticated({ auth, header, children, modalInfo, setModalInfo, fromCart, fromRestaurantDishes, forOrders}) {
@@ -55,7 +55,7 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
                                     </NavLink>
                                 </div>
                             </div>
-                            <div className="hidden sm:flex sm:items-center sm:ml-6 nav-right-block">
+                            <div className="hidden lg:flex lg:items-center lg:ml-6 nav-right-block">
                             {/* PRADZIA */}
                                 <div className={'relative nav-dropdown ' + navLinkStyle}>
                                     <Dropdown>
@@ -107,7 +107,7 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
                                 </div>
                             </div>
 
-                            <div className="-mr-2 flex items-center sm:hidden">
+                            <div className="-mr-2 flex items-center lg:hidden">
                                 <button
                                     onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
                                     className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
@@ -161,7 +161,7 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
                     </header>
                 )}
 
-                <main className={ forOrders ? 'main-for-children orders-main' : 'main-for-children' } style={{background: fromCart || fromRestaurantDishes ? ' radial-gradient(#2E2E2E 2px, #fff 2px) 0 0 / 50px 50px' : '' }}>
+                <main className={ forOrders ? 'main-for-children flex justify-center orders-main' : 'main-for-children flex justify-center' } style={{background: fromCart || fromRestaurantDishes ? ' radial-gradient(#2E2E2E 2px, #fff 2px) 0 0 / 50px 50px' : '' }}>
                     {children}
                 </main>
                 <Footer></Footer>

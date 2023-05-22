@@ -27,22 +27,22 @@ function Dish({dish}) {
         zoomSmaller();
     }
     return (
-        <li className="align-center">
+        <li className="align-center one-dish-bin">
             <ul className="one-dish">
                 <li>
                     <img src={asset + dish.picture_path ?? asset + defaultPic} className="img"/>
                 </li>
                 <li className="dish-name">{dish.dish_name}</li>
                 <li>{dish.price} eu.</li>
-                <li>
+                <li className="restaurants">
                     <span className="bold">At: </span>
                     {
                         (dish.restaurants).map((restaurant, index) => <RestaurantInDish key={index} restaurant={restaurant} index={index} allRestaurants={dish.restaurants}></RestaurantInDish>)
                     }
                 </li>
-                <li className="d-flex gap-2">
-                    <button className="one-color-btn orange-outline-btn btn-xs" onClick={showModal}>Delete</button>
-                    <button className="one-color-btn brown-btn btn-xs" onClick={showEdit}>Edit</button>
+                <li className="buttons-bin d-flex gap-4">
+                    <button className="one-color-btn orange-outline-btn" onClick={showModal}>Delete</button>
+                    <button className="one-color-btn black-btn" onClick={showEdit}>Edit</button>
                 </li>
             </ul>
         </li>

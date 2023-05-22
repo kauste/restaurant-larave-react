@@ -32,7 +32,7 @@ function BackRestaurant({restaurant}){
             <li className="controls">
                 <div className="show-edit">
                     <a className="one-color-btn orange-outline-btn" href={route('restaurant-show-dishes') + '/' + restaurant.id} title="Show restaurant dishes">Edit dishes</a>
-                    <button className="one-color-btn brown-outline-btn" title="Edit restaurant dishes" onClick={showEditModal}>Edit</button>
+                    <button className="one-color-btn black-outline-btn" title="Edit restaurant dishes" onClick={showEditModal}>Edit</button>
                     
                 </div>
                 <button className="one-color-btn orange-btn" onClick={showModal} title="Delete restaurant dishes">Delete</button>

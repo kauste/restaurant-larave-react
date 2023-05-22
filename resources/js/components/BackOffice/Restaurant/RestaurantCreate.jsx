@@ -74,8 +74,8 @@ function RestaurantCreate() {
                                 </form>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="one-color-btn orange-outline-btn" data-dismiss="modal" onClick={closeModal}>Cancel</button>
-                                <button type="button" className="one-color-btn brown-btn"  onClick={createRestaurant}>Create</button>
+                                <button type="button" className="one-color-btn black-outline-btn" data-dismiss="modal" onClick={closeModal}>Cancel</button>
+                                <button type="button" className="one-color-btn orange-btn"  onClick={createRestaurant}>Create</button>
                             </div>
                         </div>
                     </div>

@@ -17,7 +17,7 @@ function RestaurantList(props) {
     const [messages, setMessages] = useState(null);
 
     const [zoomDOM, setZoomDOM] = useState(null);
-
+    const backgroundColor = '#f8f8f8';
     const backgroundZoomTiming = {
         duration: 300,
         iterations: 1,
@@ -54,7 +54,7 @@ function RestaurantList(props) {
 
     return (
         <Contexts.BackContext.Provider value={{message, setMessage, messages, setMessages, zoomDOM, zoomSmaller, zoomBack, restaurants, setRestaurants, forEditRestaurant, setForEditRestaurant, setModalInfo, shouldCreate, setShouldCreate}}>
-            <AuthenticatedBack auth={props.auth}>
+            <AuthenticatedBack auth={props.auth} backgroundColor={backgroundColor}>
                 <Head title="Restaurants"/>
                 <RestaurantCreate/>
                 <RestaurantEdit />
@@ -62,11 +62,11 @@ function RestaurantList(props) {
                 <div className="py-12 restaurant-list-back">
                     <div className="max-w-7xl mx-auto  lg:px-8">
                         <div ref={zoomContainer}>
-                            <div className="w-100 d-flex justify-content-end">
-                                <button className="one-color-btn brown-outline-btn btn-lg m-3" onClick={create}>Create new restaurant</button>
+                            <div className="button-bin">
+                                <button className="one-color-btn gray-btn btn-lg" onClick={create}>Create new restaurant</button>
                             </div>
                             <div className="">
-                                <div className="row justify-content-center">
+                                <div className="row w-100 justify-content-center">
                                     <div className="card">
                                         <div className="card-header">
                                             <h2>Our restaurants</h2>

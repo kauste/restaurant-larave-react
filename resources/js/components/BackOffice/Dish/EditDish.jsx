@@ -105,15 +105,16 @@ function EditDish() {
                                     </div>
                                     <div className="form-row">
                                         <div className="d-flex gap-2">
-                                            <label className="main-label" htmlFor="picture">Add picture</label>
+                                            <label className="main-label one-color-btn gray-btn" htmlFor="picture">Add picture
                                             <input id="picture" type="file" name="picture"  accept="image/*" onChange={fillForm}/>
+                                            </label>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                             <div className="d-flex gap-3 justify-content-end">
-                                <button type="button" className="btn btn-danger" onClick={updateDish}>Edit</button>
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={closeModal}>Cancel</button>
+                                <button type="button" className="one-color-btn black-outline-btn"  onClick={updateDish}>Edit</button>
+                                <button type="button" className="one-color-btn orange-btn"  data-dismiss="modal" onClick={closeModal}>Cancel</button>
                             </div>
                         </div>
                     </div>
