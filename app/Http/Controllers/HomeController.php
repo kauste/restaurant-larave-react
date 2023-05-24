@@ -22,15 +22,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
-    {
-        if($request->user()?->role == 1){
-            return redirect()->route('user-restaurants');
-        } 
-        elseif($request->user()?->role == 10){
+    // public function index(Request $request)
+    // {
+    //     if($request->user()?->role == 1){
+    //         return redirect()->route('user-restaurants');
+    //     } 
+    //     elseif($request->user()?->role == 10){
 
-            // return redirect()->route(/restaurant-list);
-            return Inertia::render('Redirect');
-        }
-    }
+    //         // return redirect()->route(/restaurant-list);
+    //         return Inertia::render('Redirect');
+    //     }
+    // }
 }

@@ -140,6 +140,10 @@
             .modal-mine{
             display:block;
             padding: 50px 80px;
+            @media (max-width:500px) {
+                padding: 15px 10px;
+
+            }
             &.r-u-sure{
                 background-color: var(--the-green-color);
             }
@@ -1589,6 +1593,9 @@ footer{
         .restaurants-checkbox{
             display:grid;
             grid-template-columns: repeat(3, 1fr);
+            @media (max-width:600px) {
+                grid-template-columns: repeat(2, 1fr);
+            }
             div{
                 display: flex;
                 gap:5px;

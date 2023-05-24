@@ -70,12 +70,12 @@ function CreateDish() {
                             <Messages messages={messages}/>
                             <div className="modal-body">
                                 <form className="create-form d-flex flex-column gap-3">
-                                    <div className="form-row d-flex gap-10">
-                                        <div className="col-md-7">
+                                    <div className="form-row d-flex flex-wrap gap-3">
+                                        <div className="col-12 col-md-7">
                                             <label className="main-label" htmlFor="name">Name</label>
                                             <input id="name" type="text" className="form-control" name="dish_name" value={formData?.dish_name || ''} onChange={fillForm} required />
                                         </div>
-                                        <div className="col-3">
+                                        <div className="col-6 col-md-3">
                                             <label className="main-label" htmlFor="price">Price</label>
                                             <div className="d-flex gap-1 align-items-end">
                                                 <input id="price" type="number" className="form-control" name="price" value={formData?.price || ''} onChange={fillForm} required />

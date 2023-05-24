@@ -22,9 +22,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(fn () => Order::deleteOrders())
-        ->everyMinute();	
-        // ->daily();
+        $schedule->call(fn () => Order::deleteOrders())->daily();
         // $schedule->command('inspire')->hourly();
     }
 

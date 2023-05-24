@@ -91,8 +91,8 @@ export default function AuthenticatedBack({ auth, header, children, backgroundCo
                     </div>
                     <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                         <div className="pt-2 pb-3 space-y-1">
-                            <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                Dashboard
+                            <ResponsiveNavLink href={route('restaurant-list')} active={route().current('restaurant-list')}>
+                                Restaurants
                             </ResponsiveNavLink>
                         </div>
 

@@ -38,7 +38,7 @@ function CartRestaurant({restaurant}){
                         <li></li>
                         <li>Dish</li>
                         <li>Amount ordered</li>
-                        <li class="one-dish-price">One dish price</li>
+                        <li className="one-dish-price">One dish price</li>
                         <li>All units price</li>
                         <li></li>
                     </ul>

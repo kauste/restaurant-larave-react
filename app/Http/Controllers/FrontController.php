@@ -35,7 +35,7 @@ class FrontController extends Controller
     public function dishes(){
         
         $restaurants = Restaurant::orderBy('restaurant_name', 'asc')->get();
-        $perPage = 16;
+        $perPage = 12;
         $amountOfPages = (int) ceil(Dish::count() / $perPage);
         $dishes = Dish::get();
         $dishes->map(function($dish){
