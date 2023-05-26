@@ -3,16 +3,20 @@ import { useEffect, useRef, useState } from "react";
 import { Head } from "@inertiajs/inertia-react";
 import CartRestaurant from "@/components/frontOffice/cart/CartRestaurant";
 import Contexts from "@/components/Contexts";
+import Paginator from "@/components/Paginator";
 
 function Cart(props){
     // props
     const [cart, setCart] = useState([]);
     const [deliveryPrice, setDeliveryPrice] = useState(null);
     const [asset, setAsset] = useState('');
+    const [amountOfPages, setAmountOfPages] = useState(0);
+    const [requiredPage, setRequiredPage] = useState(0);
+    const [perPage, setPerPage] = useState(0);
     // modals
     const [modalInfo, setModalInfo] = useState(null);
     const [comfirmModalInfo, setComfirmModalInfo] = useState(null);
-    //message
+;    //message
     const [message, setMessage] = useState(null);
     const [messages, setMessages] = useState(null);
 
@@ -25,7 +29,9 @@ function Cart(props){
     const containerZoomRef = useRef();
 
     useEffect(() => {
-        setCart(props.cartInfo);
+        setCart(props.cartInfo.map((cartRestaurant, i) => ({...cartRestaurant, show:i < props.perPage ? true : false})));
+        setAmountOfPages(props.amountOfPages)
+        setPerPage(props.perPage)
         setDeliveryPrice(props.deliveryPrice);
         setAsset(props.asset);
         setZoomDOM(containerZoomRef.current);
@@ -44,21 +50,29 @@ function Cart(props){
         zoomDOM?.animate([{ transform:'scale(1)'}], backgroundZoomTiming);
     }
 
+    function changePage(page){
+        setCart(crt => crt.map((oneRestCart, i) => ({...oneRestCart, show: i < (page + 1) * perPage && i >=  page * perPage ? true : false})));
+        setRequiredPage(page)
+    }
 
     return(
-        <Contexts.FrontContext.Provider value={{deliveryPrice, asset, setModalInfo, setComfirmModalInfo, cart, setCart, message, setMessage, zoomDOM, smallerBackground, normalBackground, comfirmModalInfo, setComfirmModalInfo, cart, setCart, courier, setCurier, courierData, setCourierData, messages, setMessages}}>
+        <Contexts.FrontContext.Provider value={{ deliveryPrice, asset, setModalInfo, setComfirmModalInfo, cart, setCart, message, setMessage, zoomDOM, smallerBackground, normalBackground, comfirmModalInfo, setComfirmModalInfo, courier, setCurier, courierData, setCourierData, messages, setMessages, requiredPage, perPage, setAmountOfPages, changePage}}>
             <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo} fromCart={true}>
                             <Head title="Cart"/>
-                <div className="py-12 cart">
+                <div className="cart">
                     <div className="max-w-7xl mx-auto sm:px-0 ">
                         <div className="container" ref={containerZoomRef}>
                             <div className="card-header">
                                 <h2>Dishes in Cart</h2>
                             </div>
-                            {
-                                cart.map((restaurant, index)=> <CartRestaurant key={index} restaurant={restaurant}></CartRestaurant>)
-                            }
-                        </div>
+                            <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
+                            <div className="card-body">
+                                {
+                                    cart.map((restaurant, index)=> restaurant.show === true ? <CartRestaurant key={index} restaurant={restaurant}></CartRestaurant> : null)
+                                }
+                            </div>
+                            <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
+                         </div>
                     </div>
                 </div>
             </Authenticated>

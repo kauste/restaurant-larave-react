@@ -1,15 +1,17 @@
 import Contexts from "@/components/Contexts"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 
 function BackRestaurant({restaurant}){
-    const {restaurants, setRestaurants, setMessage, zoomDOM, zoomSmaller, setForEditRestaurant, setModalInfo} = useContext(Contexts.BackContext);
+
+    const { currPage, setRestaurantList, setMessage, zoomDOM, zoomSmaller, setForEditRestaurant, setModalInfo, changePage } = useContext(Contexts.BackContext);
+
     const confirm = () => {
+        console.log(restaurantList)
+        console.log(restaurant);
         axios.delete(route('restaurant-delete') + '/' + restaurant.id)
         .then(res => {
-            const newRestaurantList = restaurants.filter((oneRestaurant) => {
-                                                            return oneRestaurant.id !== restaurant.id
-                                                        })
-            setRestaurants(newRestaurantList)
+            setRestaurantList(rL => rL.filter((oneRestaurant) => oneRestaurant.id !== restaurant.id));
+            changePage(currPage);
             setMessage(res.data.message)
             setModalInfo(null);
         })

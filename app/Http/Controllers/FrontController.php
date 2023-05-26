@@ -16,20 +16,23 @@ class FrontController extends Controller
 {
     public function restaurants(){
         $restaurants = Restaurant::all();
+        $perPage = 4;
+        $amountOfPages = (int) ceil(Restaurant::count() / $perPage);
         $restaurants->map(function($restaurant){
             $restaurant['work_starts'] = Carbon::parse($restaurant['work_starts'])->format('H:i');
             $restaurant['work_ends'] = Carbon::parse($restaurant['work_ends'])->format('H:i');
             return $restaurant;
         });
+        $props = [
+            'restaurants'=> $restaurants,
+            'amountOfPages' => $amountOfPages,
+            'perPage' => $perPage
+        ];
         if(Auth::user() !== null){
-            return Inertia::render('frontOffice/RestaurantList', [
-                            'restaurants'=> $restaurants,
-                            ]);
-        }
+            return Inertia::render('frontOffice/RestaurantList', $props);
+        } 
         else {
-            return Inertia::render('Guest/RestaurantList', [
-                            'restaurants'=> $restaurants,
-                            ]);
+            return Inertia::render('Guest/RestaurantList', $props);
         }
     }
     public function dishes(){
@@ -62,18 +65,23 @@ class FrontController extends Controller
     }
 
     public function restaurantDishes(Request $request){
+        $perPage = 12;
         $restaurant = Restaurant::where('id', '=', $request->id)->first();
         $dishes = Dish::join('restaurant_dish', 'restaurant_dish.dish_id', 'dishes.id')
                                 ->where('restaurant_dish.restaurant_id', $request->id)
                         ->select('dishes.*')
                         ->orderBy('dishes.dish_name')
                         ->get();
+        $amountOfPages = ceil($dishes->count() / $perPage);
+
         $props =  [
             'restaurant' =>$restaurant,
             'dishes'=> $dishes,
             'asset' => asset('images/food'). '/',
             'defaultPic' => '/todays-special.jpg',
             'userId' => Auth::user()?->id,
+            'amountOfPages' => $amountOfPages,
+            'perPage' => $perPage
         ];
         if(Auth::user() !== null){
             return Inertia::render('frontOffice/RestaurantDishes', $props);

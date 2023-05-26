@@ -7,7 +7,7 @@ import RestaurantCheckbox from "./RestaurantCheckbox";
 
 function CreateDish() {
 
-    const { setShouldCreate, shouldCreate, restaurants, setDishes, setMessage, messages, setMessages, zoomBack } = useContext(Contexts.BackContext);
+    const { setShouldCreate, shouldCreate, restaurants, setDishes, setMessage, messages, setMessages, zoomBack, changePage, setSearchValue, setFilterValue} = useContext(Contexts.BackContext);
 
     const [formData, setFormData] = useState({ restaurants: [],
         dish_name: '',
@@ -38,10 +38,18 @@ function CreateDish() {
         const createDish = () => {
             axios.post(route('dish-store'), formData, {headers:{Accept: "application/json", "Content-Type": "multipart/form-data"}})
             .then(res => {
-                if(res.data.newDish){
-                    const newestDish = {...res.data.newDish, restaurants:res.data.restaurants, show:true};
-                    setDishes(allDishes => ([...allDishes.map((dish) => ({...dish, show:true})),  newestDish].sort((a, b) => b.id - a.id)))
-                    closeModal()
+                if(res.data.newDish){                  
+
+                    const newestDish = {...res.data.newDish, restaurants:res.data.restaurants, show:true, index:0, searchedAndFiltered: true};
+                    setDishes(allDishes => [...allDishes.map((dish) => {
+                        dish.index += 1;
+                        dish.searchedAndFiltered = true;
+                        return dish;
+                    }),  newestDish].sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered || a.index - b.index))
+                    changePage(0);
+                    setFilterValue(0);
+                    setSearchValue('');
+                    closeModal();
                     setMessage(res.data.message);
                 }
                 else{

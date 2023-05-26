@@ -27,8 +27,11 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::where('user_id', Auth::user()->id)
-                        ->orderBy('created_at', 'desc')
                         ->get()
+                                                ->sortBy([
+                            ['status', 'asc'],
+                            ['id', 'asc']
+                        ])
                         ->map(function($order){
                             $order->dishes = Dish::join('dish_order', 'dish_order.dish_id', 'dishes.id')
                                             ->where('order_id', $order->id)
@@ -50,21 +53,26 @@ class OrderController extends Controller
                             $order->updated = Carbon::parse($order->updated_at, 'UTC+2')->format('Y-m-d H:m');
                             return $order;
                         });
+
         $statuses = Order::STATUS;
         $deliveryChoices = Order::DELIVERY_CHOICES;
-        
-        return Inertia::render('frontOffice/FrontOrders', [ 'orders' => $orders,
+        $perPage = 4;
+        $amountOfPages = ceil($orders->count() / $perPage);
+        return Inertia::render('frontOffice/FrontOrders', [ 'orders' => array_values($orders->toArray()),
                                                 'statuses' => $statuses,
                                                 'deliveryPrice' => Order::DELIVERY_PRICE,
                                                 'asset'=> asset('/images/food'),
                                                 'deliveryChoices' => $deliveryChoices,
-                                                'getInvoiceUrl' => route('get-invoice')
+                                                'getInvoiceUrl' => route('get-invoice'),
+                                                'amountOfPages' => $amountOfPages,
+                                                'perPage' => $perPage
                                                 ]);
         
     }
     public function store(Request $request)
     {   
         // validation
+        dump($request->deliveryData['deliveryChoice']);
         $courierData = $request->deliveryData['courierData'];
         if($request->deliveryData['deliveryChoice'] == 1){
             $validator = Validator::make($courierData, [
@@ -86,6 +94,9 @@ class OrderController extends Controller
                 $errors = $validator->errors()->all();
                 return response()->json(['errors' => $errors]);
             }
+        }
+        else if ($request->deliveryData['deliveryChoice'] === null || parseInt($request->deliveryData['deliveryChoice']) !== 0){
+            return response()->json(['errors' => ['Delivery choice is required.']]);
         }
         // data valid, putting to database
         $order = new Order;
@@ -197,10 +208,8 @@ class OrderController extends Controller
                                 'user' => function($u){
                                                 $u->select('id', 'name', 'email');
                                 }
-                                ])
-                        ->orderBy('status')
-                        ->get()
-                      ->map(function($order){
+                                ])->get()
+                    ->map(function($order){
 
                             $totalPrice = 0;
                             foreach($order->dishes as $item){
@@ -217,19 +226,26 @@ class OrderController extends Controller
                             $order->created = Carbon::create($order->created_at, 'UTC+2')->format('Y-m-d H:m');
                             $order->updated = Carbon::parse($order->updated_at, 'UTC+2')->format('Y-m-d H:m');
                             return $order;
-                      });
+                      })
+                    ->sortBy([
+                        ['status', 'asc'],
+                        ['id', 'asc']
+                    ]);
 
         $statuses = Order::STATUS;
         $deliveryChoices = Order::DELIVERY_CHOICES;
-
+        $perPage = 4;
+        $amountOfPages = ceil($orders->count() / $perPage);
         $todayDate = Carbon::now('Europe/Vilnius')->format('Y-m-d');
         $beforeTwoWeeksDate = Carbon::now('Europe/Vilnius')->subWeeks(2)->format('Y-m-d');
 
-        return Inertia::render('BackOffice/OrderList', ['orders' => $orders, 
+        return Inertia::render('BackOffice/OrderList', ['orders' => array_values($orders->toArray()), 
                                                         'statuses' => $statuses, 
                                                         'deliveryChoices' => $deliveryChoices,
                                                         'todayDate' => $todayDate,
-                                                        'beforeTwoWeeksDate' => $beforeTwoWeeksDate
+                                                        'beforeTwoWeeksDate' => $beforeTwoWeeksDate,
+                                                        'perPage' => $perPage,
+                                                        'amountOfPages' => $amountOfPages
                                                         ]);
     }
     public function changeStatus(Request $request)

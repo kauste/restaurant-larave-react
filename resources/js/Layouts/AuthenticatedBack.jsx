@@ -16,7 +16,6 @@ export default function AuthenticatedBack({ auth, header, children, backgroundCo
     const [bgColor, setBgColor] = useState('');
     useEffect(() => {
         setNavDOM(navRef.current);
-        console.log(backgroundColor);
         setBgColor(backgroundColor ? backgroundColor : '')
     }, [])
 

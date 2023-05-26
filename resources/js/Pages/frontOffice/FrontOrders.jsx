@@ -1,5 +1,7 @@
 import Contexts from "@/components/Contexts";
 import FrontOrder from "@/components/frontOffice/order/FrontOrder";
+import Paginator from "@/components/Paginator";
+import PerPage from "@/components/PerPage";
 import Authenticated from "@/Layouts/Authenticated";
 import { Head } from "@inertiajs/inertia-react";
 import { useState, useEffect, useRef } from "react";
@@ -11,6 +13,10 @@ function FrontOrders(props) {
     const [asset, setAsset] = useState('');
     const [deliveryPrice, setDeliveryPrice] = useState(0);
     const [deliveryChoices, setDeliveryChoices] = useState([]);
+    const [amountOfPages, setAmountOfPages] = useState(0);
+    const [perPg, setPerPg] = useState(0);
+
+    const [requiredPage, setRequiredPage] = useState(0);
     //for modal
     const [changeContactOrder, setChangeContactOrder] = useState(null);
     const [modalInfo, setModalInfo] = useState(null);
@@ -36,19 +42,33 @@ function FrontOrders(props) {
     };
     //first render
     useEffect(() => {
+        console.log(props.orders)
+        setOrders(props.orders.map((orderRestaurant, i) => ({...orderRestaurant, show:i < props.perPage ? true : false})));
+        setAmountOfPages(props.amountOfPages)
+        setPerPg(props.perPage)
         setZoomDOM(zoomContainer.current);
-        setOrders(props.orders);
         setStatuses(props.statuses)
         setAsset(props.asset)
         setDeliveryChoices(props.deliveryChoices)
         setDeliveryPrice(props.deliveryPrice)
     }, [])
 
+    function changePage(page){
+        setOrders(ord => ord.map((oneOrder, i) => ({...oneOrder, show: i < (page + 1) * perPg && i >=  page * perPg ? true : false})));
+        setRequiredPage(page)
+    }
+
+    function changePerPage(){
+        const pagesCount = Math.ceil(Object.keys(orders).length / perPg)
+        setAmountOfPages(pagesCount)
+        changePage(0);
+    }
     useEffect(() => {
         setTimeout(()=> {
                 setMessage(null)
             }, 20000)
     }, [message])
+
     useEffect(() => {
         window.Echo.channel('scheduler.deleted.orders')
         .listen('OrdersDeleted', (e) => {
@@ -56,10 +76,8 @@ function FrontOrders(props) {
         })
     }, [])
 
-
-
     return (
-        <Contexts.FrontContext.Provider value={{message, setMessage, orders, setOrders, changeContactOrder, setChangeContactOrder, zoomDOM, statuses, asset, deliveryPrice, deliveryChoices, setModalInfo, smallerBackground, normalBackground, messages, setMessages}}>
+        <Contexts.FrontContext.Provider value={{message, setMessage, orders, setOrders, changeContactOrder, setChangeContactOrder, zoomDOM, statuses, asset, deliveryPrice, deliveryChoices, setModalInfo, smallerBackground, normalBackground, messages, setMessages, orders, perPg, requiredPage, setAmountOfPages, changePage}}>
             <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo} forOrders={true}>
                 <Head title="Orders" />
                 <div className="py-12 order front">
@@ -74,10 +92,18 @@ function FrontOrders(props) {
                                     <div>!!! You can edit your delivery data until the start of delivering, after courier takes your order, we no longer change information.</div>
                                 </div>
                             </div>
-                                <div className="all-orders">
-                                {
-                                    orders.map((order, index) => <FrontOrder key={index} order={order}></FrontOrder>)
-                                }
+                            <div className="card-body">
+                                <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={changePerPage}></PerPage>
+                                <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
+                                <div>
+                                    <div className="all-orders">
+                                        {
+                                            orders.map((order, index) => order.show === true ? <FrontOrder key={index} order={order}></FrontOrder> : null)
+                                        }
+                                    </div>
+                                </div>
+                                <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
+                                <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={(changePerPage)}></PerPage>
                             </div>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
 import GoLoginModal from "@/components/Guest/GoLoginModal";
 import Contexts from "@/components/Contexts";
+import Paginator from "@/components/Paginator";
 
 function RestaurantDishes(props){
     const [dishes, setDishes] = useState([]);
@@ -12,21 +13,32 @@ function RestaurantDishes(props){
     const [restaurant, setRestaurant] = useState({});
     const [restaurantId, setRestaurantId] = useState(null);
     const [userId, setUserId] = useState(null);
-    const [asset, setAsset] = useState('');
+    const [asset, setAsset] = useState('');    
+    const [amountOfPages, setAmountOfPages] = useState(1);
+    const [requiredPage, setRequiredPage] = useState(1);
+    const [perPage, setPerPage] = useState(1);
+
 
     const [shouldShowModal, setShouldShowModal] = useState(false);
     const [zoomDOM, setZoomDOM] = useState(null);
 
     const zoomContainer = useRef();
     useEffect(() =>{
-        setDishes(props.dishes);
+        setDishes(props.dishes.map((dish, i) => ({...dish, index:i, show:(i < props.perPage ? true : false)})));
         setDefaultPic(props.defaultPic);
         setRestaurant(props.restaurant);
         setRestaurantId(props.restaurant.id);
         setAsset(props.asset);
         setUserId(props.userId);
         setZoomDOM(zoomContainer.current);
+        setPerPage(props.perPage);
+        setAmountOfPages(props.amountOfPages);
     }, [])
+
+    const changePage = (page) => {
+        setDishes(rD => rD.map((dish, i) => ({...dish, show:(i < perPage * page && i >= perPage * (page - 1) ? true : false)})));
+        setRequiredPage(page);
+    }
     return (
         <Contexts.FrontContext.Provider value={{defaultPic, restaurantId, asset, userId, shouldShowModal, setShouldShowModal, zoomDOM}}>
             <GuestLayout>
@@ -52,9 +64,10 @@ function RestaurantDishes(props){
                                 <div className="card-body">
                                     <ul className="dish-list-grid">
                                         {
-                                            dishes.map((dish, index) => <DishInRestaurant key={index} dish={dish} setShouldShowModal={setShouldShowModal}></DishInRestaurant>)
+                                            dishes.map((dish, index) => dish.show === true ? <DishInRestaurant key={index} dish={dish} setShouldShowModal={setShouldShowModal}></DishInRestaurant> : null)
                                         }
                                     </ul>
+                                    <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
                                 </div>
                             </div>
                         </div>

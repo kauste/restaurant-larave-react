@@ -4,7 +4,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 
 function RestaurantCreate() {
-    const { messages, setMessages, restaurants, shouldCreate, setShouldCreate, setRestaurants, setMessage, zoomBack } = useContext(Contexts.BackContext);
+    const { messages, setMessages, shouldCreate, setShouldCreate, setRestaurantList, setMessage, zoomBack, changePage} = useContext(Contexts.BackContext);
     const [restaurantData, setRestaurantData] = useState({});
 
     if (shouldCreate === true) {
@@ -26,9 +26,13 @@ function RestaurantCreate() {
             axios.post(route('restaurant-store'), { restaurantData: restaurantData })
                 .then(res => {
                     if(res.data.restaurantId){
-                    setRestaurants([...restaurants, {id:res.data.restaurantId, ...restaurantData}])
-                    closeModal();
-
+                    setRestaurantList(rL => [...rL.map(rest =>{
+                        rest.index = rest.index + 1
+                        return rest;
+                    }), {...restaurantData, index:0, id:res.data.restaurantId}]);
+                    changePage(0)
+                    closeModal()
+                    setRestaurantData({});
                     setMessage(res.data.message)
                     }
                     else {

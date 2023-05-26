@@ -6,7 +6,7 @@ import Contexts from "@/components/Contexts";
 
 function ConfirmCartModal() {
     
-    const {comfirmModalInfo, setComfirmModalInfo, setCart, setCurier, courierData, messages, setMessages, smallerBackground, normalBackground} = useContext(Contexts.FrontContext);
+    const {comfirmModalInfo, setComfirmModalInfo, setCart, cart, setCurier, courierData, messages, setMessages, smallerBackground, normalBackground, requiredPage, perPage, setAmountOfPages, changePage } = useContext(Contexts.FrontContext);
     const [delivery, setDelivery] = useState(null);
     const [deliveryChoice, setDeliveryChoice] = useState('');
 
@@ -35,20 +35,26 @@ function ConfirmCartModal() {
         if(delivery === null) return;
         axios.post(route('confirm-cart'), {restaurantId:comfirmModalInfo.restaurantId, deliveryData:delivery})
         .then(res => {
-            normalBackground();
             if(res.data.errors !== undefined){
                 setMessages(res.data.errors);
 
             }
             else{
-
-                setCart( c => c.filter((r) => r.cartInfo[0].restaurant_id !== comfirmModalInfo.restaurantId));
+                normalBackground();
+                const newCart = cart.filter((r) => r.cartInfo[0].restaurant_id !== comfirmModalInfo.restaurantId)
+                setCart(newCart);
+                rearangeOrder(newCart);
                 closeModal();
                 comfirmModalInfo.setMessage(res.data.message)
             }
         })
     }, [delivery])
 
+    const rearangeOrder = (newCart) => {
+        const pagesCount = Math.ceil(Object.keys(newCart).length / perPage)
+        changePage(pagesCount - 1 < requiredPage ? requiredPage - 1 : requiredPage)
+        setAmountOfPages(pagesCount);
+    }
 
 
     if (comfirmModalInfo !== null && comfirmModalInfo != undefined) {

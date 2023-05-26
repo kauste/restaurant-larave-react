@@ -12,13 +12,18 @@ class RestaurantController extends Controller
 {
     public function index()
     {
-        $restaurants = Restaurant::all();
+        $restaurants = Restaurant::orderBy('created_at', 'desc')->get();
         $restaurants->map(function($restaurant){
             $restaurant['work_starts'] = Carbon::parse($restaurant['work_starts'])->format('H:i');
             $restaurant['work_ends'] = Carbon::parse($restaurant['work_ends'])->format('H:i');
             return $restaurant;
         });
-        return Inertia::render('BackOffice/RestaurantList', ['restaurants'=> $restaurants]); 
+        $perPage = 8;
+        $amountOfPages = ceil($restaurants->count() / $perPage);
+        return Inertia::render('BackOffice/RestaurantList', ['restaurants'=> $restaurants,
+                                                              'perPage' =>$perPage,
+                                                              'amountOfPages' => $amountOfPages
+                                                            ]); 
     }
 
     public function store(Request $request)

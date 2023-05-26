@@ -5,7 +5,7 @@ import DishInOrder from "./DishInOrder";
 import OrderAdress from "./OrderAdress";
 
 function Order({ order}) {
-    const { statuses, deliveryChoices, setMessage } = useContext(Contexts.BackContext);
+    const { statuses, deliveryChoices, setMessage, changePage, requiredPage, setOrders } = useContext(Contexts.BackContext);
     const [openDisplay, setOpenDisplay] = useState('none');
     const [statusColor, setStatusColor] = useState('black');
     const [styleOnDisplay, setStyleOnDisplay] = useState({});
@@ -30,8 +30,9 @@ function Order({ order}) {
     }, [statusChange])
 
     const toggle = () => {
+        const padding = window.innerWidth > 900 ?'15px 30px' : '8px 15px';
         if (openDisplay === 'none') {
-            setStyleOnDisplay({ transform: 'scale(1.1)', backgroundColor: '#f2f2f2', padding:'15px 30px', border:'none'})
+            setStyleOnDisplay({ transform: 'scale(1.1)', backgroundColor: '#f2f2f2', padding:padding, border:'none'})
             setOpenDisplay('block');
             setStyleOnChevron({animation:'spin-chevron 0.6s ease'})
         } else {
@@ -55,6 +56,7 @@ function Order({ order}) {
     const changeStatus = () => {
         axios.put(route('change-status') + '/' + order.id, {statusValue:statusValue})
         .then(res => {
+            setOrders((allOrders => allOrders.map((oneOrd) => (oneOrd.id === order.id) ? ({...oneOrd, status: statusValue}) : oneOrd)))
             setStatusChange(statusValue)
             setMessage(res.data.msg);
         })

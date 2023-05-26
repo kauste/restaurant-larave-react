@@ -5,7 +5,7 @@ import DeliveryInfo from "./DeliveryInfo";
 import OrderDish from "./OrderDish";
 
 function FrontOrder({ order }) {
-    const { setOrders, deliveryPrice, statuses, deliveryChoices, setChangeContactOrder, setMessage, setModalInfo, normalBackground, zoomDOM } = useContext(Contexts.FrontContext);
+    const { setOrders, deliveryPrice, statuses, deliveryChoices, setChangeContactOrder, setMessage, setModalInfo, normalBackground, zoomDOM, orders, perPg, requiredPage, setAmountOfPages, changePage } = useContext(Contexts.FrontContext);
     const [showBody, setShowBody] = useState('d-none');
     const [contactInfo, setContactInfo] = useState([]);
     const [shadowToggle, setShadowToggle] = useState('');
@@ -31,13 +31,20 @@ function FrontOrder({ order }) {
     const deleteOrder = () => {
         axios.delete(route('client-delete-order') + '/' + order.id)
         .then(res => {
-            setOrders(values => values.filter((o) => o.id != order.id));
+            const newOrder = orders.filter((o) => o.id != order.id);
+            setOrders(newOrder);
+            rearangeOrganisation(newOrder);
             normalBackground();
                 setTimeout(() => {
                 setModalInfo(null)
             }, 0.3)
             setMessage(res.data.message)
         })
+    }
+    const rearangeOrganisation = (newOrder) => {
+        const pagesCount = Math.ceil(Object.keys(newOrder).length / perPg)
+        changePage(pagesCount - 1 < requiredPage ? requiredPage - 1 : requiredPage)
+        setAmountOfPages(pagesCount);
     }
     const areYouSureInfo = {text: 'Are you sure you want to delete this order?', zoomDOM: zoomDOM, confirm:deleteOrder}
 

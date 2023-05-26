@@ -21,7 +21,6 @@ function Message({message, navDOM}){
 
 
     useEffect(()=> {
-        console.log('ce');
         if(isNavBottomSeen){
             setMessageStyle({
                             position:'fixed', 

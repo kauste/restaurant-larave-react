@@ -17,22 +17,15 @@ class Role
     public function handle(Request $request, Closure $next, ...$roles)
     {
         $userRole = $request->user()?->role ?? 0;
-        // dump('dabar');
 
-        // dump($roles);
-        if(in_array('guest', $roles)){
-            if ($userRole != 0 && $userRole != 1) {
-                abort(401);
-            }
-        }
-        else if (in_array('user', $roles)) {
+        if (count($roles) === 1 && in_array('user', $roles)) {
             if ($userRole != 1) {
-                abort(401);
+                return redirect()->route('user-restaurants');
             }
         }
-        else if (in_array('admin', $roles)) {
+        else if (count($roles) === 1 && in_array('admin', $roles)) {
             if ($userRole != 10) {
-                abort(401);
+                return redirect()->route('user-restaurants');
             }
         }
 

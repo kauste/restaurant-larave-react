@@ -44,7 +44,7 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
                 <nav ref={navRef}>
                     <div className='nav-box'>
                             <div className="flex items-center">
-                                <div className="shrink-0 flex items-center">
+                                <div className="logo-bin shrink-0 flex items-center">
                                     <Link className="logo-box" href="/" style={{background: fromCart || fromRestaurantDishes ? '#2E2E2E' : '' }}>
                                         <ApplicationLogo className="block nav-logo text-gray-500"  />
                                     </Link>

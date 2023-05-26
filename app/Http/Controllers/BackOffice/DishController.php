@@ -27,11 +27,15 @@ class DishController extends Controller
             $dish->restaurants = $restaurants;
             return $dish;
         });
+        $perPage = 8;
+        $amountOfPages = ceil($dishes->count() / $perPage);
         return Inertia::render('BackOffice/DishList', [
                         'asset' => asset('images/food') . '/',
                         'dishes'=> $dishes,
                         'defaultPic' => '/todays-special.jpg',
                         'restaurants'=> $restaurants,
+                        'perPage' =>$perPage,
+                        'amountOfPages' => $amountOfPages
                         ]);
     }
 
@@ -47,7 +51,7 @@ class DishController extends Controller
 
         $validator = Validator::make($dishData, [
             'dish_name' => 'required|min:3|max:50',
-            'price' => 'required|decimal:0,2',
+            'price' => 'required|min:0|decimal:0,2',
             'picture' => 'required|image|mimes:jpg,bmp,png',
             'restaurants' => 'nullable|array',
             'restaurants.*' => 'nullable|integer|exists:restaurants,id'
@@ -55,6 +59,7 @@ class DishController extends Controller
         if($validator->fails()){
             return response()->json(['messages' => $validator->errors()->all()]);
         };
+
         $dish = new Dish;
         $dish->dish_name = $dishData['dish_name'];
         $dish->price = $dishData['price'];
@@ -72,6 +77,7 @@ class DishController extends Controller
                 $dish->picture_path = $file; 
             }
             $dish->save();
+
 
             $restaurants = array_values($restaurants);
 

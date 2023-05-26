@@ -3,7 +3,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 function SortFilterSearch(){
     
-    const {setRestaurantDishes, restaurantDishes, restaurants, changePage, setRequiredPage, perPage, setAmountOfPages} = useContext(Contexts.FrontContext);
+    const {setRestaurantDishes, restaurantDishes, restaurants, changePage, setRequiredPage, perPg, setAmountOfPages} = useContext(Contexts.FrontContext);
 
     const [sortValue, setSortValue] = useState('default');
     const [restaurant, setRestaurant] = useState(0);
@@ -13,7 +13,7 @@ function SortFilterSearch(){
     const sortDefaultFilterAll = () => {
         setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map(dish => ({...dish, show:true})));
         changePage(1);
-        setAmountOfPages(Math.ceil(Object.keys(restaurantDishes).length /perPage));
+        setAmountOfPages(Math.ceil(Object.keys(restaurantDishes).length /perPg));
     }
     const sort = () => {
         if(sortValue === 'asc'){
@@ -22,7 +22,7 @@ function SortFilterSearch(){
         else{
             setRestaurantDishes(rD => [...rD].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
         } 
-        setAmountOfPages(Math.ceil(Object.keys(restaurantDishes).length /perPage));
+        setAmountOfPages(Math.ceil(Object.keys(restaurantDishes).length /perPg));
         changePage(1);
     }
     const filter = () => {
@@ -31,9 +31,9 @@ function SortFilterSearch(){
             restaurantDishes.map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ++countDishes : [].push())
             // array of dishes in first page sorted by index
             let z = 0;
-            setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPage) ? ({...dish, show:true}) : ({...dish, show:false})));
+            setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPg) ? ({...dish, show:true}) : ({...dish, show:false})));
             // amount of buttons for pages
-            setAmountOfPages(Math.ceil(countDishes / perPage));
+            setAmountOfPages(Math.ceil(countDishes / perPg));
             // first page
             setRequiredPage(1);
     }
@@ -45,13 +45,13 @@ function SortFilterSearch(){
         //array of dishes in the first page, sorted by pride (asc and desc)
         let z = 0;
         if(sortValue === 'asc'){
-            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(a.price) - parseInt(b.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPage) ? ({...dish, show:true}) : ({...dish, show:false})));
+            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(a.price) - parseInt(b.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPg) ? ({...dish, show:true}) : ({...dish, show:false})));
         }
         else{
-            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(b.price) - parseInt(a.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPage) ? ({...dish, show:true}) : ({...dish, show:false})));
+            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(b.price) - parseInt(a.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPg) ? ({...dish, show:true}) : ({...dish, show:false})));
         }
         // amount of buttons for pages
-        setAmountOfPages(Math.ceil(countDishes / perPage));
+        setAmountOfPages(Math.ceil(countDishes / perPg));
         // first page
         setRequiredPage(1);
     }
@@ -79,7 +79,10 @@ function SortFilterSearch(){
     }
     const doSearch = () => {
         axios.get(route('search-dish') +'?dish=' + search)
-        .then(res => {setRestaurantDishes(res.data.dishes) });
+        .then(res => {
+            setRestaurantDishes(res.data.dishes.map((dish, i) => ({...dish, index:i, show:(i < perPg ? true : false)}))) 
+        });
+
     }
     const displayToggle = () => {
         let toggle = activenessState === 'd-none' ? '' : 'd-none';

@@ -62,6 +62,8 @@ class CartController extends Controller
                             ->first()->restaurant_name;
             return ['cartInfo'=> $restaurant, 'totalPrice' => $totalPrice, 'restaurantName' => $restaurantName];
           });
+        $perPage = 4;
+        $amountOfPages = ceil($cart->count() / $perPage);
 
         $user = ['name'=> Auth::user()->name];
         return Inertia::render('frontOffice/Cart', [
@@ -69,6 +71,8 @@ class CartController extends Controller
                                 'user'=> $user,
                                 'asset' => asset('images/food'),
                                 'deliveryPrice' => Order::DELIVERY_PRICE,
+                                'amountOfPages' => $amountOfPages,
+                                'perPage' => $perPage
         ]);
     }
     public function deleteCartItem (Request $request){

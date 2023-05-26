@@ -3,18 +3,24 @@ import BackRestaurant from "@/components/BackOffice/Restaurant/BackRestaurant";
 import RestaurantCreate from "@/components/BackOffice/Restaurant/RestaurantCreate";
 import RestaurantEdit from "@/components/BackOffice/Restaurant/RestaurantEdit";
 import Contexts from "@/components/Contexts";
+import Paginator from "@/components/Paginator";
+import PerPage from "@/components/PerPage";
 import AuthenticatedBack from "@/Layouts/AuthenticatedBack";
 import { Head } from "@inertiajs/inertia-react";
 import { useEffect, useState, useRef } from "react";
 
 function RestaurantList(props) {
     const [restaurantList, setRestaurantList] = useState([]);
-    const [restaurants, setRestaurants] = useState(props.restaurants)
+    // const [restaurants, setRestaurants] = useState(props.restaurants)
     const [shouldCreate, setShouldCreate] = useState(false);
     const [forEditRestaurant, setForEditRestaurant] = useState(null);
     const [modalInfo, setModalInfo] = useState(null);
     const [message, setMessage] = useState(null);
     const [messages, setMessages] = useState(null);
+    const [amountOfPages, setAmountOfPages] = useState(0);
+    const [requiredPage, setRequiredPage] = useState(0);
+    const [perPage, setPerPage] = useState(0);
+    const [currPage, setCurrPage] = useState(0);
 
     const [zoomDOM, setZoomDOM] = useState(null);
     const backgroundColor = '#f8f8f8';
@@ -38,10 +44,10 @@ function RestaurantList(props) {
     }
     useEffect(() => {
         setZoomDOM(zoomContainer.current);
-    })
-    useEffect(() => {
-        setRestaurantList(restaurants);
-    }, [restaurants])
+        setRestaurantList(props.restaurants.map((restaurant, i) => ({...restaurant, show:i < props.perPage ? true : false, index:i})));
+        setAmountOfPages(props.amountOfPages)
+        setPerPage(props.perPage)
+    }, [])
     
     useEffect(() => {
         const messageSet = setTimeout(() => {
@@ -51,16 +57,25 @@ function RestaurantList(props) {
             clearTimeout(messageSet);
         }
     },[message])
+    
+    function changePage(page){
+        setCurrPage(page)
+        setRestaurantList(rL => rL.sort((a, b) => a.status - b.status || a.index - b.index).map((oneRestaurant, i) => ({...oneRestaurant, show: i < (page + 1) * perPage && i >=  page * perPage ? true : false})));
+        setRequiredPage(page)
 
+    }
+    useEffect(() => {
+        setAmountOfPages(Math.ceil(Object.keys(restaurantList).length / perPage))
+    }, [restaurantList])
     return (
-        <Contexts.BackContext.Provider value={{message, setMessage, messages, setMessages, zoomDOM, zoomSmaller, zoomBack, restaurants, setRestaurants, forEditRestaurant, setForEditRestaurant, setModalInfo, shouldCreate, setShouldCreate}}>
+        <Contexts.BackContext.Provider value={{message, setMessage, messages, setMessages, restaurantList, setRestaurantList, perPage, amountOfPages, requiredPage, changePage, zoomDOM, zoomSmaller, zoomBack, forEditRestaurant, setForEditRestaurant, setModalInfo, shouldCreate, setShouldCreate, currPage}}>
             <AuthenticatedBack auth={props.auth} backgroundColor={backgroundColor}>
                 <Head title="Restaurants"/>
                 <RestaurantCreate/>
                 <RestaurantEdit />
                 <AreYouSureModal modalInfo={modalInfo} setModalInfo={setModalInfo}></AreYouSureModal>
                 <div className="py-12 restaurant-list-back">
-                    <div className="max-w-7xl mx-auto  lg:px-8">
+                    <div className="">
                         <div ref={zoomContainer}>
                             <div className="button-bin">
                                 <button className="one-color-btn gray-btn btn-lg" onClick={create}>Create new restaurant</button>
@@ -72,6 +87,8 @@ function RestaurantList(props) {
                                             <h2>Our restaurants</h2>
                                         </div>
                                         <div className="card-body">
+                                            <PerPage perPg={perPage} setPerPg={setPerPage} changePerPage={() =>changePage(0)}></PerPage>
+                                            <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
                                             <ul className="restaurant-list">
                                                 <li>
                                                     <ul className="restaurant-list-grid headings">
@@ -84,10 +101,12 @@ function RestaurantList(props) {
                                                 </li>
                                                 <li>
                                                     {
-                                                        restaurantList.map((restaurant, index) => <BackRestaurant key={index} restaurant={restaurant}></BackRestaurant>)
+                                                        restaurantList.map((restaurant, index) => restaurant.show === true ? <BackRestaurant key={index} restaurant={restaurant}></BackRestaurant> :null)
                                                     }
                                                 </li>
                                             </ul>
+                                            <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage}  changePage={changePage}></Paginator>
+                                            <PerPage perPg={perPage} setPerPg={setPerPage} changePerPage={() =>changePage(0)}></PerPage>
                                         </div>
                                     </div>
                                 </div>

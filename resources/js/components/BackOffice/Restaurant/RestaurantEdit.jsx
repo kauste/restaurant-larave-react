@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 function RestaurantEdit() {
 
-    const {restaurants, forEditRestaurant, setForEditRestaurant, setRestaurants, message, setMessage, zoomBack, messages, setMessages,} = useContext(Contexts.BackContext);
+    const {setRestaurantList, forEditRestaurant, setForEditRestaurant, changePage, setMessage, zoomBack, messages, setMessages,} = useContext(Contexts.BackContext);
 
     if (forEditRestaurant) {
 
@@ -25,8 +25,7 @@ function RestaurantEdit() {
             axios.put(route('restaurant-update'), forEditRestaurant)
             .then(res => {
                 if(res.data.message){
-                    const removedRestaurant = restaurants.filter((restaurant) => {return restaurant.id !== forEditRestaurant.id});
-                    setRestaurants([forEditRestaurant, ...removedRestaurant]);
+                    setRestaurantList(rL => [...rL.filter((restaurant) => restaurant.id !== forEditRestaurant.id), forEditRestaurant].sort((a, b) => a.status - b.status || a.index - b.index));
                     closeModal();
                     setMessage(res.data.message);
                 }

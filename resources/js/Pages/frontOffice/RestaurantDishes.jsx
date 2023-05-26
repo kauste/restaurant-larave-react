@@ -3,6 +3,7 @@ import { Head } from "@inertiajs/inertia-react";
 import DishInRestaurant from "@/components/frontOffice/dishes/DishInRestaurant";
 import { useEffect, useState } from "react";
 import Contexts from "@/components/Contexts";
+import Paginator from "@/components/Paginator";
 
 function RestaurantDishes(props){
 
@@ -13,16 +14,25 @@ function RestaurantDishes(props){
     const [restaurantId, setRestaurantId] = useState(null);
     const [userId, setUserId] = useState(null);
     const [asset, setAsset] = useState('');
+    const [amountOfPages, setAmountOfPages] = useState(1);
+    const [requiredPage, setRequiredPage] = useState(1);
+    const [perPage, setPerPage] = useState(1);
     
 
     useEffect(() =>{
-        setDishes(props.dishes);
+        setDishes(props.dishes.map((dish, i) => ({...dish, index:i, show:(i < props.perPage ? true : false)})));
         setDefaultPic(props.defaultPic);
         setRestaurant(props.restaurant);
         setAsset(props.asset);
         setRestaurantId(props.restaurant.id);
         setUserId(props.userId);
+        setPerPage(props.perPage);
+        setAmountOfPages(props.amountOfPages);
     }, [])
+    const changePage = (page) => {
+        setDishes(rD => rD.map((dish, i) => ({...dish, show:(i < perPage * page && i >= perPage * (page - 1) ? true : false)})));
+        setRequiredPage(page);
+    }
 
     return (
         <Contexts.FrontContext.Provider value={{defaultPic, restaurantId, asset, setMessage, userId, message}}>
@@ -50,9 +60,10 @@ function RestaurantDishes(props){
                             <div className="card-body">
                                 <ul className="dish-list-grid">
                                     {
-                                        dishes.map((dish, index) => <DishInRestaurant key={index} dish={dish}></DishInRestaurant>)
+                                        dishes.map((dish, index) => dish.show === true ? <DishInRestaurant key={index} dish={dish}></DishInRestaurant> : null)
                                     }
                                 </ul>
+                                <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
                             </div>
                         </div>
                     </div>
