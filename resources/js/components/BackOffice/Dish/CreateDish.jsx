@@ -7,7 +7,7 @@ import RestaurantCheckbox from "./RestaurantCheckbox";
 
 function CreateDish() {
 
-    const { setShouldCreate, shouldCreate, restaurants, setDishes, setMessage, messages, setMessages, zoomBack, changePage, setSearchValue, setFilterValue} = useContext(Contexts.BackContext);
+    const { setShouldCreate, shouldCreate, restaurants, setDishes, setMessage, messages, setMessages, zoomBack, changePg, setSearchValue, setFilterValue} = useContext(Contexts.BackContext);
 
     const [formData, setFormData] = useState({ restaurants: [],
         dish_name: '',
@@ -46,7 +46,7 @@ function CreateDish() {
                         dish.searchedAndFiltered = true;
                         return dish;
                     }),  newestDish].sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered || a.index - b.index))
-                    changePage(0);
+                    changePg(0);
                     setFilterValue(0);
                     setSearchValue('');
                     closeModal();

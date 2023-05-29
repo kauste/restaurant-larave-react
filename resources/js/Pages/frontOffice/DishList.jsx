@@ -5,6 +5,7 @@ import Authenticated from "@/Layouts/Authenticated";
 import { Head } from "@inertiajs/inertia-react";
 import { useEffect, useState } from "react";
 import Contexts from '@/components/Contexts';
+import Paginator from "@/components/Paginator";
 
 function DishList(props) {
 
@@ -13,13 +14,13 @@ function DishList(props) {
     const [asset, setAsset] = useState('');
     const [restaurants, setRestaurants] = useState([]);
     const [amountOfPages, setAmountOfPages] = useState(1);
-    const [requiredPage, setRequiredPage] = useState(1);
+    const [requiredPage, setRequiredPage] = useState(0);
     const [message, setMessage] = useState(null);
     const [perPg, setPerPg] = useState(1);
 
     useEffect(() => {
         setPerPg(props.perPage);
-        setRestaurantDishes(props.dishes.map((dish, i) => ({...dish, index:i, show:(i < props.perPage ? true : false)})));
+        setRestaurantDishes(props.dishes.map((dish, i) => ({...dish, index:i, show:(i < props.perPage ? true : false), searchedAndFiltered:true})));
         setDefaultPic(props.defaultPic);
         setAsset(props.asset);
         setRestaurants(props.restaurants);
@@ -27,7 +28,7 @@ function DishList(props) {
     }, [])
 
     const changePage = (page) => {
-        setRestaurantDishes(rD => rD.map((dish, i) => ({...dish, show:(i < perPg * page && i >= perPg * (page - 1) ? true : false)})));
+        setRestaurantDishes(rD => rD.map((dish, i) => ({...dish, show: (i < (page + 1) * perPg && i >=  page * perPg && dish.searchedAndFiltered == true) ? true : false})));
         setRequiredPage(page);
     }
 
@@ -53,11 +54,7 @@ function DishList(props) {
                                     }
                                 </ul>
                             </div>
-                            <div className="paginator-box">
-                                {
-                                    Array.from({ length: (amountOfPages)}, (_, i) => 1 + i).map((page) => <div onClick={ () => changePage(page)} className={requiredPage == page ? 'active one-color-btn orange-outline-btn' : 'one-color-btn orange-outline-btn'}key={page}>{page}</div>)
-                                }
-                            </div>
+                            <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}/>
                         </div>
                     </div>
                 </div>

@@ -6,8 +6,7 @@ function BackRestaurant({restaurant}){
     const { currPage, setRestaurantList, setMessage, zoomDOM, zoomSmaller, setForEditRestaurant, setModalInfo, changePage } = useContext(Contexts.BackContext);
 
     const confirm = () => {
-        console.log(restaurantList)
-        console.log(restaurant);
+
         axios.delete(route('restaurant-delete') + '/' + restaurant.id)
         .then(res => {
             setRestaurantList(rL => rL.filter((oneRestaurant) => oneRestaurant.id !== restaurant.id));

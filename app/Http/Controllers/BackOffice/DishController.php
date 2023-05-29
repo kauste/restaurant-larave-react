@@ -112,15 +112,24 @@ class DishController extends Controller
         $dish->dish_name = $dishData['dish_name'];
         $dish->price = $dishData['price'];
             if ($dishData['picture']) {
-                $photo = $dishData['picture'];
-    
-                $ext = $photo->getClientOriginalExtension();
-                $name = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $imgToDelete = $dish->picture_path;
+
+                $nameOfImg = pathinfo($imgToDelete, PATHINFO_FILENAME);
+                $extOfImg = pathinfo($imgToDelete, PATHINFO_EXTENSION);
+                dump(public_path('images/food') . '/' . $nameOfImg . '.' . $extOfImg);
+                $pic_path = public_path('images/food') . '/' . $nameOfImg . '.' . $extOfImg;
+
+                if(file_exists($pic_path)){
+                    unlink($pic_path);
+                }
+
+                $newImg = $dishData['picture'];
+                $ext = $newImg->getClientOriginalExtension();
+
+                $name = pathinfo($newImg->getClientOriginalName(), PATHINFO_FILENAME);
                 $file = $name. '-' . rand(100000, 999999). '.' . $ext;
-    
-                // $Image = Image::make($photo);
-                // $Image->save(public_path().'/images/'.$file);
-                $photo->move(public_path().'/images/food', $file);
+
+                $newImg->move(public_path().'/images/food', $file);
                 $dish->picture_path = $file; 
             }
             $dish->save();
@@ -139,8 +148,7 @@ class DishController extends Controller
         $dish = Dish::where('id', (int) $request->id)->first();
         $name = pathinfo($dish->picture_path, PATHINFO_FILENAME);
         $ext = pathinfo($dish->picture_path, PATHINFO_EXTENSION);
-        $path = public_path('/images/food') . '/' . $name . '.' . $ext;
-        
+        $path = public_path('images/food') . '/' . $name . '.' . $ext;
         if(file_exists($path)) {
             unlink($path);
         } 
@@ -220,10 +228,6 @@ class DishController extends Controller
     public function searchAndFilterDish(Request $request) 
     {
         $data = $request->all();
-        // Validator::make($data, [
-        //     'filter' => 'required|exists:restaurants,id',
-        //     'search' => 'nullable|string',
-        // ])->validate();
         if($data['filter'] == 0) {
             if($data['search'] === null){
                 $dishesIds = Dish::select('id')->get()->pluck('id')->toArray();

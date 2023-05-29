@@ -11,8 +11,8 @@ function SortFilterSearch(){
     const [activenessState, setActivenessState] = useState('d-none');
 
     const sortDefaultFilterAll = () => {
-        setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map(dish => ({...dish, show:true})));
-        changePage(1);
+        setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map(dish => ({...dish, searchedAndFiltered:true})));
+        changePage(0);
         setAmountOfPages(Math.ceil(Object.keys(restaurantDishes).length /perPg));
     }
     const sort = () => {
@@ -23,64 +23,50 @@ function SortFilterSearch(){
             setRestaurantDishes(rD => [...rD].sort((a, b) => parseFloat(b.price) - parseFloat(a.price)));
         } 
         setAmountOfPages(Math.ceil(Object.keys(restaurantDishes).length /perPg));
-        changePage(1);
+        changePage(0);
     }
+
     const filter = () => {
-            // amount of dishes in this restaurant
-            let countDishes = 0;
-            restaurantDishes.map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ++countDishes : [].push())
-            // array of dishes in first page sorted by index
-            let z = 0;
-            setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPg) ? ({...dish, show:true}) : ({...dish, show:false})));
-            // amount of buttons for pages
-            setAmountOfPages(Math.ceil(countDishes / perPg));
-            // first page
-            setRequiredPage(1);
+        let countDishes = 0;
+        restaurantDishes.map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ++countDishes : [].push())
+        setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ({...dish, searchedAndFiltered:true}) : ({...dish, searchedAndFiltered:false})).sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered));
+        setAmountOfPages(Math.ceil(countDishes / perPg));
+        changePage(0);
     }
 
     const filterAndSort = () => {
-        // count dishes in requested restaurant
         let countDishes = 0;
         restaurantDishes.map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ++countDishes : [].push())
-        //array of dishes in the first page, sorted by pride (asc and desc)
-        let z = 0;
         if(sortValue === 'asc'){
-            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(a.price) - parseInt(b.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPg) ? ({...dish, show:true}) : ({...dish, show:false})));
+            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(a.price) - parseInt(b.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ({...dish, searchedAndFiltered:true}) : ({...dish, searchedAndFiltered:false})).sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered));
         }
         else{
-            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(b.price) - parseInt(a.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant))  && (z++ < perPg) ? ({...dish, show:true}) : ({...dish, show:false})));
+            setRestaurantDishes(rD => [...rD].sort((a,b) => parseInt(b.price) - parseInt(a.price)).map((dish) => Array.from(dish.restaurants, (thisRestaurant) => thisRestaurant.id).includes(parseInt(restaurant)) ? ({...dish, searchedAndFiltered:true}) : ({...dish, searchedAndFiltered:false})).sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered));
         }
-        // amount of buttons for pages
         setAmountOfPages(Math.ceil(countDishes / perPg));
-        // first page
-        setRequiredPage(1);
+        changePage(0);
     }
+
     const doSortAndFilter = () => {
-        if(restaurant === 0 && sortValue === 'default'){
+        if(parseInt(restaurant) === 0 && sortValue === 'default'){
             sortDefaultFilterAll();
         }
-        else if(restaurant === 0 && sortValue !== 'default'){
+        else if(parseInt(restaurant) === 0 && sortValue !== 'default'){
             sort();
         } 
-        else if( restaurant !== 0 && sortValue === 'default'){
+        else if(parseInt(restaurant) !== 0 && sortValue === 'default'){
                 filter();
         }
         else{
             filterAndSort();
         }
-            
-        
-
-        // axios.get(route('sort-and-filter') + '?price_sort='+ sortValue +'&filter=' + restaurant)
-        // .then(res => {
-        //     console.log('labas')
-        //     setRestaurantDishes(rd => rd.filter(dish => res.data.dishes.includes(dish.id)));
-        //  });
     }
     const doSearch = () => {
         axios.get(route('search-dish') +'?dish=' + search)
         .then(res => {
-            setRestaurantDishes(res.data.dishes.map((dish, i) => ({...dish, index:i, show:(i < perPg ? true : false)}))) 
+            setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map(dish => Array.from(res.data.dishes, (oneDish) => oneDish.id).includes(dish.id) ? ({...dish, searchedAndFiltered:true}) : ({...dish, searchedAndFiltered:false})).sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered));
+            setAmountOfPages(Math.ceil(res.data.dishes.length / perPg));
+            changePage(0);
         });
 
     }

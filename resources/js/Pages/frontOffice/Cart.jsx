@@ -56,7 +56,7 @@ function Cart(props){
     }
 
     return(
-        <Contexts.FrontContext.Provider value={{ deliveryPrice, asset, setModalInfo, setComfirmModalInfo, cart, setCart, message, setMessage, zoomDOM, smallerBackground, normalBackground, comfirmModalInfo, setComfirmModalInfo, courier, setCurier, courierData, setCourierData, messages, setMessages, requiredPage, perPage, setAmountOfPages, changePage}}>
+        <Contexts.FrontContext.Provider value={{ deliveryPrice, asset, setModalInfo, setComfirmModalInfo, cart, setCart, message, setMessage, zoomDOM, smallerBackground, normalBackground, comfirmModalInfo, courier, setCurier, courierData, setCourierData, messages, setMessages, requiredPage, perPage, setAmountOfPages, changePage}}>
             <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo} fromCart={true}>
                             <Head title="Cart"/>
                 <div className="cart">

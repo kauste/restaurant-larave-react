@@ -3,7 +3,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 
 function FilterSearch() {
-    const { restaurants, setDishes, changePage, filteValue, setFilterValue, searchValue, setSearchValue} = useContext(Contexts.BackContext);
+    const { restaurants, setDishes, changePg, filteValue, setFilterValue, searchValue, setSearchValue} = useContext(Contexts.BackContext);
 
     const doSortAndFilter = () => {
         axios.get(route('back-search-and-filter-dish') + '?filter=' + filteValue + '&search=' + searchValue)
@@ -12,7 +12,7 @@ function FilterSearch() {
                 res.data.dishesIds.includes(dish.id) ? dish.searchedAndFiltered = true : dish.searchedAndFiltered = false;
                 return dish;
             }).sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered || a.index - b.index))
-            changePage(0)
+            changePg(0)
         })
     }
      return (

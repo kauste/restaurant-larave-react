@@ -40,15 +40,6 @@ function OrderList(props) {
         }
     },[message])
 
-    function changePage(page){
-        setOrders(ord => ord.map((oneOrder, i) => {
-            console.log(oneOrder.isFiltered)
-            oneOrder.show = (i < (page + 1) * perPg && i >=  page * perPg && oneOrder.isFiltered === true) ? true : false;
-            return oneOrder;
-        }));
-        setRequiredPage(page)
-    }
-
     useEffect(() => {
         const initialValue = 0;
         const sumOfFiltered = orders.reduce(
@@ -57,6 +48,19 @@ function OrderList(props) {
         );
         setAmountOfPages(Math.ceil(sumOfFiltered / perPg))
     }, [orders])
+
+    function changePage(page){
+        setOrders(ord => ord.map((oneOrder, i) => {
+            oneOrder.show = (i < (page + 1) * perPg && i >=  page * perPg && oneOrder.isFiltered === true) ? true : false;
+            return oneOrder;
+        }));
+        setRequiredPage(page)
+    }
+    function changePerPage(){
+        const pagesCount = Math.ceil(Object.keys(orders).length / perPg)
+        setAmountOfPages(pagesCount)
+        changePage(0);
+    }
 
 
     const search = () => {
@@ -110,7 +114,7 @@ function OrderList(props) {
                                     <button className="one-color-btn black-outline-btn" onClick={search}>Search</button>
                                     <button className="one-color-btn orange-btn" onClick={reset}>Reset</button>
                                 </div>
-                                    <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={() => changePage(0)}></PerPage>
+                                    <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={changePerPage}></PerPage>
                                     <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
                                     <div className="one-back-order headings">
                                         <div className="order-first-line headings">
@@ -129,7 +133,7 @@ function OrderList(props) {
                                         orders.map((order, index) => order.show ? <Order key={index} order={order}></Order> : null)
                                     }
                                 <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
-                                <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={() => changePage(0)}></PerPage>
+                                <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={changePerPage}></PerPage>
                                 </div>
                             </div>
                         </div>

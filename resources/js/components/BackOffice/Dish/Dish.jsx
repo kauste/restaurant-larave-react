@@ -4,7 +4,7 @@ import { useContext } from "react";
 import RestaurantInDish from "./RestaurantInDish";
 function Dish({dish}) {
     
-    const { asset, defaultPic, setDishes, setModalInfo, setMessage, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, setShouldEdit, changePage, currPage} = useContext(Contexts.BackContext);
+    const { asset, defaultPic, setDishes, setModalInfo, setMessage, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, setShouldEdit, changePg, currPage} = useContext(Contexts.BackContext);
 
     const deleteDish = () => {
 
@@ -17,7 +17,7 @@ function Dish({dish}) {
                                         }
                                         return d;
                                     }).sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered || a.index - b.index));
-            changePage(currPage)
+            changePg(currPage)
             setModalInfo(null);
             zoomBack();
             setMessage(res.data.message);

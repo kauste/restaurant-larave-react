@@ -42,7 +42,6 @@ function FrontOrders(props) {
     };
     //first render
     useEffect(() => {
-        console.log(props.orders)
         setOrders(props.orders.map((orderRestaurant, i) => ({...orderRestaurant, show:i < props.perPage ? true : false})));
         setAmountOfPages(props.amountOfPages)
         setPerPg(props.perPage)
@@ -77,7 +76,7 @@ function FrontOrders(props) {
     }, [])
 
     return (
-        <Contexts.FrontContext.Provider value={{message, setMessage, orders, setOrders, changeContactOrder, setChangeContactOrder, zoomDOM, statuses, asset, deliveryPrice, deliveryChoices, setModalInfo, smallerBackground, normalBackground, messages, setMessages, orders, perPg, requiredPage, setAmountOfPages, changePage}}>
+        <Contexts.FrontContext.Provider value={{message, setMessage, orders, setOrders, changeContactOrder, setChangeContactOrder, zoomDOM, statuses, asset, deliveryPrice, deliveryChoices, setModalInfo, smallerBackground, normalBackground, messages, setMessages, perPg, requiredPage, setAmountOfPages, changePage}}>
             <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo} forOrders={true}>
                 <Head title="Orders" />
                 <div className="py-12 order front">

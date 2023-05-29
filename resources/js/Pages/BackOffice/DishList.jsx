@@ -25,6 +25,7 @@ function DishList(props) {
     const [requiredPage, setRequiredPage] = useState(0);
     const [perPage, setPerPage] = useState(0);
     const [currPage, setCurrPage] = useState(0);
+    // const [changePg, setChangePg] = useState(null)
     //search and filter
     const [filteValue, setFilterValue] = useState(0);
     const [searchValue, setSearchValue] = useState('');
@@ -35,14 +36,17 @@ function DishList(props) {
     const zoomContainer = useRef();
 
     useEffect(() => {
-        setDishes(props.dishes.map((dish, i) => ({...dish, show: true, index:i, searchedAndFiltered:true})));
         setAsset(props.asset);
         setRestaurants(props.restaurants);
         setZoomDOM(zoomContainer.current);
         setAmountOfPages(props.amountOfPages)
         setPerPage(props.perPage)
+        setDishes(props.dishes.map((oneDish, i) => ({...oneDish, show: i > props.perPage ? true : false, index:i, searchedAndFiltered:true})));
+        setCurrPage(0)
+        setRequiredPage(0)
     }, [])
-
+    useEffect(() => {
+    }, [dishes])
     useEffect(() => {
         const messageSet = setTimeout(() => {
             setMessage(null);
@@ -68,7 +72,12 @@ function DishList(props) {
         zoomSmaller();
         setShouldCreate(true);
     }
-    function changePage(page){
+    const changePerPage = () => {
+        const pagesCount = Math.ceil(Object.keys(dishes).length / perPage)
+        setAmountOfPages(pagesCount)
+        changePg(0);
+    }
+    function changePg(page){
         setCurrPage(page)
         setDishes(d => d.map((dish, i) => ({...dish, show: (i < (page + 1) * perPage && i >=  page * perPage && dish.searchedAndFiltered == true) ? true : false})));
         setRequiredPage(page)
@@ -84,7 +93,7 @@ function DishList(props) {
         
     }, [dishes])
     return (
-        <Contexts.BackContext.Provider value={{ message, setMessage, messages, setMessages, defaultPic, asset, setModalInfo, dishForEdit, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, shouldCreate, setShouldCreate, shouldEdit, setShouldEdit, restaurants, setDishes, changePage, currPage, filteValue, setFilterValue, searchValue, setSearchValue}}>
+        <Contexts.BackContext.Provider value={{ message, setMessage, messages, setMessages, defaultPic, asset, setModalInfo, dishForEdit, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, shouldCreate, setShouldCreate, shouldEdit, setShouldEdit, restaurants, setDishes, currPage, filteValue, setFilterValue, searchValue, setSearchValue, changePg}}>
             <AuthenticatedBack auth={props.auth} backgroundColor={backgroundColor}>
                 <Head title="Restaurants"/>
                 <CreateDish/>
@@ -104,15 +113,15 @@ function DishList(props) {
                                     <h2>Our dishes</h2>
                                 </div>
                                 <div className="card-body">
-                                    <PerPage perPg={perPage} setPerPg={setPerPage} changePerPage={() =>changePage(0)}></PerPage>
-                                    <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
+                                    <PerPage perPg={perPage} setPerPg={setPerPage} changePerPage={changePerPage}></PerPage>
+                                    <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePg}></Paginator>
                                     <ul className="back-dish-list">
                                         {
                                             dishes.map((dish, index) => dish.show === true ? <Dish key={index} dish={dish}></Dish> : null)
                                         }
                                     </ul>
-                                    <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage}  changePage={changePage}></Paginator>
-                                    <PerPage perPg={perPage} setPerPg={setPerPage} changePerPage={() =>changePage(0)}></PerPage>
+                                    <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage}  changePage={changePg}></Paginator>
+                                    <PerPage perPg={perPage} setPerPg={setPerPage} changePerPage={changePerPage}></PerPage>
                                 </div>
                             </div>
                         </div>

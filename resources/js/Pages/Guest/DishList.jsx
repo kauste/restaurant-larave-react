@@ -2,6 +2,7 @@
 import Contexts from "@/components/Contexts";
 import Dish from "@/components/frontOffice/dishes/Dish";
 import SortFilterSearch from "@/components/frontOffice/dishes/SortFilerSearch";
+import Paginator from "@/components/Paginator";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head } from "@inertiajs/inertia-react";
 import { useEffect, useState } from "react";
@@ -12,27 +13,26 @@ function DishList(props) {
     const [asset, setAsset] = useState('');
     const [restaurants, setRestaurants] = useState([]);
     const [amountOfPages, setAmountOfPages] = useState(1);
-    const [requiredPage, setRequiredPage] = useState(1);
-    const [perPage, setPerPage] = useState(1);
-
+    const [requiredPage, setRequiredPage] = useState(0);
+    const [perPg, setPerPg] = useState(1);
 
     useEffect(() => {
-        setRestaurantDishes(props.dishes.map((dish, i) => ({...dish, index:i, show:(i < props.perPage ? true : false)})));
+        setRestaurantDishes(props.dishes.map((dish, i) => ({...dish, index:i, show:(i < props.perPage ? true : false), searchedAndFiltered:true})));
         setDefaultPic(props.defaultPic);
         setAsset(props.asset);
         setRestaurants(props.restaurants)
-        setPerPage(props.perPage);
+        setPerPg(props.perPage);
         setAmountOfPages(Math.ceil(Object.keys(props.dishes).length / props.perPage));
 
     }, []);
     const changePage = (page) => {
-        setRestaurantDishes(rD => rD.map((dish, i) => ({...dish, show:(i < perPage * page && i >= perPage * (page - 1) ? true : false)})));
+        setRestaurantDishes(rD => rD.map((dish, i) => ({...dish, show: (i < (page + 1) * perPg && i >=  page * perPg && dish.searchedAndFiltered == true) ? true : false})));
         setRequiredPage(page);
     }
 
     
     return (
-        <Contexts.FrontContext.Provider value={{setRestaurantDishes, defaultPic, asset, restaurants, restaurantDishes, perPage, changePage, setRequiredPage, setAmountOfPages,}}>
+        <Contexts.FrontContext.Provider value={{setRestaurantDishes, defaultPic, asset, restaurants, restaurantDishes, perPg, changePage, setRequiredPage, setAmountOfPages}}>
             <GuestLayout>
                 <Head title="Dishes"/>
                 <div className="py-12 dishes-list">
@@ -52,11 +52,7 @@ function DishList(props) {
                                         }
                                     </ul>
                                 </div>
-                                <div className="paginator-box">
-                                    {
-                                        Array.from({ length: (amountOfPages)}, (_, i) => 1 + i).map((page) => <div onClick={ () => changePage(page)} className={requiredPage == page ? 'active one-color-btn orange-outline-btn' : 'one-color-btn orange-outline-btn'}key={page}>{page}</div>)
-                                    }
-                                </div>
+                                <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}/>
                             </div>
                         </div>
                     </div>
