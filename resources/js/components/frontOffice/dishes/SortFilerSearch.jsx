@@ -60,12 +60,15 @@ function SortFilterSearch(){
         else{
             filterAndSort();
         }
+        setSearch('');
     }
     const doSearch = () => {
         axios.get(route('search-dish') +'?dish=' + search)
         .then(res => {
             setRestaurantDishes(rD => [...rD].sort((a, b) => a.index - b.index).map(dish => Array.from(res.data.dishes, (oneDish) => oneDish.id).includes(dish.id) ? ({...dish, searchedAndFiltered:true}) : ({...dish, searchedAndFiltered:false})).sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered));
             setAmountOfPages(Math.ceil(res.data.dishes.length / perPg));
+            setSortValue('default');
+            setRestaurant('0');
             changePage(0);
         });
 

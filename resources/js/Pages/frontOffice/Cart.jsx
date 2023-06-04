@@ -54,9 +54,14 @@ function Cart(props){
         setCart(crt => crt.map((oneRestCart, i) => ({...oneRestCart, show: i < (page + 1) * perPage && i >=  page * perPage ? true : false})));
         setRequiredPage(page)
     }
+    const rearangeOrder = (newCart) => {
+        const pagesCount = Math.ceil(Object.keys(newCart).length / perPage)
+        changePage(pagesCount - 1 < requiredPage ? requiredPage - 1 : requiredPage)
+        setAmountOfPages(pagesCount);
+    }
 
     return(
-        <Contexts.FrontContext.Provider value={{ deliveryPrice, asset, setModalInfo, setComfirmModalInfo, cart, setCart, message, setMessage, zoomDOM, smallerBackground, normalBackground, comfirmModalInfo, courier, setCurier, courierData, setCourierData, messages, setMessages, requiredPage, perPage, setAmountOfPages, changePage}}>
+        <Contexts.FrontContext.Provider value={{ deliveryPrice, asset, setModalInfo, setComfirmModalInfo, cart, setCart, message, setMessage, zoomDOM, smallerBackground, normalBackground, comfirmModalInfo, courier, setCurier, courierData, setCourierData, messages, setMessages, requiredPage, perPage, setAmountOfPages, changePage, rearangeOrder}}>
             <Authenticated auth={props.auth} modalInfo={modalInfo} setModalInfo={setModalInfo} fromCart={true}>
                             <Head title="Cart"/>
                 <div className="cart">
@@ -67,9 +72,15 @@ function Cart(props){
                             </div>
                             <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
                             <div className="card-body">
-                                {
+                            {
+                                cart.length !== 0 
+                                ?  
                                     cart.map((restaurant, index)=> restaurant.show === true ? <CartRestaurant key={index} restaurant={restaurant}></CartRestaurant> : null)
-                                }
+                                :
+                                    <div className="no-data">
+                                        <p>No dishes added in cart yet.</p>
+                                    </div>
+                            }
                             </div>
                             <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
                          </div>

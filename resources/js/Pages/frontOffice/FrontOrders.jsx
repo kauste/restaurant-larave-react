@@ -92,17 +92,34 @@ function FrontOrders(props) {
                                 </div>
                             </div>
                             <div className="card-body">
-                                <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={changePerPage}></PerPage>
-                                <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
+                            {
+                                orders.length > 1 ?
+                                <div>
+                                    <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={changePerPage}></PerPage>
+                                    <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
+                                </div>
+                                : null
+                            }
                                 <div>
                                     <div className="all-orders">
                                         {
-                                            orders.map((order, index) => order.show === true ? <FrontOrder key={index} order={order}></FrontOrder> : null)
+                                            orders.length !== 0 ?
+                                               orders.map((order, index) => order.show === true ? <FrontOrder key={index} order={order}></FrontOrder> : null)
+                                            :
+                                            <div className="no-data">
+                                                <p>No dishes added in cart yet.</p>
+                                            </div>
                                         }
                                     </div>
                                 </div>
-                                <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
-                                <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={(changePerPage)}></PerPage>
+                                {
+                                    orders.length > 1 ?
+                                        <div>
+                                            <PerPage perPg={perPg} setPerPg={setPerPg} changePerPage={changePerPage}></PerPage>
+                                            <Paginator amountOfPages={amountOfPages} requiredPage={requiredPage} changePage={changePage}></Paginator>
+                                        </div>
+                                    : null
+                                }
                             </div>
                         </div>
                     </div>

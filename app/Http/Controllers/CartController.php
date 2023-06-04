@@ -80,19 +80,49 @@ class CartController extends Controller
         $filtered = $cart->filter(function ($item, $key) use ($request) {
             return ($item['restaurant_id'] != $request->restaurantId || $item['dish_id'] != $request->dishId);
         });
+        $totalPrice = $filtered->sum(function ($restDishes) use ($request){
+            if($restDishes['restaurant_id'] == $request->restaurantId) {
+                $onePrice = Dish::where('id', $restDishes['dish_id'])
+                ->select('price')
+                ->first()->price;
+                if($restDishes['dish_id'] == $request->dishId) return $request->amount * $onePrice;
+                else{
+                    return $restDishes['amount'] * $onePrice;
+                } 
+            }
+        });
         $request->session()->put('cart', $filtered);
-        return response()->json(['message'=> 'Dish is deleted from the cart.']);
+        return response()->json(['totalPrice' => $totalPrice, 
+                                  'message'=> 'Dish is deleted from the cart.'
+                                ]);
     }
     public function editCartItem(Request $request){
         $cart = $request->session()->get('cart', collect([]));
-        $cart = $cart->map(function ($item) use ($request) {
-            if($item['restaurant_id'] == $request->restaurantId && $item['dish_id'] == $request->dishId){
-                $item['amount'] = (int) $request->amount;
-            }
+
+        $totalPrice = 0;
+        dump($cart);
+        $cart = $cart->map(function ($item) use ($request, $totalPrice) {
+            if($item['restaurant_id'] == $request->restaurantId && $item['dish_id'] == $request->dishId) $item['amount'] = (int) $request->amount;
             return $item;
+        })->reject(function($item){
+            return $item['amount'] == 0;
         });
+
+        $totalPrice = $cart->sum(function ($restDishes) use ($request){
+            if($restDishes['restaurant_id'] == $request->restaurantId) {
+                $onePrice = Dish::where('id', $restDishes['dish_id'])
+                ->select('price')
+                ->first()->price;
+                if($restDishes['dish_id'] == $request->dishId) return $request->amount * $onePrice;
+                else{
+                    return $restDishes['amount'] * $onePrice;
+                } 
+            }
+        });
+        
         $request->session()->put('cart', $cart);
-        return response()->json(['message'=> 'Amount of this dish is edited']);
+        return response()->json(['totalPrice' => $totalPrice,
+                                'message'=> 'Amount of this dish is edited']);
     }
     public function deleteCart (Request $request){
         $cart = $request->session()->get('cart', collect([]));

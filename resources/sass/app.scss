@@ -1094,7 +1094,37 @@ nav{
         }
     }
 }
+.cart{
+    .no-data{
+        height:200px;
+        p{
+            width:350px;
+            font-weight: 500;
+            background-color: #fff;
+            padding: 40px 70px;
+            border-top:#222 2px solid;
+            border-bottom:#222 2px solid;
 
+        }
+    }
+}
+.order{
+    .no-data{
+        display:flex;
+        justify-content: center;
+        p{
+            color:#fff;
+            width:350px;
+            font-weight: 500;
+            background-color: var(--the-almost-black);
+            padding: 40px 70px;
+            border-top:#fff 2px solid;
+            border-bottom:#fff 2px solid;
+
+        }
+    }
+
+}
 .cart, .order{
     &.front{
         h2{

@@ -15,7 +15,7 @@ function RestaurantDishes(props){
     const [userId, setUserId] = useState(null);
     const [asset, setAsset] = useState('');
     const [amountOfPages, setAmountOfPages] = useState(1);
-    const [requiredPage, setRequiredPage] = useState(1);
+    const [requiredPage, setRequiredPage] = useState(0);
     const [perPage, setPerPage] = useState(1);
     
 
@@ -30,7 +30,7 @@ function RestaurantDishes(props){
         setAmountOfPages(props.amountOfPages);
     }, [])
     const changePage = (page) => {
-        setDishes(rD => rD.map((dish, i) => ({...dish, show:(i < perPage * page && i >= perPage * (page - 1) ? true : false)})));
+        setDishes(rD => rD.map((dish, i) => ({...dish, show:(dish.index < perPage * (page + 1) && dish.index >= perPage * page ? true : false)})));
         setRequiredPage(page);
     }
 

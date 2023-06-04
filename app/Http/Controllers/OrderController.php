@@ -49,8 +49,8 @@ class OrderController extends Controller
                                 $totalPrice += Order::DELIVERY_PRICE;                          
                             }
                             $order->totalPrice = $totalPrice;
-                            $order->created = Carbon::create($order->created_at, 'UTC+2')->format('Y-m-d H:m');
-                            $order->updated = Carbon::parse($order->updated_at, 'UTC+2')->format('Y-m-d H:m');
+                            $order->created = Carbon::create($order->created_at, 'UTC+2')->format('Y-m-d H:i');
+                            $order->updated = Carbon::parse($order->updated_at, 'UTC+2')->format('Y-m-d H:i');
                             return $order;
                         });
 
@@ -72,8 +72,9 @@ class OrderController extends Controller
     public function store(Request $request)
     {   
         // validation
-        dump($request->deliveryData['deliveryChoice']);
+
         $courierData = $request->deliveryData['courierData'];
+
         if($request->deliveryData['deliveryChoice'] == 1){
             $validator = Validator::make($courierData, [
                 'city' => 'required|string|min:3|max:50',
@@ -95,9 +96,10 @@ class OrderController extends Controller
                 return response()->json(['errors' => $errors]);
             }
         }
-        else if ($request->deliveryData['deliveryChoice'] === null || parseInt($request->deliveryData['deliveryChoice']) !== 0){
+        else if ($request->deliveryData['deliveryChoice'] === null || $request->deliveryData['deliveryChoice'] != 0){
             return response()->json(['errors' => ['Delivery choice is required.']]);
         }
+
         // data valid, putting to database
         $order = new Order;
         $order->user_id = Auth::user()->id;

@@ -5,29 +5,34 @@ import Contexts from "@/components/Contexts";
 
 function CartRestaurant({restaurant}){
     
-    const {asset, deliveryPrice, setModalInfo, setComfirmModalInfo, cart, setMessage, setCart, zoomDOM} = useContext(Contexts.FrontContext);
+    const {deliveryPrice, setModalInfo, setComfirmModalInfo, cart, setMessage, setCart, zoomDOM, rearangeOrder} = useContext(Contexts.FrontContext);
     const [cartData, setCartData] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(Infinity);
 
     useEffect(() => {
-        setCartData(restaurant.cartInfo)
-    }, [])
+        setCartData(restaurant.cartInfo);
+        setTotalPrice(restaurant.totalPrice)
+    }, [cart])
 
     const showModal = () => {
-        setModalInfo({'text':'Are you sure you want to delete this cart?', 'confirm': cancelCart, 'zoomDOM':zoomDOM});
+        setModalInfo({'text':['Are you sure you want to delete this ', <b key={0}>cart?</b>, '?'], 'confirm': cancelCart, 'zoomDOM':zoomDOM});
     }
 
     const confirmOrderModal =() => {
-        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'restaurantId': restaurant.cartInfo[0].restaurant_id, 'setMessage':setMessage});
+        setComfirmModalInfo({'deliveryPrice':deliveryPrice, 'restaurantId': restaurant.cartInfo[0].restaurant_id});
     }
     
     const cancelCart = () => {
         axios.delete(route('delete-cart') + '/' + restaurant.cartInfo[0].restaurant_id)
         .then(res => {
-            setCart( c => c.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id));
+            const newCart = cart.filter((r) => r.cartInfo[0].restaurant_id !== restaurant.cartInfo[0].restaurant_id)
+            setCart(newCart)
+            rearangeOrder(newCart);
             setModalInfo(null);
             setMessage(res.data.message)
         })
     }
+
     return(
             <div className="card cart-restaurant">
                 <div className="card-header">
@@ -43,12 +48,12 @@ function CartRestaurant({restaurant}){
                         <li></li>
                     </ul>
                     {
-                        cartData.map((cartDish, index) => <CartDish key={index} cartDish={cartDish} asset={asset} setModalInfo={setModalInfo} cartData={restaurant.cartInfo} setCartData={setCartData} setCart={setCart} cart={cart} restaurant={restaurant} setMessage={setMessage} zoomDOM={zoomDOM}></CartDish>)
+                        cartData.map((cartDish, index) => <CartDish key={index} cartDish={cartDish} cartData={cartData} setCartData={setCartData} restaurant={restaurant} setTotalPrice={setTotalPrice} showCancelCartModal={showModal}></CartDish>)
                     }
                     <ul className="grid-for-extra">
                         <li></li>
                         <li><b>Total price:</b></li>
-                        <li>{restaurant.totalPrice} eu.</li>
+                        <li>{totalPrice} eu.</li>
                     </ul>
                 </div>
                 <div className="d-flex justify-content-end gap-3 p-4">

@@ -6,7 +6,7 @@ import Contexts from "@/components/Contexts";
 
 function ConfirmCartModal() {
     
-    const {comfirmModalInfo, setComfirmModalInfo, setCart, cart, setCurier, courierData, messages, setMessages, smallerBackground, normalBackground, requiredPage, perPage, setAmountOfPages, changePage } = useContext(Contexts.FrontContext);
+    const {comfirmModalInfo, setComfirmModalInfo, setCart, cart, setCurier, courierData, messages, setMessages, setMessage, smallerBackground, normalBackground, rearangeOrder} = useContext(Contexts.FrontContext);
     const [delivery, setDelivery] = useState(null);
     const [deliveryChoice, setDeliveryChoice] = useState('');
 
@@ -37,24 +37,19 @@ function ConfirmCartModal() {
         .then(res => {
             if(res.data.errors !== undefined){
                 setMessages(res.data.errors);
-
             }
             else{
-                normalBackground();
                 const newCart = cart.filter((r) => r.cartInfo[0].restaurant_id !== comfirmModalInfo.restaurantId)
                 setCart(newCart);
                 rearangeOrder(newCart);
+                normalBackground();
                 closeModal();
-                comfirmModalInfo.setMessage(res.data.message)
+                setMessage(res.data.message)
             }
         })
     }, [delivery])
 
-    const rearangeOrder = (newCart) => {
-        const pagesCount = Math.ceil(Object.keys(newCart).length / perPage)
-        changePage(pagesCount - 1 < requiredPage ? requiredPage - 1 : requiredPage)
-        setAmountOfPages(pagesCount);
-    }
+
 
 
     if (comfirmModalInfo !== null && comfirmModalInfo != undefined) {

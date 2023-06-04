@@ -1,3 +1,4 @@
+import HTMLReactParser from "html-react-parser";
 import { useEffect } from "react";
 
 function AreYouSureModal({modalInfo, setModalInfo}) {
