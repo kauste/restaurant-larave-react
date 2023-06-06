@@ -1,16 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ApplicationLogo from '@/components/inertiaComponents/ApplicationLogo';
 import { Link } from '@inertiajs/inertia-react';
 import NavLink from '@/components/inertiaComponents/NavLink';
 import ResponsiveNavLink from '@/components/inertiaComponents/ResponsiveNavLink';
 import FooterGuest from '@/components/Guest/FooterGuest';
+import Message from '@/components/Message';
 
 export default function GuestLayout({ children }) {
+    const [message, setMessage] = useState(null);
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [navDOM, setNavDOM] = useState(null);
+    const navRef = useRef(); 
+    useEffect(() => {
+        setNavDOM(navRef.current)
+    }, [])
 
+    useEffect(() => {
+        if(message !== null){
+           const messageSet =  setTimeout(()=> {
+                setMessage(null)
+                }, 20000)
+            return () => {
+                clearTimeout(messageSet);
+            }
+        }
+    }, [message])
     return (
         <div className="guest-layout">
-            <nav>
+            <nav ref={navRef}>
                 <div className="nav-box">
                     <div className="flex items-center">
                         <div className="shrink-0 flex items-center">
@@ -68,19 +85,18 @@ export default function GuestLayout({ children }) {
                 </div>
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                    <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('user-restaurants')} active={route().current('user-restaurants')}>
-                            Restaurants
-                        </ResponsiveNavLink>
+                    <div className="pt-3 pb-3 mobile-nav-box space-y-1">
+                        <ResponsiveNavLink href={route('user-restaurants')} active={route().current('user-restaurants')}>Restaurants</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('user-dishes')} active={route().current('user-dishes')}>Dishes</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('login')} active={route().current('login')}>Login</ResponsiveNavLink>
                     </div>
-
                 </div>
-                {/* <Message message={message} navDOM={navDOM}></Message> */}
+                <Message message={message} navDOM={navDOM}></Message>
             </nav>
             <div className="min-screen-height flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 main-for-children">
                 {children}
             </div>
-            <FooterGuest/>
+            <FooterGuest setMessage={setMessage}/>
         </div>
     );
 }

@@ -186,6 +186,7 @@ class OrderController extends Controller
         if($order->delivery_choice === 1){
             $order->totalPrice += Order::DELIVERY_PRICE;
         }
+
         $order->delivery_price = $order->delivery_choice === 1 ? Order::DELIVERY_PRICE : 0;
         $order->user = User::where('id', $order->user_id)->first();
         $order->status_name = Order::STATUS[$order->status];

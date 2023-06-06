@@ -97,13 +97,13 @@
                 <div class="one-dish-item">{{$dish->dish_name}}</div>
                 <div class="one-dish-item">{{$dish->price}} eu.</div>
                 <div class="one-dish-item">{{$dish->amount}}</div>
-                <div class="one-dish-item">{{$dish->allPrice}} eu.</div>
+                <div class="one-dish-item">{{number_format($dish->allPrice, 2, '.', ' ')}} eu.</div>
             </div>
             @endforeach
             <div class="prices">
                 <div>Delivery: {{$order->delivery}}</div>
                 <div>Delivery price: {{$order->delivery_price}} eu.</div>
-                <div>Total price: {{$order->totalPrice}} eu.</div>
+                <div>Total price: {{number_format($order->totalPrice, 2, '.', ' ')}} eu.</div>
             </div>
         </div>
     </div>

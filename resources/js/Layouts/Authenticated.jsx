@@ -132,23 +132,21 @@ export default function Authenticated({ auth, header, children, modalInfo, setMo
                             </div>
                     </div>
 
-                    <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                        <div className="pt-2 pb-3 space-y-1">
-                            <ResponsiveNavLink href={route('user-restaurants')} active={route().current('user-restaurants')}>
-                                Restaurants
-                            </ResponsiveNavLink>
-                        </div>
-
-                        <div className="pt-4 pb-1 border-t border-gray-200">
-                            <div className="px-4">
-                                <div className="font-medium text-base text-gray-800">{auth.user.name}</div>
-                                <div className="font-medium text-sm text-gray-500">{auth.user.email}</div>
+                    <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden hide-or-show'}>
+                        <div className="pt-3 pb-3 mobile-nav-box space-y-1">
+                            <div className="pt-4 pb-1 mb-4 border-t border-gray-200 user" style={{background: fromCart || fromRestaurantDishes ? '#2E2E2E' : ''}}>
+                                <div className="px-4" style={{color: fromCart || fromRestaurantDishes ? '#EEE': ''}}>
+                                    <div className="font-medium text-base ">{auth.user.name}</div>
+                                    <div className="font-medium text-sm">{auth.user.email}</div>
+                                </div>
                             </div>
-
-                            <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                    Log Out
-                                </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('user-restaurants')}>Restaurants</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('user-dishes')}>Dishes</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('show-cart')}>Cart</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('show-orders')}>Orders</ResponsiveNavLink>
+                            
+                            <div className=" mt-3 pt-3 space-y-1 border-t border-gray-200">
+                                    <ResponsiveNavLink method="post" href={route('logout')} as="button">Log Out</ResponsiveNavLink>
                             </div>
                         </div>
                     </div>

@@ -8,8 +8,10 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RedirectController;
 
-Route::get('/', [App\Http\Controllers\RedirectController::class, 'redirect'])->name('redirect');
+Route::get('/', [RedirectController::class, 'redirect'])->name('redirect');
+Route::post('/send-mail', [RedirectController::class, 'sendMail'])->name('send-mail');
 
 // Guest and front office
 Route::middleware(['role:user,guest'])->group(function () {

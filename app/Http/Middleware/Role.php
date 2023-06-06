@@ -17,7 +17,6 @@ class Role
     public function handle(Request $request, Closure $next, ...$roles)
     {
         $userRole = $request->user()?->role ?? 0;
-
         if (count($roles) === 1 && in_array('user', $roles)) {
             if ($userRole != 1) {
                 return redirect()->route('user-restaurants');

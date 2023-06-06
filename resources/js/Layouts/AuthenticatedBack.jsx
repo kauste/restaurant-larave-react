@@ -88,26 +88,23 @@ export default function AuthenticatedBack({ auth, header, children, backgroundCo
                             </button>
                         </div>
                     </div>
-                    <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                        <div className="pt-2 pb-3 space-y-1">
-                            <ResponsiveNavLink href={route('restaurant-list')} active={route().current('restaurant-list')}>
-                                Restaurants
-                            </ResponsiveNavLink>
-                        </div>
-
-                        <div className="pt-4 pb-1 border-t border-gray-200">
-                            <div className="px-4">
-                                <div className="font-medium text-base text-gray-800">{auth.user.name}</div>
-                                <div className="font-medium text-sm text-gray-500">{auth.user.email}</div>
+                    <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden hide-or-show'}>
+                        <div className="pt-3 pb-3 mobile-nav-box space-y-1">
+                            <div className="pt-4 pb-1 mb-4 border-t border-gray-200 user">
+                                <div className="px-4">
+                                    <div className="font-medium text-base ">{auth.user.name}</div>
+                                    <div className="font-medium text-sm">{auth.user.email}</div>
+                                </div>
                             </div>
-
-                            <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                    Log Out
-                                </ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('restaurant-list')} >Restaurants</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('dish-list')}>Dishes</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('back-order')}>Orders</ResponsiveNavLink>                            
+                            <div className=" mt-3 pt-3 space-y-1 border-t border-gray-200">
+                                    <ResponsiveNavLink method="post" href={route('logout')} as="button">Log Out</ResponsiveNavLink>
                             </div>
                         </div>
                     </div>
+
                     <Message message={message} navDOM={navDOM}></Message>
                 </nav>
 

@@ -7,7 +7,7 @@ import RestaurantCheckbox from "./RestaurantCheckbox";
 
 function EditDish() {
 
-    const {dishForEdit, setDishForEdit , restaurants, setDishes, setMessage, messages, setMessages, zoomBack, shouldEdit, setShouldEdit, changePg, currPage } = useContext(Contexts.BackContext);
+    const {dishForEdit, setDishForEdit , restaurants, setDishes, setMessage, messages, setMessages, zoomBack, shouldEdit, setShouldEdit } = useContext(Contexts.BackContext);
     const [checkBoxData, setCheckboxData] = useState([]);
     const [checkedRestaurants, setCheckedRestaurants] = useState([]);
 
@@ -57,7 +57,6 @@ function EditDish() {
                         d.searchedAndFiltered = true;
                         return d;
                     })).sort((a, b) => a.index - b.index))
-                    changePg(currPage)
                     closeModal();
                     setMessage(res.data.message);
                 }

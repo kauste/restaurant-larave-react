@@ -4,10 +4,9 @@ import { useContext } from "react";
 import RestaurantInDish from "./RestaurantInDish";
 function Dish({dish}) {
     
-    const { asset, defaultPic, setDishes, setModalInfo, setMessage, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, setShouldEdit, changePg, currPage} = useContext(Contexts.BackContext);
+    const { asset, defaultPic, setDishes, dishes, perPage, setModalInfo, setMessage, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, setShouldEdit, changePg, currPage} = useContext(Contexts.BackContext);
 
     const deleteDish = () => {
-
         axios.delete(route('dish-delete') + '/' + dish.id)
         .then(res => {
             setDishes(allDishes => allDishes.filter((oneDish) =>  oneDish.id != dish.id)
@@ -17,7 +16,11 @@ function Dish({dish}) {
                                         }
                                         return d;
                                     }).sort((a, b) => b.searchedAndFiltered - a.searchedAndFiltered || a.index - b.index));
-            changePg(currPage)
+                                    console.log(currPage)
+                                    console.log(currPage  * perPage)
+                                    console.log(dishes.length)
+            changePg(dishes.length <= currPage * perPage ? currPage - 1 : currPage)
+            // changePg(currPage)
             setModalInfo(null);
             zoomBack();
             setMessage(res.data.message);

@@ -93,7 +93,7 @@ function DishList(props) {
         
     }, [dishes])
     return (
-        <Contexts.BackContext.Provider value={{ message, setMessage, messages, setMessages, defaultPic, asset, setModalInfo, dishForEdit, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, shouldCreate, setShouldCreate, shouldEdit, setShouldEdit, restaurants, setDishes, currPage, filteValue, setFilterValue, searchValue, setSearchValue, changePg}}>
+        <Contexts.BackContext.Provider value={{ message, setMessage, messages, setMessages, dishes, defaultPic, asset, setModalInfo, dishForEdit, setDishForEdit, zoomDOM, zoomSmaller, zoomBack, shouldCreate, setShouldCreate, shouldEdit, setShouldEdit, restaurants, setDishes, currPage, filteValue, setFilterValue, searchValue, setSearchValue, changePg, perPage}}>
             <AuthenticatedBack auth={props.auth} backgroundColor={backgroundColor}>
                 <Head title="Restaurants"/>
                 <CreateDish/>

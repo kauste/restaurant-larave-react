@@ -98,9 +98,7 @@ class CartController extends Controller
     }
     public function editCartItem(Request $request){
         $cart = $request->session()->get('cart', collect([]));
-
         $totalPrice = 0;
-        dump($cart);
         $cart = $cart->map(function ($item) use ($request, $totalPrice) {
             if($item['restaurant_id'] == $request->restaurantId && $item['dish_id'] == $request->dishId) $item['amount'] = (int) $request->amount;
             return $item;

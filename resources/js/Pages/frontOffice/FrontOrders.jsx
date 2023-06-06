@@ -58,6 +58,7 @@ function FrontOrders(props) {
     }
 
     function changePerPage(){
+        if(perPg <= 0) return;
         const pagesCount = Math.ceil(Object.keys(orders).length / perPg)
         setAmountOfPages(pagesCount)
         changePage(0);

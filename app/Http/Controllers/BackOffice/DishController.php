@@ -116,7 +116,6 @@ class DishController extends Controller
 
                 $nameOfImg = pathinfo($imgToDelete, PATHINFO_FILENAME);
                 $extOfImg = pathinfo($imgToDelete, PATHINFO_EXTENSION);
-                dump(public_path('images/food') . '/' . $nameOfImg . '.' . $extOfImg);
                 $pic_path = public_path('images/food') . '/' . $nameOfImg . '.' . $extOfImg;
 
                 if(file_exists($pic_path)){

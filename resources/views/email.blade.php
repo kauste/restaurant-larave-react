@@ -1,0 +1,1 @@
+<div>Restaurant login request from: {{$email}}</div>

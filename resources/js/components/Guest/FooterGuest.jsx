@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-function FooterGuest() {
+function FooterGuest({setMessage}) {
     const [websiteAnimationWidth, setWebsiteAnimationWidth] = useState({});
     const [mailAnimationWidth, setMailAnimationWidtn] = useState({});
+    const [guestEmail, setGuestEmail] = useState('');
     const websiteRef = useRef();
     const mailRef = useRef();
 
@@ -11,7 +12,15 @@ function FooterGuest() {
         setMailAnimationWidtn({ "--websiteAnimationWidth": getComputedStyle(mailRef.current).width })
     }, [])
 
-
+    const sendEmail = () => {
+        console.log(route('send-mail'))
+        axios.post(route('send-mail'), {guestEmail: guestEmail})
+        .then(res => {
+            if(res.data.error) return setMessage(res.data.error)
+            setMessage(res.data.message)
+            setGuestEmail('')
+        })
+    }
     return (
         <footer>
             <div className="bottom-box">
@@ -39,8 +48,8 @@ function FooterGuest() {
                     <div className="send-form">
                         <label>Ask for login: </label>
                         <div className="input-button">
-                            <input placeholder="your emile"></input>
-                            <button>
+                            <input placeholder="your emile" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)}></input>
+                            <button onClick={sendEmail}>
                                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280.000000 640.000000" preserveAspectRatio="xMidYMid meet">
                                     <g transform="translate(0.000000,640.000000) scale(0.100000,-0.100000)" stroke="none">
                                         <path d="M9402 5819 c-126 -21 -243 -112 -303 -234 l-34 -70 0 -290 c0 -159 4 -525 8 -812 l8 -523 -4308 -2 -4308 -3 -65 -22 c-148 -51 -276 -159 -339 -288 -156 -316 8 -684 354 -794 45 -14 454 -16 4366 -18 l4317 -3 6 -373 c4 -204 11 -616 16 -914 9 -510 10 -545 30 -604 84 -249 369 -362 593 -236 26 14 699 559 1495 1210 1522 1246 1495 1222 1538 1337 27 70 24 220 -5 290 -51 124 5 81 -1551 1200 -799 575 -1479 1061 -1510 1081 -96 63 -202 86 -308 68z" />
