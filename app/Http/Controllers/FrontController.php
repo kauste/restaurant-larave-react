@@ -32,6 +32,8 @@ class FrontController extends Controller
             return Inertia::render('frontOffice/RestaurantList', $props);
         } 
         else {
+            $isRedirected = session()->get('redirect', false);
+            $props['isRedirected'] = $isRedirected;
             return Inertia::render('Guest/RestaurantList', $props);
         }
     }

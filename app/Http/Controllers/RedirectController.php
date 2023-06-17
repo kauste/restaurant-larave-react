@@ -14,7 +14,7 @@ class RedirectController extends Controller
             return redirect()->route('restaurant-list');
         }
         else{
-            return redirect()->route('user-restaurants');
+            return redirect()->route('user-restaurants')->with('redirect', true);
         }
     }
     public function sendMail(Request $request){

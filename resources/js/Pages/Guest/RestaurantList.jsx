@@ -1,27 +1,37 @@
+import Contexts from "@/components/Contexts";
 import Restaurant from "@/components/frontOffice/restaurants/Restaurant";
+import InfoModal from "@/components/Guest/InfoModal";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head } from "@inertiajs/inertia-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function RestaurantList(props) {
     const [restaurantList, setRestaurantList] = useState([]);
     const [amountOfPages, setAmountOfPages] = useState(0);
     const [requiredPage, setRequiredPage] = useState(0);
     const [perPage, setPerPage] = useState(0);
+    const[isRedirected, setIsRedirected] = useState(false);
+    const [zoomDOM, setZoomDOM] = useState(null);
+    const zoomContainer = useRef();
 
     useEffect(() => {
         setRestaurantList(props.restaurants.map((dish, i) => ({...dish, show:i < props.perPage ? true : false})));
         setAmountOfPages(props.amountOfPages)
         setPerPage(props.perPage)
+        setIsRedirected(props.isRedirected)
+        setZoomDOM(zoomContainer.current);
     }, [])
     function changePage(page){
         setRestaurantList(rL => rL.map((dish, i) => ({...dish, show: i < (page + 1) * perPage && i >=  page * perPage ? true : false})));
         setRequiredPage(page)
     }
+    console.log(isRedirected)
     return (
+        <Contexts.FrontContext.Provider value={{isRedirected, setIsRedirected, zoomDOM}}>
         <GuestLayout>
                 <Head title="Restaurants"/>
-                <div className="restaurant-list-front">
+                <InfoModal/>
+                <div className="restaurant-list-front" ref={zoomContainer}>
                     <div>
                         <div>
                             <div className="container">
@@ -51,6 +61,8 @@ function RestaurantList(props) {
                     </div>
                 </div>
         </GuestLayout>
+        </Contexts.FrontContext.Provider>
+
     )
 }
 export default RestaurantList;

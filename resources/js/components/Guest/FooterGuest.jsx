@@ -48,7 +48,7 @@ function FooterGuest({setMessage}) {
                     <div className="send-form">
                         <label>Ask for login: </label>
                         <div className="input-button">
-                            <input placeholder="your emile" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)}></input>
+                            <input placeholder="your email" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)}></input>
                             <button onClick={sendEmail}>
                                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280.000000 640.000000" preserveAspectRatio="xMidYMid meet">
                                     <g transform="translate(0.000000,640.000000) scale(0.100000,-0.100000)" stroke="none">
